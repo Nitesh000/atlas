@@ -1,5 +1,5 @@
 {
-  "name": "temp-turbo-atlas",
+  "name": "atlas",
   "private": true,
   "scripts": {
     "build": "turbo run build",
