@@ -1,17 +1,20 @@
-import Fastify from 'fastify';
+import { buildApp } from './app.js';
+import * as dotenv from 'dotenv';
 
-const fastify = Fastify({ logger: true });
+dotenv.config();
 
-fastify.get('/', async (request, reply) => {
-  return { hello: 'world' };
-});
+const port = parseInt(process.env.PORT || '3000', 10);
+const host = process.env.HOST || '0.0.0.0';
 
-const start = async () => {
+async function start() {
+  const app = await buildApp();
   try {
-    await fastify.listen({ port: 3000 });
+    await app.listen({ port, host });
+    app.log.info(`Server listening at http://${host}:${port}`);
   } catch (err) {
-    fastify.log.error(err);
+    app.log.error(err);
     process.exit(1);
   }
-};
+}
+
 start();

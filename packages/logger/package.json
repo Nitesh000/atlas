@@ -11,8 +11,13 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@atlas/typescript-config": "workspace:*",
     "@atlas/eslint-config": "workspace:*",
+    "@atlas/typescript-config": "workspace:*",
+    "@types/pino": "^7.0.5",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "pino": "^10.3.1",
+    "pino-pretty": "^13.1.3"
   }
 }
