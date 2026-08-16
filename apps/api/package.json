@@ -9,10 +9,13 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@atlas/auth": "workspace:^",
     "@atlas/config": "workspace:^",
     "@atlas/database": "workspace:^",
     "@atlas/logger": "workspace:^",
+    "@atlas/queue": "workspace:^",
     "@fastify/cors": "^11.3.0",
+    "better-auth": "^1.6.29",
     "dotenv": "^17.4.2",
     "fastify": "^5.11.3",
     "fastify-type-provider-zod": "^7.0.0",

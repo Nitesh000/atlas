@@ -5,15 +5,17 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { queryClient } from "@atlas/database";
 import { logger } from "@atlas/logger";
-import { errorHandlerPlugin } from "./plugins/errorHandler.js";
-
+import { redisClient } from "@atlas/queue";
+import { authRoutes } from "./modules/auth/auth.route.js";
+import { healthRoutes } from "./modules/health/health.route.js";
 import { orgsRoutes } from "./modules/orgs/orgs.route.js";
-import { dbClient, queryClient } from "@atlas/database";
+import { errorHandlerPlugin } from "./plugins/errorHandler.js";
 
 export async function buildApp() {
   const app = Fastify({
-    logger: logger as any, // Fastify logger types can be slightly strict
+    logger: logger as any,
   }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
@@ -23,19 +25,16 @@ export async function buildApp() {
 
   await app.register(cors, {
     origin: true,
+    credentials: true,
   });
 
-  app.addHook("onClose", async (instance, done) => {
+  app.addHook("onClose", async () => {
     await queryClient.end();
-    // await redisClient.end();
-    done();
+    await redisClient.quit();
   });
 
-  app.get("/health", async () => {
-    return { status: "ok", timestamp: new Date().toISOString() };
-  });
-
-  // Register domain routes
+  await app.register(authRoutes, { prefix: "/api/auth" });
+  await app.register(healthRoutes, { prefix: "/health" });
   await app.register(orgsRoutes, { prefix: "/api/v1/orgs" });
 
   return app;

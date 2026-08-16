@@ -1,0 +1,23 @@
+{
+  "name": "@atlas/queue",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@atlas/config": "workspace:*",
+    "bullmq": "^5.58.0",
+    "ioredis": "^5.7.0"
+  },
+  "devDependencies": {
+    "@atlas/eslint-config": "workspace:*",
+    "@atlas/typescript-config": "workspace:*",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1363,3 +1363,80 @@ Everything beyond this should be treated as an extension of the MVP rather than 
 
 I've also kept **pgvector as the initial vector store**, rather than adding a dedicated vector database now, and made the customer-facing application explicitly **React + Vite**.
 ```
+
+## Repository Strategy
+
+- Monorepo: Turborepo + pnpm
+- Branch strategy:
+  - `main`
+  - `staging`
+  - `development`
+  - `feature/*`
+  - `hotfix/*`
+
+## Monorepo Structure
+
+```text
+apps/
+  api/         # Fastify API
+  scraper/     # Playwright + BullMQ workers
+  dashboard/   # Customer app (Vite + React + TanStack Router/Query)
+  admin/       # Internal admin app
+  widget/      # Embedded chat widget
+
+packages/
+  ai/          # AI orchestration
+  auth/        # Better Auth config
+  config/      # Env schema/config
+  database/    # Drizzle client/schema
+  queue/       # Redis + BullMQ connection and queue contracts
+  validation/  # Shared Zod contracts
+  types/       # Shared TS types
+  logger/      # Logging
+  utils/       # Cross-cutting utils
+  embeddings/  # Embedding logic
+```
+
+## API Structure
+
+The API uses a domain-first modular structure:
+
+```text
+apps/api/src/
+  app.ts
+  index.ts
+  config/
+  plugins/
+  common/
+  jobs/
+  modules/
+    auth/
+    orgs/
+    websites/
+    crawls/
+    documents/
+    chat/
+    usage/
+    health/
+```
+
+Each module should keep routes, controllers, services, repositories, validation, constants, and types together.
+
+## Frontend Structure
+
+Dashboard/Admin should use:
+
+- React
+- TanStack Router
+- TanStack Query
+- Axios
+- Feature-first folder structure
+
+## Boundaries
+
+- auth logic -> `@atlas/auth`
+- env/config -> `@atlas/config`
+- db/schema -> `@atlas/database`
+- redis/queues -> `@atlas/queue`
+- shared zod -> `@atlas/validation`
+- shared ts types -> `@atlas/types`
