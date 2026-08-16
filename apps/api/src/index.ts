@@ -1,13 +1,22 @@
 import * as dotenv from "dotenv";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-dotenv.config();
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirectoryPath = path.dirname(currentFilePath);
 
-import { env } from "@atlas/config";
-import { buildApp } from "./app.js";
+dotenv.config({
+  path: path.resolve(currentDirectoryPath, "../../../.env"),
+});
 
 const SHUTDOWN_SIGNALS = ["SIGINT", "SIGTERM"] as const;
 
 async function start() {
+  const [{ env }, { buildApp }] = await Promise.all([
+    import("@atlas/config"),
+    import("./app.js"),
+  ]);
+
   const app = await buildApp();
 
   const shutdown = async (signal: (typeof SHUTDOWN_SIGNALS)[number]) => {
@@ -32,4 +41,3 @@ async function start() {
 }
 
 start();
-

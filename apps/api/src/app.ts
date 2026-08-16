@@ -15,7 +15,7 @@ import { errorHandlerPlugin } from "./plugins/errorHandler.js";
 
 export async function buildApp() {
   const app = Fastify({
-    logger: logger as any,
+    loggerInstance: logger,
   }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
