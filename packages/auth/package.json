@@ -8,11 +8,18 @@
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "dotenv -e ../../.env -- npx @better-auth/cli generate --config ./lib/auth.ts --output ../database/src/db/auth-schema.ts -y"
   },
   "devDependencies": {
-    "@atlas/typescript-config": "workspace:*",
     "@atlas/eslint-config": "workspace:*",
+    "@atlas/typescript-config": "workspace:*",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@atlas/config": "workspace:^",
+    "@atlas/database": "workspace:^",
+    "better-auth": "^1.6.29",
+    "drizzle-orm": "^0.45.2"
   }
 }

@@ -11,8 +11,17 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@atlas/typescript-config": "workspace:*",
+    "@atlas/config": "workspace:*",
     "@atlas/eslint-config": "workspace:*",
+    "@atlas/typescript-config": "workspace:*",
+    "@types/pg": "^8.21.0",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.23.12",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "pg": "^8.23.0",
+    "postgres": "^3.4.9"
   }
 }

@@ -1,16 +1,14 @@
-import { buildApp } from './app.js';
-import * as dotenv from 'dotenv';
-
+import { buildApp } from "./app.js";
+import * as dotenv from "dotenv";
 dotenv.config();
 
-const port = parseInt(process.env.PORT || '3000', 10);
-const host = process.env.HOST || '0.0.0.0';
+import { env } from "@atlas/config";
 
 async function start() {
   const app = await buildApp();
   try {
-    await app.listen({ port, host });
-    app.log.info(`Server listening at http://${host}:${port}`);
+    await app.listen({ port: env.PORT });
+    app.log.info(`Server listening at port:${env.PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
@@ -18,3 +16,4 @@ async function start() {
 }
 
 start();
+
