@@ -13,6 +13,7 @@ import { authRoutes } from "./modules/auth/auth.route.js";
 import { healthRoutes } from "./modules/health/health.route.js";
 import { orgsRoutes } from "./modules/orgs/orgs.route.js";
 import { apiKeysRoutes } from "./modules/api-keys/api-keys.route.js";
+import { websitesRoutes } from "./modules/websites/websites.route.js";
 import { errorHandlerPlugin } from "./plugins/errorHandler.js";
 
 export async function buildApp() {
@@ -44,6 +45,7 @@ export async function buildApp() {
   await app.register(healthRoutes, { prefix: "/health" });
   await app.register(orgsRoutes, { prefix: "/api/v1/orgs" });
   await app.register(apiKeysRoutes, { prefix: "/api/v1/orgs" });
+  await app.register(websitesRoutes, { prefix: "/api/v1/orgs" });
 
   return app;
 }

@@ -3,6 +3,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useSession, signOut } from "../lib/auth";
 import { api } from "../lib/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -11,16 +15,24 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data: session, isPending } = useSession();
 
-  if (isPending) return <div className="p-4">Loading...</div>;
+  if (isPending) return <div className="p-8">Loading...</div>;
 
   if (!session) {
     return (
-      <div className="p-4 bg-white rounded shadow text-center max-w-md mx-auto mt-12">
-        <h2 className="text-xl font-bold mb-4">Please log in to manage your account.</h2>
-        <div className="flex justify-center gap-4">
-          <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
-          <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
-        </div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-center">Please log in</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center gap-4">
+            <Button asChild variant="default">
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/register">Register</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -60,59 +72,62 @@ function DashboardHome({ session }: { session: any }) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Welcome, {session.user.name}</h2>
-        <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-black">
+        <h2 className="text-3xl font-bold tracking-tight">Welcome, {session.user.name}</h2>
+        <Button variant="ghost" onClick={handleLogout}>
           Logout
-        </button>
+        </Button>
       </div>
 
-      <div className="bg-white p-6 rounded-md shadow space-y-4">
-        <h3 className="text-lg font-semibold border-b pb-2">Your Organizations</h3>
-        
-        {isLoading ? (
-          <p>Loading organizations...</p>
-        ) : orgs?.length === 0 ? (
-          <p className="text-gray-500">You don't have any organizations yet.</p>
-        ) : (
-          <ul className="space-y-2">
-            {orgs?.map((org) => (
-              <li key={org.id} className="border p-3 rounded flex justify-between items-center">
-                <span className="font-medium">{org.name}</span>
-                <Link to="/" className="text-blue-600 text-sm hover:underline">
-                  Manage API Keys &rarr;
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+      <Card>
+        <CardHeader>
+          <CardTitle>Your Organizations</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {isLoading ? (
+            <p className="text-sm text-muted-foreground">Loading organizations...</p>
+          ) : orgs?.length === 0 ? (
+            <p className="text-sm text-muted-foreground">You don't have any organizations yet.</p>
+          ) : (
+            <ul className="space-y-3">
+              {orgs?.map((org) => (
+                <li key={org.id} className="border rounded-md p-4 flex justify-between items-center bg-card">
+                  <span className="font-medium text-lg">{org.name}</span>
+                  <Button asChild variant="secondary" size="sm">
+                    <Link to="/orgs/$orgId" params={{ orgId: org.id }}>
+                      Manage API Keys
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
 
-        <form 
-          className="mt-6 pt-4 border-t flex items-end gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (newOrgName.trim()) createOrg.mutate(newOrgName);
-          }}
-        >
-          <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">Create New Organization</label>
-            <input
-              type="text"
-              value={newOrgName}
-              onChange={(e) => setNewOrgName(e.target.value)}
-              placeholder="Organization Name"
-              className="w-full border px-3 py-2 rounded"
-              required
-            />
+          <div className="border-t pt-6">
+            <form 
+              className="flex items-end gap-4 max-w-md"
+              onSubmit={(e: React.FormEvent) => {
+                e.preventDefault();
+                if (newOrgName.trim()) createOrg.mutate(newOrgName);
+              }}
+            >
+              <div className="flex-1 space-y-2">
+                <Label htmlFor="orgName">Create New Organization</Label>
+                <Input
+                  id="orgName"
+                  placeholder="e.g. Acme Corp"
+                  value={newOrgName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewOrgName(e.target.value)}
+                  disabled={createOrg.isPending}
+                  required
+                />
+              </div>
+              <Button type="submit" disabled={createOrg.isPending}>
+                Create
+              </Button>
+            </form>
           </div>
-          <button
-            type="submit"
-            disabled={createOrg.isPending}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-          >
-            Create
-          </button>
-        </form>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

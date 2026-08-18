@@ -9,6 +9,12 @@ import {
 import { user } from "./auth-schema.js";
 
 export const memberRole = pgEnum("member_role", ["owner", "admin", "member"]);
+export const crawlStatus = pgEnum("crawl_status", [
+  "pending",
+  "crawling",
+  "completed",
+  "failed",
+]);
 
 export const organization = pgTable("organization", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -52,4 +58,18 @@ export const apiKey = pgTable("api_key", {
   allowedDomains: text("allowed_domains").array(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   lastUsedAt: timestamp("last_used_at"),
+});
+
+export const website = pgTable("website", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  organizationId: uuid("organization_id")
+    .notNull()
+    .references(() => organization.id, { onDelete: "cascade" }),
+  url: text("url").notNull(),
+  status: crawlStatus("status").notNull().default("pending"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
