@@ -1,4 +1,5 @@
 import { dbClient, appSchema } from "@atlas/database";
+import { eq } from "drizzle-orm";
 import type { CreateOrgInput, Org } from "./orgs.types.js";
 
 /**
@@ -30,4 +31,20 @@ export async function createOrgRecord(input: CreateOrgInput): Promise<Org> {
   });
 
   return org;
+}
+
+export async function findOrgsByUserId(userId: string): Promise<Org[]> {
+  const orgs = await dbClient
+    .select({
+      id: appSchema.organization.id,
+      name: appSchema.organization.name,
+    })
+    .from(appSchema.organization)
+    .innerJoin(
+      appSchema.organizationMember,
+      eq(appSchema.organization.id, appSchema.organizationMember.organizationId),
+    )
+    .where(eq(appSchema.organizationMember.userId, userId));
+
+  return orgs;
 }

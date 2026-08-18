@@ -1,5 +1,5 @@
 import type { CreateOrgInput, Org } from "./orgs.types.js";
-import { createOrgRecord } from "./orgs.repository.js";
+import { createOrgRecord, findOrgsByUserId } from "./orgs.repository.js";
 
 /**
  * Creates a new organization.
@@ -11,4 +11,11 @@ export async function createOrg(input: CreateOrgInput): Promise<Org> {
     name: normalizedName,
     userId: input.userId,
   });
+}
+
+/**
+ * Lists all organizations for a user.
+ */
+export async function listOrgs(userId: string): Promise<Org[]> {
+  return findOrgsByUserId(userId);
 }

@@ -15,3 +15,9 @@ export const createOrgSchema = {
     201: orgResponseSchema,
   },
 };
+
+export const listOrgsSchema = {
+  response: {
+    200: z.array(orgResponseSchema),
+  },
+};
