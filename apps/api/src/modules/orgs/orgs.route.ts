@@ -7,12 +7,7 @@ import { requireAuth } from "../../plugins/requireAuth.js";
 export async function orgsRoutes(app: FastifyInstance) {
   const typedApp = app.withTypeProvider<ZodTypeProvider>();
 
-  typedApp.post(
-    "/",
-    {
-      schema: createOrgSchema,
-      preHandler: [requireAuth],
-    },
-    createOrgHandler,
-  );
+  typedApp.addHook("preHandler", requireAuth);
+
+  typedApp.post("/", { schema: createOrgSchema }, createOrgHandler);
 }

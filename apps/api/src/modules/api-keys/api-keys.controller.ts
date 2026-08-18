@@ -25,12 +25,10 @@ export async function createApiKeyHandler(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  if (!request.user) throw new UnauthorizedError("Auth required");
-
   const params = request.params as { orgId: string };
   const body = request.body as Omit<CreateApiKeyInput, "organizationId">;
 
-  await verifyOrgMember(request.user.id, params.orgId);
+  await verifyOrgMember(request.user!.id, params.orgId);
 
   const apiKey = await createApiKey({
     name: body.name,
@@ -45,11 +43,9 @@ export async function listApiKeysHandler(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  if (!request.user) throw new UnauthorizedError("Auth required");
-
   const params = request.params as { orgId: string };
 
-  await verifyOrgMember(request.user.id, params.orgId);
+  await verifyOrgMember(request.user!.id, params.orgId);
 
   const keys = await listApiKeys(params.orgId);
 
