@@ -5,15 +5,22 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
+import { env } from "@atlas/config";
 import { queryClient } from "@atlas/database";
-import { logger } from "@atlas/logger";
+import { createLogger } from "@atlas/logger";
 import { redisClient } from "@atlas/queue";
 import { authRoutes } from "./modules/auth/auth.route.js";
 import { healthRoutes } from "./modules/health/health.route.js";
 import { orgsRoutes } from "./modules/orgs/orgs.route.js";
+import { apiKeysRoutes } from "./modules/api-keys/api-keys.route.js";
 import { errorHandlerPlugin } from "./plugins/errorHandler.js";
 
 export async function buildApp() {
+  const logger = createLogger({
+    level: "info",
+    isProduction: env.NODE_ENV === "production",
+  });
+
   const app = Fastify({
     loggerInstance: logger,
   }).withTypeProvider<ZodTypeProvider>();
@@ -36,6 +43,7 @@ export async function buildApp() {
   await app.register(authRoutes, { prefix: "/api/auth" });
   await app.register(healthRoutes, { prefix: "/health" });
   await app.register(orgsRoutes, { prefix: "/api/v1/orgs" });
+  await app.register(apiKeysRoutes, { prefix: "/api/v1/orgs" });
 
   return app;
 }

@@ -8,7 +8,10 @@
   },
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "dotenv -e ../../.env -- drizzle-kit generate",
+    "db:push": "dotenv -e ../../.env -- drizzle-kit push",
+    "db:studio": "dotenv -e ../../.env -- drizzle-kit studio"
   },
   "devDependencies": {
     "@atlas/config": "workspace:*",

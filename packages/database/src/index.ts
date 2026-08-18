@@ -7,3 +7,5 @@ export const name = "@atlas/database";
 
 export const queryClient = postgres(env.DATABASE_URL);
 export const dbClient = drizzle(queryClient, { schema });
+
+export * from "./db/index.js";

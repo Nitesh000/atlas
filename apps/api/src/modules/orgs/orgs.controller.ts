@@ -1,17 +1,22 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
-import { randomUUID } from 'node:crypto';
+import type { FastifyReply, FastifyRequest } from "fastify";
+import type { CreateOrgInput } from "./orgs.types.js";
+import { createOrg } from "./orgs.service.js";
+import { UnauthorizedError } from "../../common/errors/index.js";
 
 export async function createOrgHandler(
-  request: FastifyRequest<{ Body: { name: string } }>,
-  reply: FastifyReply
+  request: FastifyRequest,
+  reply: FastifyReply,
 ) {
-  const { name } = request.body;
-  
-  // TODO: Insert into database using @atlas/database
-  const newOrg = {
-    id: randomUUID(),
-    name,
-  };
+  const body = request.body as Omit<CreateOrgInput, "userId">;
 
-  return reply.status(201).send(newOrg);
+  if (!request.user) {
+    throw new UnauthorizedError("User missing from request context");
+  }
+
+  const organization = await createOrg({
+    name: body.name,
+    userId: request.user.id,
+  });
+
+  return reply.status(201).send(organization);
 }
