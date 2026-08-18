@@ -6,7 +6,7 @@ export const createApiKeyBodySchema = z.object({
 });
 
 export const apiKeyResponseSchema = z.object({
-  id: z.string().uuid(),
+  id: z.uuid(),
   key: z.string(),
   name: z.string(),
   allowedDomains: z.array(z.string()).nullable(),
@@ -15,7 +15,7 @@ export const apiKeyResponseSchema = z.object({
 
 export const createApiKeySchema = {
   params: z.object({
-    orgId: z.string().uuid(),
+    orgId: z.uuid(),
   }),
   body: createApiKeyBodySchema,
   response: {
@@ -25,7 +25,7 @@ export const createApiKeySchema = {
 
 export const listApiKeysSchema = {
   params: z.object({
-    orgId: z.string().uuid(),
+    orgId: z.uuid(),
   }),
   response: {
     200: z.array(apiKeyResponseSchema),
