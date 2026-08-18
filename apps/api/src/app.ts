@@ -32,7 +32,10 @@ export async function buildApp() {
   await app.register(errorHandlerPlugin);
 
   await app.register(cors, {
-    origin: true,
+    origin: (origin, cb) => {
+      // Allows any origin, reflecting it back to satisfy credentials: true requirements
+      cb(null, true);
+    },
     credentials: true,
   });
 

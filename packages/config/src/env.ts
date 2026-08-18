@@ -13,7 +13,7 @@ const EnvSchema = z.object({
   DATABASE_URL: z.url("POSTGRES DB url is required for this application"),
   BETTER_AUTH_URL: z
     .url("better auth url is required")
-    .default("http://localhost:3000"),
+    .default("http://localhost:3001"),
   BETTER_AUTH_SECRET: z.string("Secret is required").default("000000000"),
 });
 
