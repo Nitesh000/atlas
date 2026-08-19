@@ -24,8 +24,9 @@ function OrgDetails() {
   const queryClient = useQueryClient();
   const [newKeyName, setNewKeyName] = useState("");
   const [newKey, setNewKey] = useState("");
+  const [newWebsiteUrl, setNewWebsiteUrl] = useState("");
 
-  const { data: apiKeys, isLoading } = useQuery({
+  const { data: apiKeys, isLoading: isLoadingKeys } = useQuery({
     queryKey: ["orgs", orgId, "api-keys"],
     queryFn: async () => {
       const res = await api.get(`/orgs/${orgId}/api-keys`);
@@ -36,6 +37,20 @@ function OrgDetails() {
         createdAt: string;
       }[];
     },
+  });
+
+  const { data: websites, isLoading: isLoadingWebsites } = useQuery({
+    queryKey: ["orgs", orgId, "websites"],
+    queryFn: async () => {
+      const res = await api.get(`/orgs/${orgId}/websites`);
+      return res.data as {
+        id: string;
+        url: string;
+        status: string;
+        createdAt: string;
+      }[];
+    },
+    refetchInterval: 5000, // Poll every 5s to see crawl status update
   });
 
   const createApiKey = useMutation({
@@ -53,10 +68,28 @@ function OrgDetails() {
     },
   });
 
-  const handleCreate = (e: React.FormEvent) => {
+  const createWebsite = useMutation({
+    mutationFn: async (url: string) => {
+      const res = await api.post(`/orgs/${orgId}/websites`, { url });
+      return res.data;
+    },
+    onSuccess: () => {
+      setNewWebsiteUrl("");
+      queryClient.invalidateQueries({ queryKey: ["orgs", orgId, "websites"] });
+    },
+  });
+
+  const handleCreateKey = (e: React.FormEvent) => {
     e.preventDefault();
     if (newKeyName.trim()) {
       createApiKey.mutate(newKeyName.trim());
+    }
+  };
+
+  const handleAddWebsite = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newWebsiteUrl.trim()) {
+      createWebsite.mutate(newWebsiteUrl.trim());
     }
   };
 
@@ -94,7 +127,7 @@ function OrgDetails() {
             </div>
           )}
 
-          {isLoading ? (
+          {isLoadingKeys ? (
             <p>Loading keys...</p>
           ) : apiKeys?.length === 0 ? (
             <p className="text-muted-foreground">No API keys generated yet.</p>
@@ -125,7 +158,7 @@ function OrgDetails() {
 
           <div className="border-t pt-6">
             <h3 className="text-lg font-medium mb-4">Create New Key</h3>
-            <form onSubmit={handleCreate} className="flex items-end gap-4 max-w-md">
+            <form onSubmit={handleCreateKey} className="flex items-end gap-4 max-w-md">
               <div className="flex-1 space-y-2">
                 <Label htmlFor="keyName">Key Name</Label>
                 <Input
@@ -139,6 +172,71 @@ function OrgDetails() {
               </div>
               <Button type="submit" disabled={createApiKey.isPending}>
                 Generate Key
+              </Button>
+            </form>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Indexed Websites</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {isLoadingWebsites ? (
+            <p>Loading websites...</p>
+          ) : websites?.length === 0 ? (
+            <p className="text-muted-foreground">No websites added yet.</p>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>URL</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Added</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {websites?.map((site) => (
+                  <TableRow key={site.id}>
+                    <TableCell className="font-medium">{site.url}</TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          site.status === "completed"
+                            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                            : site.status === "failed"
+                              ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                        }`}
+                      >
+                        {site.status.toUpperCase()}
+                      </span>
+                    </TableCell>
+                    <TableCell>{new Date(site.createdAt).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-medium mb-4">Add Website to Crawl</h3>
+            <form onSubmit={handleAddWebsite} className="flex items-end gap-4 max-w-md">
+              <div className="flex-1 space-y-2">
+                <Label htmlFor="websiteUrl">Website URL</Label>
+                <Input
+                  id="websiteUrl"
+                  type="url"
+                  placeholder="https://example.com"
+                  value={newWebsiteUrl}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewWebsiteUrl(e.target.value)}
+                  disabled={createWebsite.isPending}
+                  required
+                />
+              </div>
+              <Button type="submit" disabled={createWebsite.isPending}>
+                Crawl
               </Button>
             </form>
           </div>
