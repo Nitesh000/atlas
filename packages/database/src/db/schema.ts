@@ -15,10 +15,12 @@ export const crawlStatus = pgEnum("crawl_status", [
   "completed",
   "failed",
 ]);
+export const orgPlan = pgEnum("org_plan", ["free", "pro"]);
 
 export const organization = pgTable("organization", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
+  plan: orgPlan("plan").notNull().default("free"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

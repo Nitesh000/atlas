@@ -1,0 +1,474 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+        .bg-grid-subtle {
+          background-image: radial-gradient(
+            circle at 2px 2px,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 0
+          );
+          background-size: 24px 24px;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#c8c6c9",
+              "inverse-on-surface": "#312f39",
+              error: "#ffb4ab",
+              "on-secondary-fixed": "#1c1b1d",
+              surface: "#14121b",
+              "secondary-fixed-dim": "#c8c6c8",
+              "on-tertiary-fixed": "#1b1b1e",
+              tertiary: "#c8c6c9",
+              "on-primary-fixed": "#190064",
+              "on-surface-variant": "#c9c4d7",
+              "secondary-fixed": "#e5e1e4",
+              background: "#14121b",
+              "surface-container": "#201e28",
+              "primary-fixed": "#e5deff",
+              "on-secondary-fixed-variant": "#474649",
+              "on-error": "#690005",
+              "primary-container": "#8f7eff",
+              "primary-fixed-dim": "#c8bfff",
+              "surface-container-lowest": "#0e0d16",
+              "on-surface": "#e5e0ed",
+              "surface-container-highest": "#35333d",
+              "on-primary-container": "#26008b",
+              "surface-dim": "#14121b",
+              "surface-tint": "#c8bfff",
+              "tertiary-container": "#919094",
+              "on-tertiary": "#303033",
+              "on-background": "#e5e0ed",
+              "on-secondary-container": "#b7b4b7",
+              primary: "#c8bfff",
+              secondary: "#c8c6c8",
+              "inverse-primary": "#5b41dc",
+              "on-secondary": "#313032",
+              "on-primary": "#2c009e",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-container": "#29292c",
+              "error-container": "#93000a",
+              "on-tertiary-fixed-variant": "#47464a",
+              "surface-container-low": "#1c1a23",
+              "surface-bright": "#3a3842",
+              "surface-container-high": "#2a2932",
+              "surface-variant": "#35333d",
+              "tertiary-fixed": "#e4e1e5",
+              "on-primary-fixed-variant": "#4220c4",
+              "outline-variant": "#474555",
+              outline: "#928ea1",
+              "inverse-surface": "#e5e0ed",
+              "secondary-container": "#474649",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "stack-md": "16px",
+              unit: "4px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              gutter: "24px",
+              "container-max": "1280px",
+              "margin-page": "40px",
+            },
+            fontFamily: {
+              "body-sm": ["Geist"],
+              "headline-lg-mobile": ["Geist"],
+              "headline-md": ["Geist"],
+              "headline-lg": ["Geist"],
+              "label-mono": ["JetBrains Mono"],
+              display: ["Geist"],
+              "body-lg": ["Geist"],
+            },
+            fontSize: {
+              "body-sm": [
+                "14px",
+                { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "1.2", fontWeight: "600" },
+              ],
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "1.3",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-mono": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" },
+              ],
+              display: [
+                "48px",
+                {
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "1.6",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-surface font-body-lg text-body-lg text-on-surface bg-grid-subtle"
+  >
+    <header
+      class="fixed top-0 z-50 w-full border-b bg-surface/60 backdrop-blur-xl border-outline-variant/10"
+    >
+      <div class="flex justify-between items-center w-full h-14 px-gutter">
+        <div class="flex items-center gap-stack-md">
+          <div class="w-6 h-6 rounded-xl bg-primary"></div>
+          <span
+            class="tracking-widest uppercase font-label-mono text-label-mono text-on-surface-variant"
+            >Widget.Preview</span
+          >
+        </div>
+        <nav
+          class="flex items-center gap-stack-lg"
+          data-active-classes="text-on-surface bg-surface-container-high px-3 py-1 rounded-full"
+        >
+          <a
+            aria-current="page"
+            class="py-1 px-3 rounded-full transition-colors font-body-sm text-on-surface bg-surface-container-high"
+            data-path="preview-canvas"
+            href="#"
+            >Preview Canvas</a
+          ><a
+            class="transition-colors text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface"
+            data-path="configuration"
+            href="#"
+            >Configuration</a
+          ><a
+            class="transition-colors text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface"
+            data-path="documentation"
+            href="#"
+            >Docs</a
+          >
+        </nav>
+        <div class="flex items-center gap-stack-md">
+          <div
+            class="flex justify-center items-center w-8 h-8 rounded-full bg-primary"
+          >
+            <span class="material-symbols-outlined text-on-primary text-[18px]"
+              >person</span
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex relative flex-col pt-14 w-full min-h-screen">
+      <div
+        class="flex relative flex-col justify-center items-center w-full h-full p-gutter"
+      >
+        <div class="absolute inset-0 z-0 bg-surface/50 backdrop-blur-sm"></div>
+        <div
+          class="flex z-10 flex-col items-center w-full gap-stack-lg max-w-container-max"
+        >
+          <div class="flex flex-col items-center text-center gap-stack-sm">
+            <h2 class="font-headline-lg text-headline-lg text-on-surface">
+              Expanded State
+            </h2>
+            <p
+              class="max-w-md font-body-lg text-body-lg text-on-surface-variant"
+            >
+              The fully realized chat interface, anchored above the floating
+              action button, ready for deep interaction.
+            </p>
+          </div>
+          <div
+            class="flex overflow-hidden relative flex-col w-full rounded-2xl border shadow-2xl max-w-[400px] h-[600px] bg-surface-container border-outline-variant/20"
+          >
+            <div
+              class="flex justify-between items-center border-b p-stack-md bg-surface-container-high border-outline-variant/10"
+            >
+              <div class="flex items-center gap-stack-sm">
+                <div
+                  class="flex overflow-hidden relative justify-center items-center w-8 h-8 rounded-full bg-primary-container group"
+                >
+                  <div
+                    class="absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 from-primary via-primary/50"
+                  ></div>
+                  <span
+                    class="relative z-10 material-symbols-outlined text-on-primary-container text-[18px]"
+                    >smart_toy</span
+                  >
+                </div>
+                <div>
+                  <h3
+                    class="leading-tight font-headline-md text-headline-md text-on-surface text-[16px]"
+                  >
+                    Atlas AI
+                  </h3>
+                  <div class="flex gap-2 items-center">
+                    <div
+                      class="w-2 h-2 rounded-full animate-pulse bg-[#10B981]"
+                    ></div>
+                    <span
+                      class="font-label-mono text-label-mono text-on-surface-variant text-[10px]"
+                      >Online</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-stack-sm">
+                <button
+                  class="flex justify-center items-center w-8 h-8 rounded-full transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-variant"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >more_vert</span
+                  >
+                </button>
+                <button
+                  class="flex justify-center items-center w-8 h-8 rounded-full transition-colors text-on-surface-variant hover:text-on-surface hover:bg-surface-variant"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >close</span
+                  >
+                </button>
+              </div>
+            </div>
+            <div
+              class="flex overflow-y-auto relative flex-col flex-1 p-stack-md gap-stack-lg"
+            >
+              <div
+                class="absolute inset-0 z-10 h-12 bg-gradient-to-b to-transparent pointer-events-none from-surface-container/50"
+              ></div>
+              <div
+                class="flex flex-col justify-center items-center gap-unit my-stack-lg"
+              >
+                <span
+                  class="tracking-widest uppercase font-label-mono text-label-mono text-on-surface-variant text-[10px]"
+                  >Today, 10:42 AM</span
+                >
+              </div>
+              <div class="flex items-end gap-stack-sm">
+                <div
+                  class="flex flex-shrink-0 justify-center items-center w-6 h-6 rounded-full bg-primary-container"
+                >
+                  <span
+                    class="material-symbols-outlined text-on-primary-container text-[14px]"
+                    >smart_toy</span
+                  >
+                </div>
+                <div class="flex flex-col gap-unit max-w-[80%]">
+                  <div
+                    class="rounded-2xl rounded-bl-sm bg-surface-variant p-stack-sm"
+                  >
+                    <p class="font-body-sm text-body-sm text-on-surface">
+                      Hello! I'm Atlas. I can help you navigate this
+                      documentation, write code snippets, or answer questions
+                      about our API.
+                    </p>
+                  </div>
+                  <div class="rounded-2xl bg-surface-variant p-stack-sm">
+                    <p class="font-body-sm text-body-sm text-on-surface">
+                      What are you working on today?
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-end items-end gap-stack-sm">
+                <div class="flex flex-col gap-unit max-w-[80%] items-end">
+                  <div
+                    class="rounded-2xl rounded-br-sm bg-primary p-stack-sm shadow-[0_0_15px_rgba(200,191,255,0.1)]"
+                  >
+                    <p class="font-body-sm text-body-sm text-on-primary">
+                      I need help setting up the authentication flow for a
+                      Next.js application using the new SDK.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-end gap-stack-sm">
+                <div
+                  class="flex flex-shrink-0 justify-center items-center w-6 h-6 rounded-full bg-primary-container"
+                >
+                  <span
+                    class="material-symbols-outlined text-on-primary-container text-[14px]"
+                    >smart_toy</span
+                  >
+                </div>
+                <div class="flex flex-col gap-unit max-w-[85%]">
+                  <div
+                    class="overflow-hidden relative rounded-2xl rounded-bl-sm bg-surface-variant p-stack-sm group"
+                  >
+                    <div
+                      class="absolute top-0 bottom-0 left-0 w-1 bg-primary"
+                    ></div>
+                    <p class="pl-2 font-body-sm text-body-sm text-on-surface">
+                      I can help with that. Are you using the App Router or the
+                      Pages Router in your Next.js project?
+                    </p>
+                  </div>
+                  <div class="flex gap-stack-sm mt-unit">
+                    <button
+                      class="flex gap-2 items-center py-1.5 px-3 rounded-full border transition-colors border-outline-variant/50 text-on-surface-variant font-label-mono text-label-mono hover:bg-surface-container-high hover:text-on-surface"
+                    >
+                      App Router
+                    </button>
+                    <button
+                      class="flex gap-2 items-center py-1.5 px-3 rounded-full border transition-colors border-outline-variant/50 text-on-surface-variant font-label-mono text-label-mono hover:bg-surface-container-high hover:text-on-surface"
+                    >
+                      Pages Router
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex items-end opacity-0 transition-opacity duration-300 gap-stack-sm"
+                id="typing-indicator"
+              >
+                <div
+                  class="flex flex-shrink-0 justify-center items-center w-6 h-6 rounded-full bg-primary-container"
+                >
+                  <span
+                    class="material-symbols-outlined text-on-primary-container text-[14px]"
+                    >smart_toy</span
+                  >
+                </div>
+                <div
+                  class="flex gap-1 items-center py-3 px-4 rounded-2xl rounded-bl-sm bg-surface-variant"
+                >
+                  <div
+                    class="w-1.5 h-1.5 rounded-full animate-bounce bg-on-surface-variant"
+                    style="animation-delay: 0s"
+                  ></div>
+                  <div
+                    class="w-1.5 h-1.5 rounded-full animate-bounce bg-on-surface-variant"
+                    style="animation-delay: 0.15s"
+                  ></div>
+                  <div
+                    class="w-1.5 h-1.5 rounded-full animate-bounce bg-on-surface-variant"
+                    style="animation-delay: 0.3s"
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="relative border-t p-stack-md bg-surface-container border-outline-variant/10"
+            >
+              <div
+                class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent via-primary/20"
+              ></div>
+              <div
+                class="flex relative items-center rounded-xl border transition-all bg-surface border-outline-variant/30 group focus-within:border-primary focus-within:shadow-[0_0_10px_rgba(200,191,255,0.1)]"
+              >
+                <input
+                  class="py-3 pr-12 pl-4 w-full bg-transparent border-none focus:outline-none text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant/50"
+                  placeholder="Type your message..."
+                  type="text"
+                />
+                <button
+                  class="flex absolute right-2 justify-center items-center w-8 h-8 rounded-lg transition-colors bg-primary/10 text-primary hover:bg-primary hover:text-on-primary"
+                >
+                  <span class="material-symbols-outlined text-[18px]"
+                    >send</span
+                  >
+                </button>
+              </div>
+              <div class="flex justify-between items-center px-1 mt-stack-sm">
+                <div class="flex gap-2 items-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[14px]"
+                    >bolt</span
+                  >
+                  <span class="font-label-mono text-label-mono text-[10px]"
+                    >GPT-4 Optimized</span
+                  >
+                </div>
+                <span
+                  class="font-label-mono text-label-mono text-[10px] text-on-surface-variant"
+                  >⌘K to command</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-gutter right-gutter">
+          <button
+            class="flex justify-center items-center w-14 h-14 rounded-full border shadow-lg transition-transform hover:scale-105 bg-surface-container border-outline-variant/20 text-on-surface hover:bg-surface-container-high"
+          >
+            <span class="material-symbols-outlined text-[24px]"
+              >keyboard_arrow_down</span
+            >
+          </button>
+        </div>
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const input = document.querySelector('input[type="text"]');
+          const typingIndicator = document.getElementById("typing-indicator");
+
+          input.addEventListener("focus", () => {
+            setTimeout(() => {
+              typingIndicator.classList.remove("opacity-0");
+            }, 500);
+          });
+
+          input.addEventListener("blur", () => {
+            typingIndicator.classList.add("opacity-0");
+          });
+        });
+      </script>
+    </main>
+  </body>
+</html>

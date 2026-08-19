@@ -1,0 +1,363 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+        .bg-grid-subtle {
+          background-image: radial-gradient(
+            circle at 2px 2px,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 0
+          );
+          background-size: 24px 24px;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#c8c6c9",
+              "inverse-on-surface": "#312f39",
+              error: "#ffb4ab",
+              "on-secondary-fixed": "#1c1b1d",
+              surface: "#14121b",
+              "secondary-fixed-dim": "#c8c6c8",
+              "on-tertiary-fixed": "#1b1b1e",
+              tertiary: "#c8c6c9",
+              "on-primary-fixed": "#190064",
+              "on-surface-variant": "#c9c4d7",
+              "secondary-fixed": "#e5e1e4",
+              background: "#14121b",
+              "surface-container": "#201e28",
+              "primary-fixed": "#e5deff",
+              "on-secondary-fixed-variant": "#474649",
+              "on-error": "#690005",
+              "primary-container": "#8f7eff",
+              "primary-fixed-dim": "#c8bfff",
+              "surface-container-lowest": "#0e0d16",
+              "on-surface": "#e5e0ed",
+              "surface-container-highest": "#35333d",
+              "on-primary-container": "#26008b",
+              "surface-dim": "#14121b",
+              "surface-tint": "#c8bfff",
+              "tertiary-container": "#919094",
+              "on-tertiary": "#303033",
+              "on-background": "#e5e0ed",
+              "on-secondary-container": "#b7b4b7",
+              primary: "#c8bfff",
+              secondary: "#c8c6c8",
+              "inverse-primary": "#5b41dc",
+              "on-secondary": "#313032",
+              "on-primary": "#2c009e",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-container": "#29292c",
+              "error-container": "#93000a",
+              "on-tertiary-fixed-variant": "#47464a",
+              "surface-container-low": "#1c1a23",
+              "surface-bright": "#3a3842",
+              "surface-container-high": "#2a2932",
+              "surface-variant": "#35333d",
+              "tertiary-fixed": "#e4e1e5",
+              "on-primary-fixed-variant": "#4220c4",
+              "outline-variant": "#474555",
+              outline: "#928ea1",
+              "inverse-surface": "#e5e0ed",
+              "secondary-container": "#474649",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "stack-md": "16px",
+              unit: "4px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              gutter: "24px",
+              "container-max": "1280px",
+              "margin-page": "40px",
+            },
+            fontFamily: {
+              "body-sm": ["Geist"],
+              "headline-lg-mobile": ["Geist"],
+              "headline-md": ["Geist"],
+              "headline-lg": ["Geist"],
+              "label-mono": ["JetBrains Mono"],
+              display: ["Geist"],
+              "body-lg": ["Geist"],
+            },
+            fontSize: {
+              "body-sm": [
+                "14px",
+                { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "1.2", fontWeight: "600" },
+              ],
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "1.3",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-mono": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" },
+              ],
+              display: [
+                "48px",
+                {
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "1.6",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-surface font-body-lg text-body-lg text-on-surface bg-grid-subtle"
+  >
+    <header
+      class="fixed top-0 z-50 w-full border-b bg-surface/60 backdrop-blur-xl border-outline-variant/10"
+    >
+      <div class="flex justify-between items-center w-full h-14 px-gutter">
+        <div class="flex items-center gap-stack-md">
+          <div class="w-6 h-6 rounded-xl bg-primary"></div>
+          <span
+            class="tracking-widest uppercase font-label-mono text-label-mono text-on-surface-variant"
+            >Widget.Preview</span
+          >
+        </div>
+        <nav
+          class="flex items-center gap-stack-lg"
+          data-active-classes="text-on-surface bg-surface-container-high px-3 py-1 rounded-full"
+        >
+          <a
+            aria-current="page"
+            class="py-1 px-3 rounded-full transition-colors font-body-sm text-on-surface bg-surface-container-high"
+            data-path="preview-canvas"
+            href="#"
+            >Preview Canvas</a
+          ><a
+            class="transition-colors text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface"
+            data-path="configuration"
+            href="#"
+            >Configuration</a
+          ><a
+            class="transition-colors text-body-sm font-body-sm text-on-surface-variant hover:text-on-surface"
+            data-path="documentation"
+            href="#"
+            >Docs</a
+          >
+        </nav>
+        <div class="flex items-center gap-stack-md">
+          <div
+            class="flex justify-center items-center w-8 h-8 rounded-full bg-primary"
+          >
+            <span class="material-symbols-outlined text-on-primary text-[18px]"
+              >person</span
+            >
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="flex relative flex-col pt-14 w-full min-h-screen">
+      <div class="flex relative flex-col w-full">
+        <!-- Simulated Page Content Container (to provide context for the FAB) -->
+        <div
+          class="flex relative flex-col justify-start items-center pb-32 w-full"
+          style="min-height: 100vh"
+        >
+          <!-- Ambient Background Elements -->
+          <div
+            class="absolute top-0 left-1/2 rounded-full -translate-x-1/2 pointer-events-none w-[800px] h-[800px] bg-primary/5 blur-[120px]"
+          ></div>
+          <!-- Header area of simulated site -->
+          <div
+            class="flex relative z-10 flex-col items-center pt-24 w-full text-center max-w-container-max px-gutter pb-stack-lg"
+          >
+            <div
+              class="inline-flex gap-2 items-center py-1 px-3 rounded-full shadow-sm bg-surface-container-low mb-stack-md"
+            >
+              <span
+                class="w-2 h-2 rounded-full animate-pulse bg-primary"
+              ></span>
+              <span
+                class="tracking-widest uppercase font-label-mono text-label-mono text-on-surface-variant"
+                >System Status: Optimal</span
+              >
+            </div>
+            <h1
+              class="max-w-3xl font-display text-display text-on-surface mb-stack-md"
+            >
+              Next-Generation
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container"
+                >Infrastructure</span
+              >
+            </h1>
+            <p
+              class="max-w-2xl font-body-lg text-body-lg text-on-surface-variant mb-stack-lg"
+            >
+              Deploy, scale, and monitor your distributed systems with surgical
+              precision. Experience the high-density environment designed for
+              modern engineering teams.
+            </p>
+          </div>
+          <!-- Simulated Data Visualization Area -->
+          <div class="relative z-10 w-full max-w-5xl px-gutter">
+            <div
+              class="flex overflow-hidden relative flex-col w-full rounded-xl shadow-xl h-[500px] bg-surface-container"
+            >
+              <!-- Window controls mock -->
+              <div
+                class="flex gap-2 items-center px-4 w-full h-10 bg-surface-container-high"
+              >
+                <div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+                <div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+                <div class="w-3 h-3 rounded-full bg-surface-variant"></div>
+                <div
+                  class="ml-4 font-label-mono text-label-mono text-on-surface-variant"
+                >
+                  metrics_dashboard.json
+                </div>
+              </div>
+              <!-- Image Placeholder acting as a complex graph -->
+              <div class="relative flex-1 w-full">
+                <div
+                  class="absolute inset-0 bg-center bg-cover opacity-60 mix-blend-lighten"
+                  data-alt="A highly detailed, ultra-modern data visualization dashboard in dark mode. Pitch black background with electric indigo glowing lines forming a complex network graph and time-series charts. Minimalist, high-tech aesthetic with sharp geometric shapes and subtle glassmorphic overlays."
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAYn6HR5ar15IFW6FIrUgrUpcOHLexbs4uoxakXE7qA9MfW1tIYC9UKyZLa_2406VJ3fjWEZ_DNNNhUniQer9MgTGXl3TpsYjY04nR50hX2Arzg9kW9iUOMfWDzwZxi2CWpbaqGUthUt09SsdyfKc_veZK6vDTVBtrpblaUvUbj0evFbsPX9nMI6UNQdov-AolexQy5cIa45Fx07bJaeteZ3rSW20t_5WK_Sp8-Xogo0GuUgd4sWGVW&quot;);
+                  "
+                ></div>
+                <div
+                  class="absolute inset-0 bg-gradient-to-t to-transparent from-surface-container"
+                ></div>
+                <!-- State Label Overlay -->
+                <div class="flex absolute bottom-8 left-8 gap-4 items-center">
+                  <div class="font-display text-headline-md text-on-surface">
+                    Collapsed State View
+                  </div>
+                  <div
+                    class="w-24 h-px bg-gradient-to-r to-transparent from-primary/50"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 
+    Atlas Widget Collapsed State (FAB)
+    Positioned fixed to the viewport, independent of page scroll.
+  -->
+        <div class="fixed z-50 bottom-margin-page right-margin-page group">
+          <!-- Outer Glow / Atmosphere -->
+          <div
+            class="absolute inset-0 rounded-full opacity-20 transition-all duration-500 ease-out scale-110 group-hover:opacity-40 group-hover:scale-150 bg-primary blur-[24px]"
+          ></div>
+          <!-- Primary Interaction Area -->
+          <button
+            class="flex relative justify-center items-center w-16 h-16 rounded-full shadow-xl transition-all duration-300 ease-out hover:shadow-2xl hover:-translate-y-1 active:scale-95 active:translate-y-0 bg-surface-container-highest after:content-[ group-hover:after:opacity-100 hover:bg-surface-bright''] after:absolute after:inset-0 after:rounded-full after:bg-gradient-to-t after:from-primary/10 after:to-transparent after:opacity-0 after:transition-opacity"
+            id="atlas-fab"
+          >
+            <!-- Geometric 'A' Arrow Logo -->
+            <svg
+              class="relative z-10 w-7 h-7 transition-transform duration-300 group-hover:scale-110 text-primary"
+              fill="none"
+              viewbox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!-- Main structural triangle -->
+              <path
+                d="M12 2L2 21H7.5L12 12.5L16.5 21H22L12 2Z"
+                fill="currentColor"
+              ></path>
+              <!-- Inner accent/arrow element -->
+              <path
+                d="M12 16L9.5 21H14.5L12 16Z"
+                fill="currentColor"
+                opacity="0.5"
+              ></path>
+            </svg>
+            <!-- Subtle top-light gradient for depth without borders -->
+            <div
+              class="absolute inset-0 bg-gradient-to-b to-transparent rounded-full pointer-events-none from-white/10"
+            ></div>
+          </button>
+        </div>
+      </div>
+      <script>
+        // Simple micro-interaction: Subtle entrance animation on load
+        document.addEventListener("DOMContentLoaded", () => {
+          const fab = document.getElementById("atlas-fab");
+          if (fab) {
+            fab.style.opacity = "0";
+            fab.style.transform = "translateY(20px) scale(0.9)";
+
+            setTimeout(() => {
+              fab.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+              fab.style.opacity = "1";
+              fab.style.transform = "translateY(0) scale(1)";
+            }, 100);
+          }
+        });
+      </script>
+    </main>
+  </body>
+</html>

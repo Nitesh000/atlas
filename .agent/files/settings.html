@@ -1,0 +1,486 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#47464a",
+              error: "#ffb4ab",
+              "on-surface": "#e5e0ed",
+              "primary-fixed": "#e5deff",
+              "error-container": "#93000a",
+              "on-primary-fixed-variant": "#4220c4",
+              "on-tertiary-container": "#29292c",
+              "on-error-container": "#ffdad6",
+              "tertiary-container": "#919094",
+              "surface-tint": "#c8bfff",
+              "on-secondary-container": "#b7b4b7",
+              surface: "#14121b",
+              "secondary-container": "#474649",
+              "surface-dim": "#14121b",
+              "primary-container": "#8f7eff",
+              "surface-container-low": "#1c1a23",
+              "primary-fixed-dim": "#c8bfff",
+              "surface-container-highest": "#35333d",
+              "outline-variant": "#474555",
+              "on-surface-variant": "#c9c4d7",
+              "on-error": "#690005",
+              "on-tertiary": "#303033",
+              primary: "#c8bfff",
+              "inverse-surface": "#e5e0ed",
+              "inverse-primary": "#5b41dc",
+              "surface-container-lowest": "#0e0d16",
+              "on-secondary": "#313032",
+              "surface-bright": "#3a3842",
+              secondary: "#c8c6c8",
+              "on-primary": "#2c009e",
+              "on-tertiary-fixed": "#1b1b1e",
+              "secondary-fixed-dim": "#c8c6c8",
+              "surface-container-high": "#2a2932",
+              "on-secondary-fixed": "#1c1b1d",
+              "on-primary-fixed": "#190064",
+              "tertiary-fixed": "#e4e1e5",
+              outline: "#928ea1",
+              "tertiary-fixed-dim": "#c8c6c9",
+              "surface-container": "#201e28",
+              background: "#14121b",
+              "inverse-on-surface": "#312f39",
+              "on-secondary-fixed-variant": "#474649",
+              "surface-variant": "#35333d",
+              "on-background": "#e5e0ed",
+              "secondary-fixed": "#e5e1e4",
+              "on-primary-container": "#26008b",
+              tertiary: "#c8c6c9",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "container-max": "1280px",
+              "stack-md": "16px",
+              unit: "4px",
+              "margin-page": "40px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              gutter: "24px",
+            },
+            fontFamily: {
+              display: ["Geist"],
+              "label-mono": ["JetBrains Mono"],
+              "body-lg": ["Geist"],
+              "body-sm": ["Geist"],
+              "headline-lg-mobile": ["Geist"],
+              "headline-lg": ["Geist"],
+              "headline-md": ["Geist"],
+            },
+            fontSize: {
+              display: [
+                "48px",
+                {
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-mono": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "1.6",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+              "body-sm": [
+                "14px",
+                { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "1.2", fontWeight: "600" },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "1.3",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="select-none bg-background font-body-sm text-on-surface">
+    <aside
+      class="flex fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-surface-container-lowest border-outline-variant/30"
+    >
+      <div class="flex items-center px-4 h-14 mb-stack-md">
+        <img
+          alt="Logo"
+          class="object-contain mr-3 w-auto h-6"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA3MWMOpdqe0MXIvdjiIrF_gHJzN54BmXepNc7bK3buoDzvuFIqVe12jgYjjqiFsboqdb-wyVqk8QaecAwtvyR6Ck-iSQEXu9RvX1t8umEkv1MVfC9o0XcDqOJNcCZWY_kyrM4CO5KQ1FP-hHj4hB6QM31laz-lOtNzjqE1_8CoS3tUD4u-XgsFyBgFcmkVSxbSwEQJhcghqewwvpjLvJkwmUSE6_4jsc4bUW0cuNIUxCaCBX4qx52"
+        /><span
+          class="font-bold tracking-tight uppercase font-headline-md text-body-lg text-on-surface"
+          >Atlas</span
+        >
+      </div>
+      <nav
+        class="flex-1 px-3 space-y-1"
+        data-active-classes="bg-surface-container-highest text-primary shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+      >
+        <a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="organizations"
+          href="#"
+          >Organizations</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="usage"
+          href="#"
+          >Usage</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="billing"
+          href="#"
+          >Billing</a
+        ><a
+          aria-current="page"
+          class="flex items-center py-2 px-3 rounded-lg transition-all group bg-surface-container-highest text-primary shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+          data-path="settings"
+          href="#"
+          >Settings</a
+        >
+      </nav>
+      <div class="px-3 pt-4 pb-6 space-y-1 border-t border-outline-variant/20">
+        <a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="documentation"
+          href="#"
+          >Docs</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="help-support"
+          href="#"
+          >Support</a
+        >
+      </div>
+    </aside>
+    <div class="pl-64">
+      <header
+        class="flex fixed top-0 right-0 left-64 z-40 justify-between items-center px-6 h-14 border-b bg-surface-container-lowest/60 backdrop-blur-xl border-outline-variant/30"
+      >
+        <div class="flex gap-2 items-center text-body-sm font-label-mono">
+          <span class="text-on-surface-variant">Atlas</span
+          ><span class="text-outline">/</span
+          ><span class="font-medium text-on-surface">Acme Corp</span>
+        </div>
+        <div class="flex gap-6 items-center">
+          <div
+            class="flex gap-2 items-center py-1.5 px-3 rounded border transition-colors cursor-pointer bg-surface-container border-outline-variant/50 min-w-[240px] text-on-surface-variant group hover:border-primary/50"
+          >
+            <span class="material-symbols-outlined text-[18px]">search</span
+            ><span class="flex-1 text-label-mono">Search...</span
+            ><span
+              class="py-0.5 px-1.5 rounded border text-[10px] bg-surface-container-highest border-outline-variant"
+              >⌘K</span
+            >
+          </div>
+          <div
+            class="flex gap-3 items-center pl-4 border-l border-outline-variant/30"
+          >
+            <span
+              class="cursor-pointer material-symbols-outlined text-on-surface-variant hover:text-on-surface"
+              >notifications</span
+            >
+            <div
+              class="overflow-hidden w-8 h-8 rounded-full border transition-colors cursor-pointer border-outline-variant hover:border-primary"
+            >
+              <img
+                alt="Profile"
+                class="object-cover w-full h-full"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuxZwwgS3Q2G2Ns9BHL5IEJS7a5ZHOCKw8kI9Azu7P4KDfMgi7zdzQFpxFWFNTMghYmiqEJZlm-LRmbl_a13rrSUH8fxzgIL_5oA8Tw0B-XekV7keobWJRg9Igg1cgjQCkxuF8Db-6z5_DnV5lJgEDY-cS1hrdRUzTYtTtTmDFdMrWSFedjt84nRKTCeDjThcRz0JI0jNPijxi0SO1zAPDk3XvMUyrm_Fi76oq0K5iGOUuNw3gYtXH"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="pt-14 min-h-screen bg-background">
+        <div class="flex flex-col w-full text-on-surface">
+          <div class="flex flex-col gap-12 py-8 px-6 mx-auto w-full max-w-5xl">
+            <header class="flex flex-col gap-2">
+              <h1 class="font-display text-display text-on-surface">
+                Settings
+              </h1>
+              <p class="font-body-lg text-body-lg text-on-surface-variant">
+                Manage your organization's preferences, security, and team
+                members.
+              </p>
+            </header>
+            <div class="flex relative gap-8 border-b border-outline-variant/30">
+              <button
+                class="pb-4 border-b-2 transition-colors font-label-mono text-label-mono text-primary border-primary"
+              >
+                GENERAL
+              </button>
+              <button
+                class="pb-4 border-b-2 border-transparent transition-colors font-label-mono text-label-mono text-on-surface-variant hover:text-on-surface"
+              >
+                SECURITY
+              </button>
+              <button
+                class="pb-4 border-b-2 border-transparent transition-colors font-label-mono text-label-mono text-on-surface-variant hover:text-on-surface"
+              >
+                TEAM
+              </button>
+              <button
+                class="pb-4 border-b-2 border-transparent transition-colors font-label-mono text-label-mono text-on-surface-variant hover:text-on-surface"
+              >
+                BILLING
+              </button>
+            </div>
+            <section class="flex flex-col gap-8">
+              <div class="flex flex-col gap-4">
+                <h2 class="font-headline-md text-headline-md text-on-surface">
+                  Organization Profile
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Update your organization's public information and logo.
+                </p>
+              </div>
+              <div
+                class="flex flex-col gap-6 p-6 w-full rounded-2xl bg-surface-container/40 backdrop-blur-xl"
+              >
+                <div class="flex gap-6 items-center">
+                  <div
+                    class="flex overflow-hidden relative justify-center items-center w-24 h-24 rounded-full border cursor-pointer bg-surface-container-high group border-outline-variant/50"
+                  >
+                    <div
+                      class="hidden absolute inset-0 z-10 justify-center items-center transition-all group-hover:flex bg-black/50"
+                    >
+                      <span class="text-white material-symbols-outlined"
+                        >upload</span
+                      >
+                    </div>
+                    <img
+                      alt="Org Logo"
+                      class="object-contain w-16 h-auto"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA3MWMOpdqe0MXIvdjiIrF_gHJzN54BmXepNc7bK3buoDzvuFIqVe12jgYjjqiFsboqdb-wyVqk8QaecAwtvyR6Ck-iSQEXu9RvX1t8umEkv1MVfC9o0XcDqOJNcCZWY_kyrM4CO5KQ1FP-hHj4hB6QM31laz-lOtNzjqE1_8CoS3tUD4u-XgsFyBgFcmkVSxbSwEQJhcghqewwvpjLvJkwmUSE6_4jsc4bUW0cuNIUxCaCBX4qx52"
+                    />
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <button
+                      class="py-2 px-4 rounded-lg border transition-colors bg-surface-container-highest text-on-surface font-label-mono text-label-mono border-outline-variant/50 w-fit hover:bg-surface-variant"
+                    >
+                      CHANGE LOGO
+                    </button>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      SVG, PNG, or JPG (max. 800x400px)
+                    </p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 gap-6 w-full md:grid-cols-2">
+                  <div class="flex flex-col gap-2 w-full">
+                    <label
+                      class="font-label-mono text-label-mono text-on-surface-variant"
+                      >ORGANIZATION NAME</label
+                    >
+                    <input
+                      class="py-3 px-4 w-full rounded-lg border transition-all focus:ring-1 focus:outline-none bg-black/50 border-outline-variant/50 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:border-primary/50 focus:ring-primary/20"
+                      type="text"
+                      value="Acme Corp"
+                    />
+                  </div>
+                  <div class="flex flex-col gap-2 w-full">
+                    <label
+                      class="font-label-mono text-label-mono text-on-surface-variant"
+                      >WORKSPACE SLUG</label
+                    >
+                    <div class="flex">
+                      <span
+                        class="flex items-center py-3 px-4 rounded-l-lg border border-r-0 bg-surface-container-high border-outline-variant/50 font-body-lg text-body-lg text-on-surface-variant"
+                        >atlas.com/</span
+                      >
+                      <input
+                        class="py-3 px-4 w-full rounded-r-lg border transition-all focus:ring-1 focus:outline-none bg-black/50 border-outline-variant/50 font-body-lg text-body-lg text-on-surface placeholder:text-outline-variant focus:border-primary/50 focus:ring-primary/20"
+                        type="text"
+                        value="acme"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="flex flex-col gap-8">
+              <div
+                class="flex flex-col gap-4 pb-4 border-b border-outline-variant/20"
+              >
+                <h2 class="font-headline-md text-headline-md text-on-surface">
+                  Notifications
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Configure how you receive alerts and reports.
+                </p>
+              </div>
+              <div class="flex flex-col gap-4">
+                <div class="flex justify-between items-center py-4 group">
+                  <div class="flex flex-col gap-1">
+                    <span
+                      class="font-medium font-body-lg text-body-lg text-on-surface"
+                      >System Alerts</span
+                    >
+                    <span
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                      >Receive notifications about critical system errors or
+                      downtime.</span
+                    >
+                  </div>
+                  <div
+                    class="flex relative items-center w-11 h-6 rounded-full cursor-pointer bg-primary shrink-0"
+                  >
+                    <div
+                      class="absolute right-0.5 w-5 h-5 bg-black rounded-full shadow-sm"
+                    ></div>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center py-4 group">
+                  <div class="flex flex-col gap-1">
+                    <span
+                      class="font-medium font-body-lg text-body-lg text-on-surface"
+                      >Weekly Usage Reports</span
+                    >
+                    <span
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                      >A summary of your API usage and costs delivered to your
+                      inbox.</span
+                    >
+                  </div>
+                  <div
+                    class="flex relative items-center w-11 h-6 rounded-full cursor-pointer bg-primary shrink-0"
+                  >
+                    <div
+                      class="absolute right-0.5 w-5 h-5 bg-black rounded-full shadow-sm"
+                    ></div>
+                  </div>
+                </div>
+                <div class="flex justify-between items-center py-4 group">
+                  <div class="flex flex-col gap-1">
+                    <span
+                      class="font-medium font-body-lg text-body-lg text-on-surface"
+                      >New Feature Announcements</span
+                    >
+                    <span
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                      >Updates about new tools, endpoints, and platform
+                      improvements.</span
+                    >
+                  </div>
+                  <div
+                    class="flex relative items-center w-11 h-6 rounded-full border cursor-pointer bg-surface-container-highest border-outline-variant/50 shrink-0"
+                  >
+                    <div
+                      class="absolute left-0.5 w-5 h-5 rounded-full shadow-sm bg-on-surface-variant"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="flex flex-col gap-8 pt-8">
+              <div class="flex flex-col gap-4">
+                <h2 class="font-headline-md text-headline-md text-error">
+                  Danger Zone
+                </h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Irreversible actions regarding your organization.
+                </p>
+              </div>
+              <div
+                class="flex flex-col gap-6 justify-between items-start p-6 rounded-2xl border md:flex-row md:items-center bg-error-container/10 border-error/20"
+              >
+                <div class="flex flex-col gap-2 max-w-xl">
+                  <span
+                    class="font-medium font-body-lg text-body-lg text-on-surface"
+                    >Delete Organization</span
+                  >
+                  <span
+                    class="font-body-sm text-body-sm text-on-surface-variant"
+                    >Permanently remove your organization and all of its data.
+                    This action cannot be undone.</span
+                  >
+                </div>
+                <button
+                  class="py-3 px-6 whitespace-nowrap rounded-lg border transition-colors bg-error/10 text-error border-error/30 font-label-mono text-label-mono shrink-0 hover:bg-error/20"
+                >
+                  DELETE ORGANIZATION
+                </button>
+              </div>
+            </section>
+            <div class="flex justify-end pt-8 mb-16">
+              <button
+                class="bg-primary hover:bg-primary-fixed text-on-primary px-8 py-3 rounded-lg font-label-mono text-label-mono transition-all shadow-[0_0_20px_hsla(250,89%,65%,0.15)]"
+              >
+                SAVE CHANGES
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

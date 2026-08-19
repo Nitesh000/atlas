@@ -1,0 +1,464 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary": "#313032",
+              "on-secondary-fixed": "#1c1b1d",
+              "surface-tint": "#c8bfff",
+              "primary-fixed-dim": "#c8bfff",
+              "on-tertiary-fixed-variant": "#47464a",
+              "on-tertiary": "#303033",
+              "tertiary-container": "#919094",
+              "tertiary-fixed-dim": "#c8c6c9",
+              "error-container": "#93000a",
+              "surface-container-lowest": "#0e0d16",
+              "inverse-on-surface": "#312f39",
+              "on-tertiary-fixed": "#1b1b1e",
+              "surface-bright": "#3a3842",
+              "on-secondary-container": "#b7b4b7",
+              "on-error-container": "#ffdad6",
+              background: "#14121b",
+              "outline-variant": "#474555",
+              error: "#ffb4ab",
+              "on-error": "#690005",
+              "on-primary-container": "#26008b",
+              "surface-container": "#201e28",
+              "on-surface": "#e5e0ed",
+              "inverse-surface": "#e5e0ed",
+              "surface-dim": "#14121b",
+              "surface-container-highest": "#35333d",
+              "surface-variant": "#35333d",
+              "on-primary-fixed-variant": "#4220c4",
+              "on-surface-variant": "#c9c4d7",
+              primary: "#c8bfff",
+              "on-secondary-fixed-variant": "#474649",
+              "secondary-container": "#474649",
+              "inverse-primary": "#5b41dc",
+              "on-primary-fixed": "#190064",
+              "surface-container-high": "#2a2932",
+              tertiary: "#c8c6c9",
+              "primary-fixed": "#e5deff",
+              "secondary-fixed": "#e5e1e4",
+              "primary-container": "#8f7eff",
+              "tertiary-fixed": "#e4e1e5",
+              "on-background": "#e5e0ed",
+              "secondary-fixed-dim": "#c8c6c8",
+              "surface-container-low": "#1c1a23",
+              outline: "#928ea1",
+              surface: "#14121b",
+              "on-primary": "#2c009e",
+              "on-tertiary-container": "#29292c",
+              secondary: "#c8c6c8",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "container-max": "1280px",
+              unit: "4px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              "stack-md": "16px",
+              "margin-page": "40px",
+              gutter: "24px",
+            },
+            fontFamily: {
+              "headline-md": ["Geist"],
+              "headline-lg": ["Geist"],
+              "body-sm": ["Geist"],
+              display: ["Geist"],
+              "label-mono": ["JetBrains Mono"],
+              "headline-lg-mobile": ["Geist"],
+              "body-lg": ["Geist"],
+            },
+            fontSize: {
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "1.3",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-sm": [
+                "14px",
+                { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
+              ],
+              display: [
+                "48px",
+                {
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-mono": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "1.2", fontWeight: "600" },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "1.6",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="flex overflow-x-hidden p-0 m-0 min-h-screen bg-background font-body-sm text-on-surface"
+  >
+    <main class="flex flex-col w-full min-h-screen lg:flex-row">
+      <!-- Left Panel: Brand & Value Prop -->
+      <div
+        class="hidden overflow-hidden relative flex-col justify-between p-12 w-1/2 bg-black border-r lg:flex border-surface-variant"
+      >
+        <!-- Deep Pitch Black Background with Technical Abstract Glow -->
+        <div class="absolute inset-0 pointer-events-none">
+          <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 blur-[120px] rounded-full"
+          ></div>
+          <div
+            class="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] bg-inverse-primary/10 blur-[150px] rounded-full"
+          ></div>
+          <!-- Subtle Grid Overlay -->
+          <div
+            class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px]"
+          ></div>
+        </div>
+        <div class="relative z-10">
+          <!-- Prominent Atlas Logo -->
+          <img
+            alt="Atlas brand logo"
+            class="object-contain w-16 h-16 drop-shadow-[0_0_15px_rgba(200,191,255,0.4)]"
+            src="https://lh3.googleusercontent.com/aida/AP1WRLv6V08EEJE0lrMlMj_3Dz9kBtMmBkDTMRnghHT2qNG_M3Lt4KWYjBzT9KO-TWkgtzEgjvy3nlfegZTpvCY1dKrC9Su1u8yt3xtYp9XKEjLzZEBFibwN6lbTxlfVgP_hQMm9kUGWSOldd4f8OBwdtEsHBsspQY4-LxlYnrUF5Rpf8iKMQcLxqWa7sKxsysOWnuKQUIUDmcvZenMV7TaNRZJVtnCkXP2eqvvsm2IO5CoMX2FYhCWybAmvwJA"
+          />
+        </div>
+        <!-- Content Area -->
+        <div class="flex relative z-10 flex-col gap-8 max-w-lg">
+          <div class="flex flex-col gap-4">
+            <span
+              class="py-1.5 px-3 tracking-widest uppercase rounded-md border font-label-mono text-label-mono text-primary bg-primary/10 w-fit border-primary/20"
+              >Scale Operations</span
+            >
+            <h1
+              class="font-bold tracking-tight text-white font-display text-[56px] leading-[1.05]"
+            >
+              Deploy intelligent workflows.
+            </h1>
+          </div>
+          <p
+            class="max-w-md text-lg leading-relaxed font-body-lg text-zinc-400"
+          >
+            Join 5,000+ technical teams building high-performance support
+            infrastructure with Atlas.
+          </p>
+          <!-- Testimonial / Metric -->
+          <div
+            class="flex gap-5 items-center p-5 mt-4 rounded-2xl border bg-white/5 backdrop-blur-md border-white/10 w-fit"
+          >
+            <div class="flex -space-x-3">
+              <div
+                class="flex overflow-hidden justify-center items-center w-10 h-10 rounded-full border-2 border-black"
+              >
+                <img
+                  class="object-cover w-full h-full"
+                  data-alt="Small avatar portrait of a professional woman"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDywNjSUcKX99HADOi2cd953R0AY89DVgyhoeOVJNQBPJGG6mvhGGNTwUUBjJjZNyTS5vLA4MKaZiVsCGtovQ-No7oZyF-BmqBpeZ1rUyjOYxwacdiPYL6jV4EOVoOfU_60cJlCOhSV1Dn6FzOOSkkLVhmLAZgWfXe4lNCGZ-hIzPUS1MhRoN9EbEucA58BVnzET7IQYU0yGjv1Ql35_lFtJ1ydbULMSeZF4Ro61qbPhBnLtmgyY99H"
+                />
+              </div>
+              <div
+                class="flex overflow-hidden justify-center items-center w-10 h-10 rounded-full border-2 border-black"
+              >
+                <img
+                  class="object-cover w-full h-full"
+                  data-alt="Small avatar portrait of a developer man"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqt7FmwHxIk9yBIJqIIbYGXq1vCOrGhde51HMhGRUJig1q0PcSuVGytBkqNZqMn3O4mVIvNDdypvGc359hKp6OaEByUOuoi5JbHEyDgxKMaomr1uybN-OXYnMcdVi5OKp91GpdzKIIQbejUSQaGEc1IQeJnsVnQZBe-gwpHsV2P-g7SR5EABvFnHSeGsabikXANvugDdIu-AJF9bO3lP68akRRlagsSQ0tPWZgnlh6-aeX_6VkDe9g"
+                />
+              </div>
+              <div
+                class="flex overflow-hidden justify-center items-center w-10 h-10 rounded-full border-2 border-black"
+              >
+                <img
+                  class="object-cover w-full h-full"
+                  data-alt="Small avatar portrait of a non-binary person"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuADfDVVwAZWua9KyBhJFHmR0ZHZD7hmYHySpuf2zVQGquSpv7VSdEe19FlQp1gFRnq4Tp2L2dUEfLfuRz-VboFRRrhj4m78t39zwjXbe9pyk-pY00WdFtufB8NTaCLyG31oE4ZIPQeiM5wt9l3cchfkaTpXMxH0MBeO-qTwm79iOXxZYiYOvCY_PrzgMyapSfedgYYr2ArEK_mR4NbSMpUoZ3x7LC1qkoWWIligkVkE0AGVzAGhSFRo"
+                />
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex gap-1 items-center text-primary">
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-variation-settings: &quot;FILL&quot; 1;
+                    font-size: 16px;
+                  "
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-variation-settings: &quot;FILL&quot; 1;
+                    font-size: 16px;
+                  "
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-variation-settings: &quot;FILL&quot; 1;
+                    font-size: 16px;
+                  "
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-variation-settings: &quot;FILL&quot; 1;
+                    font-size: 16px;
+                  "
+                  >star</span
+                >
+                <span
+                  class="material-symbols-outlined"
+                  style="
+                    font-variation-settings: &quot;FILL&quot; 1;
+                    font-size: 16px;
+                  "
+                  >star</span
+                >
+              </div>
+              <span class="text-sm font-body-sm text-zinc-400"
+                >Trusted by elite teams</span
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex relative z-10 gap-3 items-center text-sm font-label-mono text-zinc-500"
+        >
+          <span
+            class="w-2.5 h-2.5 rounded-full animate-pulse bg-primary shadow-[0_0_8px_currentColor]"
+          ></span>
+          System Operational
+        </div>
+      </div>
+      <!-- Right Panel: Auth Form -->
+      <div
+        class="flex justify-center items-center p-6 w-full sm:p-12 lg:w-1/2 bg-surface"
+      >
+        <!-- Generous Authentication Card -->
+        <div class="w-full max-w-[440px]">
+          <!-- Mobile Logo -->
+          <div class="flex gap-3 justify-center items-center mb-8 lg:hidden">
+            <img
+              alt="Atlas brand logo"
+              class="object-contain w-12 h-12 drop-shadow-lg"
+              src="https://lh3.googleusercontent.com/aida/AP1WRLv6V08EEJE0lrMlMj_3Dz9kBtMmBkDTMRnghHT2qNG_M3Lt4KWYjBzT9KO-TWkgtzEgjvy3nlfegZTpvCY1dKrC9Su1u8yt3xtYp9XKEjLzZEBFibwN6lbTxlfVgP_hQMm9kUGWSOldd4f8OBwdtEsHBsspQY4-LxlYnrUF5Rpf8iKMQcLxqWa7sKxsysOWnuKQUIUDmcvZenMV7TaNRZJVtnCkXP2eqvvsm2IO5CoMX2FYhCWybAmvwJA"
+            />
+          </div>
+          <div
+            class="relative p-10 rounded-3xl border shadow-2xl bg-zinc-900 border-zinc-800"
+          >
+            <div class="flex flex-col gap-3 mb-10 text-center">
+              <h2
+                class="text-4xl font-semibold tracking-tight text-white font-headline-lg"
+              >
+                Sign In
+              </h2>
+              <p class="text-base font-body-sm text-zinc-400">
+                Authenticate to access your workspace.
+              </p>
+            </div>
+            <form class="flex flex-col gap-6" onsubmit="event.preventDefault()">
+              <!-- Email Input -->
+              <div class="flex flex-col gap-2.5">
+                <label
+                  class="text-xs tracking-wider uppercase font-label-mono text-zinc-400"
+                  for="email"
+                  >Email Address</label
+                >
+                <div class="relative group/input">
+                  <span
+                    class="absolute left-4 top-1/2 text-xl transition-colors -translate-y-1/2 material-symbols-outlined text-zinc-500 group-focus-within/input:text-primary"
+                    >mail</span
+                  >
+                  <input
+                    class="py-3.5 pr-4 pl-12 w-full text-white bg-black rounded-xl border shadow-inner transition-all focus:ring-1 focus:outline-none border-zinc-800 font-body-sm placeholder:text-zinc-600 focus:border-primary focus:ring-primary/50"
+                    id="email"
+                    placeholder="name@company.com"
+                    type="email"
+                  />
+                </div>
+              </div>
+              <!-- Password Input -->
+              <div class="flex flex-col gap-2.5">
+                <div class="flex justify-between items-center">
+                  <label
+                    class="text-xs tracking-wider uppercase font-label-mono text-zinc-400"
+                    for="password"
+                    >Password</label
+                  >
+                  <a
+                    class="text-xs transition-colors font-label-mono text-primary hover:text-primary-fixed"
+                    href="#"
+                    >Forgot?</a
+                  >
+                </div>
+                <div class="relative group/input">
+                  <span
+                    class="absolute left-4 top-1/2 text-xl transition-colors -translate-y-1/2 material-symbols-outlined text-zinc-500 group-focus-within/input:text-primary"
+                    >lock</span
+                  >
+                  <input
+                    class="py-3.5 pr-12 pl-12 w-full text-white bg-black rounded-xl border shadow-inner transition-all focus:ring-1 focus:outline-none border-zinc-800 font-body-sm placeholder:text-zinc-600 focus:border-primary focus:ring-primary/50"
+                    id="password"
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                  <button
+                    class="absolute right-4 top-1/2 transition-colors -translate-y-1/2 hover:text-white text-zinc-500"
+                    onclick="
+                      const p = document.getElementById('password');
+                      p.type = p.type === 'password' ? 'text' : 'password';
+                      this.innerText =
+                        p.type === 'password' ? 'visibility' : 'visibility_off';
+                    "
+                    type="button"
+                  >
+                    <span class="text-xl material-symbols-outlined"
+                      >visibility</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- Sign In Button -->
+              <button
+                class="mt-2 w-full bg-primary text-on-primary font-label-mono py-4 rounded-xl hover:bg-primary-fixed hover:shadow-[0_0_24px_hsla(250,89%,65%,0.4)] transition-all duration-300 flex items-center justify-center gap-2 group/btn font-semibold tracking-wide"
+                type="submit"
+              >
+                <span>Authenticate</span>
+                <span
+                  class="text-sm transition-transform material-symbols-outlined group-hover/btn:translate-x-1"
+                  >arrow_forward</span
+                >
+              </button>
+            </form>
+            <!-- Divider -->
+            <div class="flex relative items-center py-6 my-2">
+              <div class="flex-grow border-t border-zinc-800"></div>
+              <span
+                class="flex-shrink-0 mx-4 text-xs font-label-mono text-zinc-600"
+                >OR</span
+              >
+              <div class="flex-grow border-t border-zinc-800"></div>
+            </div>
+            <!-- SSO Buttons -->
+            <div class="flex flex-col gap-3">
+              <button
+                class="flex gap-3 justify-center items-center py-3.5 w-full bg-transparent rounded-xl border transition-all duration-200 hover:text-white border-zinc-800 text-zinc-300 font-label-mono hover:bg-zinc-800/50 hover:border-zinc-700"
+                type="button"
+              >
+                <svg
+                  class="w-5 h-5 fill-current"
+                  viewbox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#4285F4"
+                  ></path>
+                  <path
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#34A853"
+                  ></path>
+                  <path
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    fill="#FBBC05"
+                  ></path>
+                  <path
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    fill="#EA4335"
+                  ></path>
+                </svg>
+                Continue with Google
+              </button>
+              <button
+                class="flex gap-3 justify-center items-center py-3.5 w-full bg-transparent rounded-xl border transition-all duration-200 hover:text-white border-zinc-800 text-zinc-300 font-label-mono hover:bg-zinc-800/50 hover:border-zinc-700"
+                type="button"
+              >
+                <span class="material-symbols-outlined">vpn_key</span>
+                Continue with SSO
+              </button>
+            </div>
+          </div>
+          <p class="mt-8 text-base text-center font-body-sm text-zinc-500">
+            Don't have an account?
+            <a
+              class="transition-colors hover:underline text-primary hover:text-primary-fixed"
+              href="#"
+              >Request Access</a
+            >
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -240,14 +240,18 @@ apps/api/
 
 ## Organizations
 
-- [ ] Create organization
+- [ ] Create organization (Strict limit: 1 Organization per user)
+- [ ] Organization plan management (Free / Pro)
 - [ ] Update organization
 - [ ] Delete organization
-- [ ] Organization membership
-
-Team members can be added later.
+- [ ] Team members via email invites
 
 ---
+
+## API Keys
+- [ ] Generate API keys (Limits: 1 for Free, 5 for Pro)
+- [ ] Revoke API keys
+- [ ] Restrict keys by allowed domains
 
 ## Support Bot
 

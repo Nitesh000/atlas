@@ -1,0 +1,751 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#47464a",
+              error: "#ffb4ab",
+              "on-surface": "#e5e0ed",
+              "primary-fixed": "#e5deff",
+              "error-container": "#93000a",
+              "on-primary-fixed-variant": "#4220c4",
+              "on-tertiary-container": "#29292c",
+              "on-error-container": "#ffdad6",
+              "tertiary-container": "#919094",
+              "surface-tint": "#c8bfff",
+              "on-secondary-container": "#b7b4b7",
+              surface: "#14121b",
+              "secondary-container": "#474649",
+              "surface-dim": "#14121b",
+              "primary-container": "#8f7eff",
+              "surface-container-low": "#1c1a23",
+              "primary-fixed-dim": "#c8bfff",
+              "surface-container-highest": "#35333d",
+              "outline-variant": "#474555",
+              "on-surface-variant": "#c9c4d7",
+              "on-error": "#690005",
+              "on-tertiary": "#303033",
+              primary: "#c8bfff",
+              "inverse-surface": "#e5e0ed",
+              "inverse-primary": "#5b41dc",
+              "surface-container-lowest": "#0e0d16",
+              "on-secondary": "#313032",
+              "surface-bright": "#3a3842",
+              secondary: "#c8c6c8",
+              "on-primary": "#2c009e",
+              "on-tertiary-fixed": "#1b1b1e",
+              "secondary-fixed-dim": "#c8c6c8",
+              "surface-container-high": "#2a2932",
+              "on-secondary-fixed": "#1c1b1d",
+              "on-primary-fixed": "#190064",
+              "tertiary-fixed": "#e4e1e5",
+              outline: "#928ea1",
+              "tertiary-fixed-dim": "#c8c6c9",
+              "surface-container": "#201e28",
+              background: "#14121b",
+              "inverse-on-surface": "#312f39",
+              "on-secondary-fixed-variant": "#474649",
+              "surface-variant": "#35333d",
+              "on-background": "#e5e0ed",
+              "secondary-fixed": "#e5e1e4",
+              "on-primary-container": "#26008b",
+              tertiary: "#c8c6c9",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            spacing: {
+              "container-max": "1280px",
+              "stack-md": "16px",
+              unit: "4px",
+              "margin-page": "40px",
+              "stack-lg": "32px",
+              "stack-sm": "8px",
+              gutter: "24px",
+            },
+            fontFamily: {
+              display: ["Geist"],
+              "label-mono": ["JetBrains Mono"],
+              "body-lg": ["Geist"],
+              "body-sm": ["Geist"],
+              "headline-lg-mobile": ["Geist"],
+              "headline-lg": ["Geist"],
+              "headline-md": ["Geist"],
+            },
+            fontSize: {
+              display: [
+                "48px",
+                {
+                  lineHeight: "1.1",
+                  letterSpacing: "-0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "label-mono": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.05em", fontWeight: "500" },
+              ],
+              "body-lg": [
+                "16px",
+                {
+                  lineHeight: "1.6",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "400",
+                },
+              ],
+              "body-sm": [
+                "14px",
+                { lineHeight: "1.5", letterSpacing: "0", fontWeight: "400" },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                { lineHeight: "1.2", fontWeight: "600" },
+              ],
+              "headline-lg": [
+                "32px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "-0.03em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "1.3",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="select-none bg-background font-body-sm text-on-surface">
+    <aside
+      class="flex fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-surface-container-lowest border-outline-variant/30"
+    >
+      <div class="flex items-center px-4 h-14 mb-stack-md">
+        <img
+          alt="Logo"
+          class="object-contain mr-3 w-auto h-6"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA3MWMOpdqe0MXIvdjiIrF_gHJzN54BmXepNc7bK3buoDzvuFIqVe12jgYjjqiFsboqdb-wyVqk8QaecAwtvyR6Ck-iSQEXu9RvX1t8umEkv1MVfC9o0XcDqOJNcCZWY_kyrM4CO5KQ1FP-hHj4hB6QM31laz-lOtNzjqE1_8CoS3tUD4u-XgsFyBgFcmkVSxbSwEQJhcghqewwvpjLvJkwmUSE6_4jsc4bUW0cuNIUxCaCBX4qx52"
+        /><span
+          class="font-bold tracking-tight uppercase font-headline-md text-body-lg text-on-surface"
+          >Atlas</span
+        >
+      </div>
+      <nav
+        class="flex-1 px-3 space-y-1"
+        data-active-classes="bg-surface-container-highest text-primary shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+      >
+        <a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="organizations"
+          href="#"
+          >Organizations</a
+        ><a
+          aria-current="page"
+          class="flex items-center py-2 px-3 rounded-lg transition-all group bg-surface-container-highest text-primary shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
+          data-path="usage"
+          href="#"
+          >Usage</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="billing"
+          href="#"
+          >Billing</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="settings"
+          href="#"
+          >Settings</a
+        >
+      </nav>
+      <div class="px-3 pt-4 pb-6 space-y-1 border-t border-outline-variant/20">
+        <a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="documentation"
+          href="#"
+          >Docs</a
+        ><a
+          class="flex items-center py-2 px-3 rounded-lg transition-all text-on-surface-variant group hover:text-on-surface hover:bg-surface-container"
+          data-path="help-support"
+          href="#"
+          >Support</a
+        >
+      </div>
+    </aside>
+    <div class="pl-64">
+      <header
+        class="flex fixed top-0 right-0 left-64 z-40 justify-between items-center px-6 h-14 border-b bg-surface-container-lowest/60 backdrop-blur-xl border-outline-variant/30"
+      >
+        <div class="flex gap-2 items-center text-body-sm font-label-mono">
+          <span class="text-on-surface-variant">Atlas</span
+          ><span class="text-outline">/</span
+          ><span class="font-medium text-on-surface">Acme Corp</span>
+        </div>
+        <div class="flex gap-6 items-center">
+          <div
+            class="flex gap-2 items-center py-1.5 px-3 rounded border transition-colors cursor-pointer bg-surface-container border-outline-variant/50 min-w-[240px] text-on-surface-variant group hover:border-primary/50"
+          >
+            <span class="material-symbols-outlined text-[18px]">search</span
+            ><span class="flex-1 text-label-mono">Search...</span
+            ><span
+              class="py-0.5 px-1.5 rounded border text-[10px] bg-surface-container-highest border-outline-variant"
+              >⌘K</span
+            >
+          </div>
+          <div
+            class="flex gap-3 items-center pl-4 border-l border-outline-variant/30"
+          >
+            <span
+              class="cursor-pointer material-symbols-outlined text-on-surface-variant hover:text-on-surface"
+              >notifications</span
+            >
+            <div
+              class="overflow-hidden w-8 h-8 rounded-full border transition-colors cursor-pointer border-outline-variant hover:border-primary"
+            >
+              <img
+                alt="Profile"
+                class="object-cover w-full h-full"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuxZwwgS3Q2G2Ns9BHL5IEJS7a5ZHOCKw8kI9Azu7P4KDfMgi7zdzQFpxFWFNTMghYmiqEJZlm-LRmbl_a13rrSUH8fxzgIL_5oA8Tw0B-XekV7keobWJRg9Igg1cgjQCkxuF8Db-6z5_DnV5lJgEDY-cS1hrdRUzTYtTtTmDFdMrWSFedjt84nRKTCeDjThcRz0JI0jNPijxi0SO1zAPDk3XvMUyrm_Fi76oq0K5iGOUuNw3gYtXH"
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="pt-14 min-h-screen bg-background">
+        <div class="flex relative flex-col w-full">
+          <!-- Ambient background glow -->
+          <div
+            class="absolute top-0 left-1/4 w-1/2 h-96 rounded-full pointer-events-none bg-primary/5 blur-[120px]"
+          ></div>
+          <!-- Header Section -->
+          <div
+            class="flex flex-col justify-between border-b md:flex-row md:items-end gap-stack-lg px-margin-page py-stack-lg border-surface-container/50"
+          >
+            <div>
+              <div
+                class="tracking-widest uppercase text-label-mono font-label-mono text-primary mb-stack-sm"
+              >
+                Analytics
+              </div>
+              <h1 class="text-display font-display text-on-surface">
+                Usage Overview
+              </h1>
+              <p
+                class="max-w-2xl text-body-lg font-body-lg text-on-surface-variant mt-stack-sm"
+              >
+                Monitor your organization's API consumption, crawler activity,
+                and compute resource allocation across all active deployments.
+              </p>
+            </div>
+            <div class="flex items-center gap-stack-sm">
+              <div
+                class="flex gap-2 items-center py-2 px-4 rounded-lg transition-colors cursor-pointer bg-surface-container text-on-surface-variant text-label-mono font-label-mono hover:text-on-surface"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >calendar_month</span
+                >
+                <span>Last 30 Days</span>
+                <span class="material-symbols-outlined text-[18px]"
+                  >expand_more</span
+                >
+              </div>
+              <button
+                class="flex gap-2 items-center py-2 px-4 font-bold rounded-lg transition-all bg-primary text-on-primary text-label-mono font-label-mono shadow-[0_0_15px_rgba(200,191,255,0.15)] hover:bg-primary-fixed-dim"
+              >
+                <span class="material-symbols-outlined text-[18px]"
+                  >download</span
+                >
+                Export CSV
+              </button>
+            </div>
+          </div>
+          <!-- Main Grid Container -->
+          <div class="flex flex-col p-margin-page gap-gutter">
+            <!-- Top KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+              <!-- KPI 1 -->
+              <div
+                class="overflow-hidden relative p-6 rounded-xl border-t shadow-lg bg-surface-container-low/80 backdrop-blur-md group border-white/5"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 from-primary/5"
+                ></div>
+                <div
+                  class="flex relative z-10 justify-between items-start mb-8"
+                >
+                  <div
+                    class="uppercase text-on-surface-variant text-label-mono font-label-mono"
+                  >
+                    Total Tokens
+                  </div>
+                  <div
+                    class="flex gap-1 items-center py-1 px-2 rounded bg-surface-container text-label-mono font-label-mono text-primary"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_up</span
+                    >
+                    +14.2%
+                  </div>
+                </div>
+                <div class="relative z-10">
+                  <div
+                    class="tracking-tighter text-display font-display text-on-surface"
+                  >
+                    42.8<span class="text-headline-lg text-on-surface-variant"
+                      >M</span
+                    >
+                  </div>
+                  <div
+                    class="mt-1 text-body-sm font-body-sm text-on-surface-variant"
+                  >
+                    Used of 50M tier
+                  </div>
+                  <!-- Mini Progress -->
+                  <div
+                    class="overflow-hidden mt-4 w-full h-1 rounded-full bg-surface-container"
+                  >
+                    <div
+                      class="h-full bg-primary w-[85%] rounded-full relative"
+                    >
+                      <div
+                        class="absolute right-0 top-1/2 w-2 h-2 bg-white rounded-full -translate-y-1/2 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- KPI 2 -->
+              <div
+                class="overflow-hidden relative p-6 rounded-xl border-t shadow-lg bg-surface-container-low/80 backdrop-blur-md group border-white/5"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 from-primary/5"
+                ></div>
+                <div
+                  class="flex relative z-10 justify-between items-start mb-8"
+                >
+                  <div
+                    class="uppercase text-on-surface-variant text-label-mono font-label-mono"
+                  >
+                    Pages Crawled
+                  </div>
+                  <div
+                    class="flex gap-1 items-center py-1 px-2 rounded bg-surface-container text-label-mono font-label-mono text-error"
+                  >
+                    <span class="material-symbols-outlined text-[14px]"
+                      >trending_down</span
+                    >
+                    -2.1%
+                  </div>
+                </div>
+                <div class="relative z-10">
+                  <div
+                    class="tracking-tighter text-display font-display text-on-surface"
+                  >
+                    1.2<span class="text-headline-lg text-on-surface-variant"
+                      >M</span
+                    >
+                  </div>
+                  <div
+                    class="mt-1 text-body-sm font-body-sm text-on-surface-variant"
+                  >
+                    Across 4 active jobs
+                  </div>
+                  <!-- Mini Sparkline -->
+                  <div
+                    class="flex gap-1 justify-between items-end mt-2 w-full h-8"
+                  >
+                    <div
+                      class="w-1/12 bg-surface-container h-[40%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[60%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[45%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[80%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[55%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[70%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-surface-container h-[90%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-primary/40 h-[100%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-primary/60 h-[85%] rounded-t-sm"
+                    ></div>
+                    <div
+                      class="w-1/12 bg-primary/80 h-[65%] rounded-t-sm"
+                    ></div>
+                    <div class="w-1/12 bg-primary h-[50%] rounded-t-sm"></div>
+                    <div
+                      class="w-1/12 bg-primary-fixed h-[40%] rounded-t-sm"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <!-- KPI 3 -->
+              <div
+                class="overflow-hidden relative p-6 rounded-xl border-t shadow-lg bg-surface-container-low/80 backdrop-blur-md group border-white/5"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 from-primary/5"
+                ></div>
+                <div
+                  class="flex relative z-10 justify-between items-start mb-8"
+                >
+                  <div
+                    class="uppercase text-on-surface-variant text-label-mono font-label-mono"
+                  >
+                    Compute Hours
+                  </div>
+                  <div
+                    class="flex gap-2 items-center py-1 px-3 font-bold rounded-full bg-primary/10 text-primary text-[10px] font-label-mono"
+                  >
+                    <span
+                      class="w-1.5 h-1.5 rounded-full animate-pulse bg-primary"
+                    ></span>
+                    PROCESSING
+                  </div>
+                </div>
+                <div class="flex relative z-10 gap-3 items-end">
+                  <div
+                    class="tracking-tighter text-display font-display text-on-surface"
+                  >
+                    842
+                  </div>
+                  <div
+                    class="mb-2 text-headline-md font-headline-md text-on-surface-variant"
+                  >
+                    hrs
+                  </div>
+                </div>
+                <div
+                  class="mt-1 text-body-sm font-body-sm text-on-surface-variant"
+                >
+                  Average 28h/day
+                </div>
+              </div>
+            </div>
+            <!-- Main Chart Section -->
+            <div
+              class="overflow-hidden relative p-8 rounded-xl border-t shadow-xl bg-surface-container-low border-white/5"
+            >
+              <!-- Decorative grid background -->
+              <div
+                class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSA0MCAwIEwgMCAwIDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50 pointer-events-none"
+              ></div>
+              <div class="flex relative z-10 justify-between items-end mb-8">
+                <div>
+                  <h2 class="text-headline-md font-headline-md text-on-surface">
+                    Token Consumption
+                  </h2>
+                  <p
+                    class="mt-1 text-body-sm font-body-sm text-on-surface-variant"
+                  >
+                    Input vs Output tokens over the selected period
+                  </p>
+                </div>
+                <div class="flex gap-4">
+                  <div class="flex gap-2 items-center">
+                    <div
+                      class="w-3 h-3 rounded-sm bg-primary shadow-[0_0_8px_rgba(200,191,255,0.4)]"
+                    ></div>
+                    <span
+                      class="text-label-mono font-label-mono text-on-surface-variant"
+                      >Output</span
+                    >
+                  </div>
+                  <div class="flex gap-2 items-center">
+                    <div class="w-3 h-3 rounded-sm bg-outline-variant"></div>
+                    <span
+                      class="text-label-mono font-label-mono text-on-surface-variant"
+                      >Input</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- SVG Line Chart Mockup -->
+              <div class="relative z-10 w-full h-72">
+                <!-- Y Axis -->
+                <div
+                  class="flex absolute top-0 left-0 bottom-6 flex-col justify-between pr-2 w-12 text-right text-[10px] font-label-mono text-on-surface-variant/50"
+                >
+                  <span>2.0M</span>
+                  <span>1.5M</span>
+                  <span>1.0M</span>
+                  <span>0.5M</span>
+                  <span>0</span>
+                </div>
+                <!-- Chart Area -->
+                <div
+                  class="absolute top-0 right-0 bottom-6 left-12 border-b border-l border-surface-container"
+                >
+                  <!-- Horizontal Grid Lines -->
+                  <div class="flex absolute inset-0 flex-col justify-between">
+                    <div class="w-full h-px bg-surface-container/50"></div>
+                    <div class="w-full h-px bg-surface-container/50"></div>
+                    <div class="w-full h-px bg-surface-container/50"></div>
+                    <div class="w-full h-px bg-surface-container/50"></div>
+                    <div class="w-full h-px bg-transparent"></div>
+                  </div>
+                  <svg
+                    class="overflow-visible w-full h-full"
+                    preserveaspectratio="none"
+                    viewbox="0 0 1000 200"
+                  >
+                    <!-- Input Tokens (Zinc) -->
+                    <path
+                      class="text-outline-variant"
+                      d="M0,180 C100,160 200,190 300,150 C400,110 500,140 600,120 C700,100 800,130 900,90 C950,70 1000,80 1000,80"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    ></path>
+                    <!-- Output Tokens (Primary Glow) -->
+                    <path
+                      class="text-primary drop-shadow-[0_0_12px_rgba(200,191,255,0.4)]"
+                      d="M0,150 C100,130 200,160 300,110 C400,60 500,100 600,70 C700,40 800,80 900,30 C950,10 1000,20 1000,20"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                    ></path>
+                    <!-- Area under primary line -->
+                    <path
+                      d="M0,150 C100,130 200,160 300,110 C400,60 500,100 600,70 C700,40 800,80 900,30 C950,10 1000,20 1000,20 L1000,200 L0,200 Z"
+                      fill="url(#gradient)"
+                      opacity="0.1"
+                    ></path>
+                    <defs>
+                      <lineargradient
+                        id="gradient"
+                        x1="0%"
+                        x2="0%"
+                        y1="0%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stop-color="#c8bfff"></stop>
+                        <stop
+                          offset="100%"
+                          stop-color="#14121b"
+                          stop-opacity="0"
+                        ></stop>
+                      </lineargradient>
+                    </defs>
+                  </svg>
+                </div>
+                <!-- X Axis -->
+                <div
+                  class="flex absolute right-0 bottom-0 left-12 justify-between items-end px-2 h-6 text-[10px] font-label-mono text-on-surface-variant/50"
+                >
+                  <span>Oct 1</span>
+                  <span>Oct 8</span>
+                  <span>Oct 15</span>
+                  <span>Oct 22</span>
+                  <span>Oct 31</span>
+                </div>
+              </div>
+            </div>
+            <!-- Usage Breakdown Table & Context Panel -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+              <!-- Table Section -->
+              <div
+                class="overflow-hidden rounded-xl border-t shadow-md lg:col-span-2 bg-surface-container-low border-white/5"
+              >
+                <div class="p-6 border-b border-surface-container">
+                  <h3 class="text-headline-md font-headline-md text-on-surface">
+                    Model Breakdown
+                  </h3>
+                </div>
+                <div class="overflow-x-auto w-full">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr
+                        class="uppercase border-b text-label-mono font-label-mono text-on-surface-variant border-surface-container bg-surface-container/20"
+                      >
+                        <th class="py-4 px-6 font-medium">Model</th>
+                        <th class="py-4 px-6 font-medium">Requests</th>
+                        <th class="py-4 px-6 font-medium">Total Tokens</th>
+                        <th class="py-4 px-6 font-medium text-right">
+                          Cost Est.
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-body-sm font-body-sm text-on-surface">
+                      <tr
+                        class="border-b transition-colors border-surface-container/50 group hover:bg-surface-container/30"
+                      >
+                        <td class="flex gap-3 items-center py-4 px-6">
+                          <div
+                            class="w-2 h-2 rounded-full transition-shadow bg-primary group-hover:shadow-[0_0_8px_rgba(200,191,255,0.6)]"
+                          ></div>
+                          <span class="font-label-mono">gpt-4-turbo</span>
+                        </td>
+                        <td class="py-4 px-6 text-on-surface-variant">
+                          124,592
+                        </td>
+                        <td class="py-4 px-6">28.4M</td>
+                        <td
+                          class="py-4 px-6 text-right font-label-mono text-on-surface-variant"
+                        >
+                          $426.00
+                        </td>
+                      </tr>
+                      <tr
+                        class="border-b transition-colors border-surface-container/50 group hover:bg-surface-container/30"
+                      >
+                        <td class="flex gap-3 items-center py-4 px-6">
+                          <div class="w-2 h-2 rounded-full bg-primary/60"></div>
+                          <span class="font-label-mono">claude-3-opus</span>
+                        </td>
+                        <td class="py-4 px-6 text-on-surface-variant">
+                          45,102
+                        </td>
+                        <td class="py-4 px-6">12.1M</td>
+                        <td
+                          class="py-4 px-6 text-right font-label-mono text-on-surface-variant"
+                        >
+                          $181.50
+                        </td>
+                      </tr>
+                      <tr
+                        class="border-b transition-colors border-surface-container/50 group hover:bg-surface-container/30"
+                      >
+                        <td class="flex gap-3 items-center py-4 px-6">
+                          <div
+                            class="w-2 h-2 rounded-full bg-surface-container-highest"
+                          ></div>
+                          <span class="font-label-mono">text-embedding-3</span>
+                        </td>
+                        <td class="py-4 px-6 text-on-surface-variant">
+                          892,001
+                        </td>
+                        <td class="py-4 px-6">2.3M</td>
+                        <td
+                          class="py-4 px-6 text-right font-label-mono text-on-surface-variant"
+                        >
+                          $0.46
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Context Panel -->
+              <div
+                class="flex flex-col p-6 rounded-xl border-t shadow-md bg-surface-container-low border-white/5"
+              >
+                <h3
+                  class="mb-6 text-headline-md font-headline-md text-on-surface"
+                >
+                  Limits & Alerts
+                </h3>
+                <div class="flex-1 space-y-6">
+                  <!-- Limit 1 -->
+                  <div>
+                    <div class="flex justify-between items-end mb-2">
+                      <span class="text-body-sm font-body-sm text-on-surface"
+                        >Monthly Budget</span
+                      >
+                      <span
+                        class="text-label-mono font-label-mono text-on-surface-variant"
+                        >$607.96 / $1000</span
+                      >
+                    </div>
+                    <div
+                      class="overflow-hidden w-full h-1.5 rounded-full bg-surface-container"
+                    >
+                      <div class="h-full bg-primary w-[60%] rounded-full"></div>
+                    </div>
+                  </div>
+                  <!-- Limit 2 -->
+                  <div>
+                    <div class="flex justify-between items-end mb-2">
+                      <span class="text-body-sm font-body-sm text-on-surface"
+                        >Crawler Concurrency</span
+                      >
+                      <span
+                        class="text-label-mono font-label-mono text-on-surface-variant"
+                        >4 / 10 jobs</span
+                      >
+                    </div>
+                    <div
+                      class="overflow-hidden w-full h-1.5 rounded-full bg-surface-container"
+                    >
+                      <div
+                        class="h-full bg-primary-fixed-dim w-[40%] rounded-full"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-6 mt-8 border-t border-surface-container">
+                  <button
+                    class="py-2 w-full bg-transparent rounded-lg border transition-colors border-outline-variant text-on-surface text-label-mono font-label-mono hover:bg-surface-container"
+                  >
+                    Configure Alerts
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
