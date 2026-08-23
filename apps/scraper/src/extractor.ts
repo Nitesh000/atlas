@@ -29,7 +29,7 @@ export function extractAndClean(html: string): ExtractedData {
   ).remove();
 
   // Get main content. Fallback to body if no main tag.
-  let mainContent =
+  const mainContent =
     $("main").html() || $("article").html() || $("body").html() || "";
 
   // Convert to Markdown

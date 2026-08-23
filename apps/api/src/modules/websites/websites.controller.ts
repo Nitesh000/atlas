@@ -41,7 +41,9 @@ export async function createWebsiteHandler(
   const count = result[0]?.count || 0;
 
   if (Number(count) >= 3) {
-    return reply.status(400).send({ message: "Website limit reached (max 3)." });
+    return reply
+      .status(400)
+      .send({ message: "Website limit reached (max 3)." });
   }
 
   const website = await createWebsite({
@@ -102,7 +104,7 @@ export async function rescrapeWebsiteHandler(
   // Notify clients
   await redisClient.publish(
     `org:${params.orgId}:scrape-events`,
-    JSON.stringify({ websiteId: website.id, status: "crawling" })
+    JSON.stringify({ websiteId: website.id, status: "crawling" }),
   );
 
   // Re-queue
@@ -126,6 +128,8 @@ export async function websiteEventsHandler(
   reply.raw.setHeader("Content-Type", "text/event-stream");
   reply.raw.setHeader("Cache-Control", "no-cache");
   reply.raw.setHeader("Connection", "keep-alive");
+
+  reply.hijack(); // Prevent Fastify from automatically closing the response
 
   // Duplicate redis client for this subscription connection
   const subscriber = redisClient.duplicate();

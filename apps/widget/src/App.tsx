@@ -17,17 +17,17 @@ export default function AtlasWidget() {
   const searchParams = new URLSearchParams(window.location.search);
   const layout = (searchParams.get("layout") || "floating") as LayoutMode;
   const isCustomTheme = searchParams.get("theme") === "custom";
-  
+
   // Custom theme overrides
   const customStyles = useMemo(() => {
     if (!isCustomTheme) return null;
-    
+
     const primary = searchParams.get("primary");
     const background = searchParams.get("background");
     const foreground = searchParams.get("foreground");
     const card = searchParams.get("card");
     const radius = searchParams.get("radius");
-    
+
     return {
       ...(primary && { "--primary": primary }),
       ...(background && { "--background": background }),
@@ -38,6 +38,17 @@ export default function AtlasWidget() {
   }, [isCustomTheme]);
 
   const [isOpen, setIsOpen] = useState(layout === "sidebar");
+
+  useEffect(() => {
+    // Notify parent window to resize iframe
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        JSON.stringify({ type: "ATLAS_WIDGET_RESIZE", isOpen }),
+        "*",
+      );
+    }
+  }, [isOpen]);
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -106,7 +117,8 @@ export default function AtlasWidget() {
       case "sidebar":
         return {
           containerClass: "fixed top-0 right-0 z-50 h-full flex flex-col",
-          windowClass: "w-[400px] h-full bg-card border-l border-border shadow-2xl rounded-none flex flex-col overflow-hidden",
+          windowClass:
+            "w-[400px] h-full bg-card border-l border-border shadow-2xl rounded-none flex flex-col overflow-hidden",
           animation: {
             initial: { opacity: 0, x: 20 },
             animate: { opacity: 1, x: 0 },
@@ -115,8 +127,10 @@ export default function AtlasWidget() {
         };
       case "bottom":
         return {
-          containerClass: "fixed bottom-0 right-10 z-50 flex flex-col items-end",
-          windowClass: "mb-0 w-[380px] h-[500px] max-h-[70vh] bg-card border-t border-l border-r border-border shadow-[0_-5px_40px_rgba(0,0,0,0.15)] rounded-t-2xl flex flex-col overflow-hidden",
+          containerClass:
+            "fixed bottom-0 right-10 z-50 flex flex-col items-end",
+          windowClass:
+            "mb-0 w-[380px] h-[500px] max-h-[70vh] bg-card border-t border-l border-r border-border shadow-[0_-5px_40px_rgba(0,0,0,0.15)] rounded-t-2xl flex flex-col overflow-hidden",
           animation: {
             initial: { opacity: 0, y: 40 },
             animate: { opacity: 1, y: 0 },
@@ -127,7 +141,8 @@ export default function AtlasWidget() {
       default:
         return {
           containerClass: "fixed bottom-6 right-6 z-50 flex flex-col items-end",
-          windowClass: "mb-4 w-[380px] h-[600px] max-h-[80vh] bg-card border border-border shadow-2xl rounded-2xl flex flex-col overflow-hidden",
+          windowClass:
+            "mb-4 w-[380px] h-[600px] max-h-[80vh] bg-card border border-border shadow-2xl rounded-2xl flex flex-col overflow-hidden",
           animation: {
             initial: { opacity: 0, scale: 0.95, y: 20 },
             animate: { opacity: 1, scale: 1, y: 0 },
@@ -138,7 +153,10 @@ export default function AtlasWidget() {
   }, [layout]);
 
   return (
-    <div className={layoutConfig.containerClass} style={customStyles || undefined}>
+    <div
+      className={layoutConfig.containerClass}
+      style={customStyles || undefined}
+    >
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -151,7 +169,11 @@ export default function AtlasWidget() {
             {/* Header */}
             <div className="flex justify-between items-center px-4 py-3 bg-card border-b border-border/50 shrink-0">
               <div className="flex items-center gap-3">
-                <img src="/logo.png" alt="Atlas Logo" className="w-8 h-8 object-cover rounded-lg shadow-sm border border-primary/20" />
+                <img
+                  src="/logo.png"
+                  alt="Atlas Logo"
+                  className="w-8 h-8 object-cover rounded-lg shadow-sm border border-primary/20"
+                />
                 <div>
                   <h3 className="font-semibold text-sm text-foreground">
                     Atlas Support
@@ -194,7 +216,11 @@ export default function AtlasWidget() {
                     {msg.role === "user" ? (
                       <User className="w-3 h-3" />
                     ) : (
-                      <img src="/logo.png" alt="Atlas" className="w-4 h-4 object-cover rounded-sm opacity-90" />
+                      <img
+                        src="/logo.png"
+                        alt="Atlas"
+                        className="w-4 h-4 object-cover rounded-sm opacity-90"
+                      />
                     )}
                   </div>
                   <div
@@ -233,7 +259,11 @@ export default function AtlasWidget() {
               {isTyping && (
                 <div className="flex gap-3 max-w-[85%]">
                   <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center shrink-0 mt-1">
-                    <img src="/logo.png" alt="Atlas" className="w-4 h-4 object-cover rounded-sm opacity-90" />
+                    <img
+                      src="/logo.png"
+                      alt="Atlas"
+                      className="w-4 h-4 object-cover rounded-sm opacity-90"
+                    />
                   </div>
                   <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-muted flex items-center gap-1">
                     <span
@@ -277,7 +307,12 @@ export default function AtlasWidget() {
               </form>
               <div className="text-center mt-3">
                 <span className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-medium">
-                  Powered by <img src="/logo.png" alt="Atlas Logo" className="h-4 w-4 object-cover rounded shadow-sm inline-block" />
+                  Powered by{" "}
+                  <img
+                    src="/logo.png"
+                    alt="Atlas Logo"
+                    className="h-4 w-4 object-cover rounded shadow-sm inline-block"
+                  />
                 </span>
               </div>
             </div>
@@ -298,7 +333,7 @@ export default function AtlasWidget() {
             className={cn(
               "rounded-full bg-primary shadow-xl flex items-center justify-center text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background relative group",
               layout === "bottom" ? "w-14 h-14 mb-6" : "w-14 h-14",
-              layout === "sidebar" && "fixed bottom-6 right-6 z-50" // Enforce position if sidebar is toggled closed
+              layout === "sidebar" && "fixed bottom-6 right-6 z-50", // Enforce position if sidebar is toggled closed
             )}
           >
             <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />

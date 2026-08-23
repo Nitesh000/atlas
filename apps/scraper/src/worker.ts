@@ -23,10 +23,10 @@ async function updateWebsiteStatus(
     .update(appSchema.website)
     .set({ status, updatedAt: new Date() })
     .where(eq(appSchema.website.id, websiteId));
-    
+
   await redisClient.publish(
     `org:${organizationId}:scrape-events`,
-    JSON.stringify({ websiteId, status })
+    JSON.stringify({ websiteId, status }),
   );
 }
 
@@ -41,8 +41,10 @@ const worker = new Worker<CrawlJobData>(
     let crawler;
     try {
       await chromeSemaphore.acquire();
-      console.log(`[CRAWLER] Acquired Chrome slot for ${url}. Active instances: ${3 - chromeSemaphore.nrWaiting()}`);
-      
+      console.log(
+        `[CRAWLER] Acquired Chrome slot for ${url}. Active instances: ${3 - chromeSemaphore.nrWaiting()}`,
+      );
+
       crawler = new Crawler({
         startUrl: url,
         maxPages: 5,

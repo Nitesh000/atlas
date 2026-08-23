@@ -22,7 +22,7 @@ type Message = {
 
 function ChatPlayground() {
   const { data: org, isLoading: orgLoading } = useCurrentOrg();
-  
+
   // Fetch API keys to test chat
   const { data: apiKeys, isLoading: keysLoading } = useQuery({
     queryKey: ["apiKeys", org?.id],
@@ -39,7 +39,8 @@ function ChatPlayground() {
     {
       id: "1",
       role: "ai",
-      content: "Hello! I am ready to answer questions based on your indexed websites. How can I help you?",
+      content:
+        "Hello! I am ready to answer questions based on your indexed websites. How can I help you?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -61,13 +62,14 @@ function ChatPlayground() {
       role: "user",
       content: input,
     };
-    
+
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+      const baseUrl =
+        import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
       const res = await axios.post(
         `${baseUrl}/chat`,
         { message: userMessage.content },
@@ -75,7 +77,7 @@ function ChatPlayground() {
           headers: {
             "x-atlas-api-key": activeApiKey,
           },
-        }
+        },
       );
 
       const aiMessage: Message = {
@@ -91,7 +93,8 @@ function ChatPlayground() {
         {
           id: (Date.now() + 1).toString(),
           role: "ai",
-          content: "Sorry, an error occurred while connecting to the chat API. Make sure your API key is valid.",
+          content:
+            "Sorry, an error occurred while connecting to the chat API. Make sure your API key is valid.",
         },
       ]);
     } finally {
@@ -100,7 +103,11 @@ function ChatPlayground() {
   };
 
   if (orgLoading || keysLoading) {
-    return <div className="p-8 text-muted-foreground animate-pulse">Loading playground...</div>;
+    return (
+      <div className="p-8 text-muted-foreground animate-pulse">
+        Loading playground...
+      </div>
+    );
   }
 
   if (!org) {
@@ -123,7 +130,8 @@ function ChatPlayground() {
             <MessageSquare className="h-10 w-10 text-muted-foreground opacity-50" />
             <div className="text-lg font-medium">No API Key Found</div>
             <p className="text-sm text-muted-foreground max-w-md">
-              To test the chat playground, you need an active API key to authenticate requests. Go to the API Keys tab to generate one.
+              To test the chat playground, you need an active API key to
+              authenticate requests. Go to the API Keys tab to generate one.
             </p>
           </CardContent>
         </Card>
@@ -136,7 +144,8 @@ function ChatPlayground() {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Playground</h2>
         <p className="text-muted-foreground mt-2">
-          Test your RAG pipeline. This simulates exactly what your users will see.
+          Test your RAG pipeline. This simulates exactly what your users will
+          see.
         </p>
       </div>
 
@@ -149,10 +158,20 @@ function ChatPlayground() {
             >
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1 ${
-                  msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-card border shadow-sm"
+                  msg.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-card border shadow-sm"
                 }`}
               >
-                {msg.role === "user" ? <User className="w-4 h-4" /> : <img src="/logo.png" className="w-5 h-5 rounded-sm opacity-90" alt="Atlas" />}
+                {msg.role === "user" ? (
+                  <User className="w-4 h-4" />
+                ) : (
+                  <img
+                    src="/logo.png"
+                    className="w-5 h-5 rounded-sm opacity-90"
+                    alt="Atlas"
+                  />
+                )}
               </div>
               <div
                 className={`px-5 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
@@ -189,12 +208,25 @@ function ChatPlayground() {
           {isTyping && (
             <div className="flex gap-4 max-w-[80%]">
               <div className="w-8 h-8 rounded-full bg-card border shadow-sm flex items-center justify-center shrink-0 mt-1">
-                <img src="/logo.png" className="w-5 h-5 rounded-sm opacity-90" alt="Atlas" />
+                <img
+                  src="/logo.png"
+                  className="w-5 h-5 rounded-sm opacity-90"
+                  alt="Atlas"
+                />
               </div>
               <div className="px-5 py-4 rounded-2xl rounded-tl-sm bg-card border shadow-sm flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                <span
+                  className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                />
+                <span
+                  className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                />
+                <span
+                  className="w-1.5 h-1.5 bg-foreground/30 rounded-full animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                />
               </div>
             </div>
           )}
@@ -202,7 +234,10 @@ function ChatPlayground() {
         </div>
 
         <div className="p-4 bg-card border-t shrink-0">
-          <form onSubmit={handleSend} className="relative flex items-center max-w-3xl mx-auto">
+          <form
+            onSubmit={handleSend}
+            className="relative flex items-center max-w-3xl mx-auto"
+          >
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -220,7 +255,10 @@ function ChatPlayground() {
           </form>
           <div className="text-center mt-3">
             <span className="text-xs text-muted-foreground font-medium">
-              Testing as API Key: <code className="bg-muted px-1.5 py-0.5 rounded text-[10px]">{activeApiKey.slice(0, 12)}...</code>
+              Testing as API Key:{" "}
+              <code className="bg-muted px-1.5 py-0.5 rounded text-[10px]">
+                {activeApiKey.slice(0, 12)}...
+              </code>
             </span>
           </div>
         </div>

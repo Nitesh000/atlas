@@ -1,198 +1,148 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { useSession } from "../lib/auth";
-import { api } from "../lib/api";
-import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Activity, Globe, Key, Building2, Zap, ArrowRight } from "lucide-react";
+import { Globe, Zap, Shield, ArrowRight } from "lucide-react";
+import { useSession } from "../lib/auth";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: LandingPage,
 });
 
-function Index() {
-  const { data: session, isPending } = useSession();
-
-  if (isPending) return <div className="p-8 text-muted-foreground animate-pulse">Loading session...</div>;
-
-  if (!session) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Please log in</CardTitle>
-          </CardHeader>
-          <CardContent className="flex justify-center gap-4">
-            <Button asChild variant="default">
-              <Link to="/login">Login</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/register">Register</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return <DashboardHome userName={session.user.name} />;
-}
-
-function DashboardHome({ userName }: { userName: string }) {
-  const { data: org, isLoading: orgLoading } = useCurrentOrg();
-  const queryClient = useQueryClient();
-  const [newOrgName, setNewOrgName] = useState("");
-
-  const createOrg = useMutation({
-    mutationFn: async (name: string) => {
-      const res = await api.post("/orgs", { name });
-      return res.data;
-    },
-    onSuccess: () => {
-      setNewOrgName("");
-      queryClient.invalidateQueries({ queryKey: ["currentOrg"] });
-    },
-  });
-
-  if (orgLoading) return <div className="p-8 text-muted-foreground animate-pulse">Loading dashboard...</div>;
-
-  if (!org) {
-    return (
-      <div className="max-w-md mx-auto mt-12 space-y-6">
-        <div className="text-center space-y-2">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-4">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight">Welcome, {userName}</h2>
-          <p className="text-muted-foreground">
-            Create your primary workspace to start indexing websites and generating API keys.
-          </p>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Create Workspace</CardTitle>
-            <CardDescription>You can only have one workspace per account.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form
-              className="space-y-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (newOrgName.trim()) createOrg.mutate(newOrgName);
-              }}
-            >
-              <div className="space-y-2">
-                <Label htmlFor="orgName">Organization Name</Label>
-                <Input
-                  id="orgName"
-                  placeholder="e.g. Acme Corp"
-                  value={newOrgName}
-                  onChange={(e) => setNewOrgName(e.target.value)}
-                  disabled={createOrg.isPending}
-                  required
-                  className="bg-muted/50"
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={createOrg.isPending}>
-                Create Workspace
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+function LandingPage() {
+  const { data: session } = useSession();
 
   return (
-    <div className="max-w-5xl space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
-        <p className="text-muted-foreground mt-2">
-          Welcome back to {org.name}. Here's what's happening today.
-        </p>
-      </div>
+    <div className="flex flex-col min-h-screen">
+      {/* Navigation */}
+      <header className="px-6 lg:px-12 h-20 flex items-center justify-between border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo.png"
+            alt="Atlas Logo"
+            className="h-8 w-8 rounded-lg shadow-sm"
+          />
+          <span className="font-bold text-xl tracking-tight">Atlas</span>
+        </div>
+        <nav className="hidden md:flex gap-8 text-sm font-medium text-muted-foreground">
+          <a
+            href="#features"
+            className="hover:text-foreground transition-colors"
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            className="hover:text-foreground transition-colors"
+          >
+            How it Works
+          </a>
+          <a
+            href="#pricing"
+            className="hover:text-foreground transition-colors"
+          >
+            Pricing
+          </a>
+        </nav>
+        <div className="flex gap-4">
+          {session ? (
+            <Button asChild>
+              <Link to="/overview">Go to Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link to="/login">Login</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/register">Get Started</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </header>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Total API Calls</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1,245</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-              <Zap className="h-3 w-3 text-green-500" /> +15% from last month
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Indexed Websites</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              3 active, 1 crawling
-            </p>
-          </CardContent>
-        </Card>
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="px-6 py-24 md:py-32 flex flex-col items-center text-center max-w-5xl mx-auto space-y-8">
+          <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+            ✨ Atlas v1.0 is now live
+          </div>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight">
+            Give your users{" "}
+            <span className="text-primary">instant answers</span> from your
+            docs.
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl">
+            Atlas automatically crawls your documentation and provides a
+            beautiful, AI-powered chat widget you can embed anywhere in minutes.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <Button size="lg" className="h-12 px-8 text-base" asChild>
+              <Link to={session ? "/overview" : "/register"}>
+                Start Building Free <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="h-12 px-8 text-base">
+              View Demo
+            </Button>
+          </div>
+        </section>
 
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Active API Keys</CardTitle>
-            <Key className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">2 <span className="text-sm font-normal text-muted-foreground">/ 3</span></div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Limit 3 keys per account
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        {/* Features Section */}
+        <section id="features" className="px-6 py-24 bg-muted/30 border-y">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Everything you need
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Stop answering the same questions manually.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              <FeatureCard
+                icon={<Globe className="h-6 w-6 text-primary" />}
+                title="Automated Crawling"
+                description="Just drop in your documentation URL. We automatically crawl, chunk, and index your content into vector embeddings."
+              />
+              <FeatureCard
+                icon={<Zap className="h-6 w-6 text-primary" />}
+                title="Universal Widget"
+                description="Embed our beautiful React chat widget on any CDN, WordPress, Vue, Angular, or vanilla JS site instantly."
+              />
+              <FeatureCard
+                icon={<Shield className="h-6 w-6 text-primary" />}
+                title="API-First Design"
+                description="Generate secure API keys to integrate Atlas directly into your own custom UI or backend systems."
+              />
+            </div>
+          </div>
+        </section>
+      </main>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Common tasks to get you started.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Link to="/websites" className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 text-primary rounded-md">
-                  <Globe className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="font-medium">Index New Website</div>
-                  <div className="text-sm text-muted-foreground">Crawl a documentation site for RAG.</div>
-                </div>
-              </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-            </Link>
-            
-            <Link to="/api-keys" className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 text-primary rounded-md">
-                  <Key className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="font-medium">Generate API Key</div>
-                  <div className="text-sm text-muted-foreground">Create a secure token for requests.</div>
-                </div>
-              </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-            </Link>
-          </CardContent>
-        </Card>
+      {/* Footer */}
+      <footer className="py-8 text-center border-t text-sm text-muted-foreground">
+        <p>© {new Date().getFullYear()} Atlas. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="bg-card border rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6">
+        {icon}
       </div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-muted-foreground leading-relaxed">{description}</p>
     </div>
   );
 }

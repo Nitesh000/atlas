@@ -5,7 +5,13 @@ import { api } from "../lib/api";
 import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
   Table,
@@ -31,7 +37,13 @@ function ApiKeysPage() {
     queryKey: ["apiKeys", org?.id],
     queryFn: async () => {
       const res = await api.get(`/orgs/${org?.id}/api-keys`);
-      return res.data as { id: string; name: string; key: string; createdAt: string; lastUsedAt: string | null }[];
+      return res.data as {
+        id: string;
+        name: string;
+        key: string;
+        createdAt: string;
+        lastUsedAt: string | null;
+      }[];
     },
     enabled: !!org?.id,
   });
@@ -53,8 +65,13 @@ function ApiKeysPage() {
     setTimeout(() => setCopiedKeyId(null), 2000);
   };
 
-  if (orgLoading) return <div className="p-8 text-muted-foreground animate-pulse">Loading workspace...</div>;
-  
+  if (orgLoading)
+    return (
+      <div className="p-8 text-muted-foreground animate-pulse">
+        Loading workspace...
+      </div>
+    );
+
   if (!org) {
     return (
       <div className="p-8">
@@ -63,7 +80,9 @@ function ApiKeysPage() {
             <CardTitle className="text-destructive flex items-center gap-2">
               <AlertCircle className="h-5 w-5" /> Workspace Required
             </CardTitle>
-            <CardDescription>You need to create an organization in the Overview tab first.</CardDescription>
+            <CardDescription>
+              You need to create an organization in the Overview tab first.
+            </CardDescription>
           </CardHeader>
         </Card>
       </div>
@@ -87,7 +106,9 @@ function ApiKeysPage() {
           <Card>
             <CardHeader>
               <CardTitle>Active Keys</CardTitle>
-              <CardDescription>Keys associated with {org.name}. Limit 3 per account.</CardDescription>
+              <CardDescription>
+                Keys associated with {org.name}. Limit 3 per account.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
@@ -102,26 +123,35 @@ function ApiKeysPage() {
                 <TableBody>
                   {apiKeys?.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center py-6 text-muted-foreground">
+                      <TableCell
+                        colSpan={4}
+                        className="text-center py-6 text-muted-foreground"
+                      >
                         No API keys generated yet.
                       </TableCell>
                     </TableRow>
                   ) : (
                     apiKeys?.map((key) => (
                       <TableRow key={key.id}>
-                        <TableCell className="font-medium">{key.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {key.name}
+                        </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <code className="bg-muted px-2 py-1 rounded text-xs font-mono text-muted-foreground select-all">
                               {key.key.slice(0, 12)}...{key.key.slice(-4)}
                             </code>
-                            <Button 
-                              variant="ghost" 
-                              size="icon" 
-                              className="h-6 w-6" 
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
                               onClick={() => copyToClipboard(key.id, key.key)}
                             >
-                              {copiedKeyId === key.id ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
+                              {copiedKeyId === key.id ? (
+                                <Check className="h-3 w-3 text-green-500" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
                             </Button>
                           </div>
                         </TableCell>
@@ -129,7 +159,9 @@ function ApiKeysPage() {
                           {new Date(key.createdAt).toLocaleDateString()}
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
-                          {key.lastUsedAt ? new Date(key.lastUsedAt).toLocaleDateString() : "Never"}
+                          {key.lastUsedAt
+                            ? new Date(key.lastUsedAt).toLocaleDateString()
+                            : "Never"}
                         </TableCell>
                       </TableRow>
                     ))
@@ -145,7 +177,9 @@ function ApiKeysPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Create New Key</CardTitle>
-                <CardDescription>Generate a new secret API key.</CardDescription>
+                <CardDescription>
+                  Generate a new secret API key.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <form
@@ -180,7 +214,8 @@ function ApiKeysPage() {
                   Limit Reached
                 </CardTitle>
                 <CardDescription>
-                  You have reached the maximum limit of 3 API keys for your account. Delete an existing key to generate a new one.
+                  You have reached the maximum limit of 3 API keys for your
+                  account. Delete an existing key to generate a new one.
                 </CardDescription>
               </CardHeader>
             </Card>
