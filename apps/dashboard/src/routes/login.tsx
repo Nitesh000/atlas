@@ -46,7 +46,7 @@ function Login() {
         </div>
 
         <div className="relative z-10 flex items-center gap-3 text-white font-bold text-2xl tracking-tight">
-          <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-10 w-auto object-contain brightness-0 invert" />
+          <img src="/logo.png" alt="Atlas Logo" className="h-10 w-10 object-cover rounded-xl shadow-lg border border-white/10" />
           Atlas
         </div>
 

@@ -24,7 +24,7 @@ export const Route = createRootRoute({
         <aside className="hidden fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-card border-border lg:flex">
           <div className="flex items-center px-6 h-16 border-b border-border/50">
             <Link to="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
-              <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-8 w-auto object-contain" />
+              <img src="/logo.png" alt="Atlas Logo" className="h-8 w-8 object-cover rounded-lg shadow-sm" />
               <span className="font-bold text-xl tracking-tight text-foreground">Atlas</span>
             </Link>
           </div>

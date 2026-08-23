@@ -1,4 +1,5 @@
 import { Worker } from "bullmq";
+import { Sema } from "async-sema";
 import {
   crawlQueue,
   redisClient,
@@ -9,6 +10,9 @@ import { dbClient, appSchema } from "@atlas/database";
 import { eq } from "drizzle-orm";
 import { Crawler } from "./crawler.js";
 import { generateEmbedding } from "@atlas/embeddings";
+
+// Limit concurrent browser instances to prevent RAM exhaustion
+const chromeSemaphore = new Sema(3);
 
 async function updateWebsiteStatus(
   websiteId: string,
@@ -30,6 +34,9 @@ const worker = new Worker<CrawlJobData>(
 
     let crawler;
     try {
+      await chromeSemaphore.acquire();
+      console.log(`[CRAWLER] Acquired Chrome slot for ${url}. Active instances: ${3 - chromeSemaphore.nrWaiting()}`);
+      
       crawler = new Crawler({
         startUrl: url,
         maxPages: 5,
@@ -70,11 +77,12 @@ const worker = new Worker<CrawlJobData>(
       if (crawler) {
         await crawler.close();
       }
+      chromeSemaphore.release();
     }
   },
   {
     connection: redisClient,
-    concurrency: 2,
+    concurrency: 5, // We can run 5 concurrent jobs, but only 3 can have Chrome open at once
   },
 );
 

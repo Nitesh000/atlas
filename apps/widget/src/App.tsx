@@ -131,7 +131,7 @@ export default function AtlasWidget() {
             {/* Header */}
             <div className="flex justify-between items-center px-4 py-3 bg-card border-b border-border/50 shrink-0">
               <div className="flex items-center gap-3">
-                <img src="/logo-no-bg.png" alt="Atlas Logo" className="w-8 h-8 object-contain bg-primary/5 rounded-md p-1 border border-primary/20" />
+                <img src="/logo.png" alt="Atlas Logo" className="w-8 h-8 object-cover rounded-lg shadow-sm border border-primary/20" />
                 <div>
                   <h3 className="font-semibold text-sm text-foreground">
                     Atlas Support
@@ -174,7 +174,7 @@ export default function AtlasWidget() {
                     {msg.role === "user" ? (
                       <User className="w-3 h-3" />
                     ) : (
-                      <img src="/logo-no-bg.png" alt="Atlas" className="w-4 h-4 object-contain opacity-80" />
+                      <img src="/logo.png" alt="Atlas" className="w-4 h-4 object-cover rounded-sm opacity-90" />
                     )}
                   </div>
                   <div
@@ -213,7 +213,7 @@ export default function AtlasWidget() {
               {isTyping && (
                 <div className="flex gap-3 max-w-[85%]">
                   <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center shrink-0 mt-1">
-                    <img src="/logo-no-bg.png" alt="Atlas" className="w-4 h-4 object-contain opacity-80" />
+                    <img src="/logo.png" alt="Atlas" className="w-4 h-4 object-cover rounded-sm opacity-90" />
                   </div>
                   <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-muted flex items-center gap-1">
                     <span
@@ -257,7 +257,7 @@ export default function AtlasWidget() {
               </form>
               <div className="text-center mt-3">
                 <span className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-medium">
-                  Powered by <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-3 w-auto object-contain inline-block grayscale opacity-70" />
+                  Powered by <img src="/logo.png" alt="Atlas Logo" className="h-4 w-4 object-cover rounded shadow-sm inline-block" />
                 </span>
               </div>
             </div>
