@@ -13,10 +13,10 @@
   "devDependencies": {
     "@atlas/eslint-config": "workspace:*",
     "@atlas/typescript-config": "workspace:*",
+    "@types/node": "^26.2.0",
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@types/node": "^26.2.0",
     "zod": "^4.4.3"
   }
 }

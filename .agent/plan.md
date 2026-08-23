@@ -872,6 +872,7 @@ packages/ai/
 
 Responsibilities:
 
+- [ ] Support comma-separated list of LLM API keys for fallback chain (avoid rate limits/failures).
 - [ ] Groq client
 - [ ] Prompt builder
 - [ ] Streaming

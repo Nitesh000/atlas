@@ -9,6 +9,7 @@
     "start": "tsx src/index.ts"
   },
   "dependencies": {
+    "@atlas/ai": "workspace:^",
     "@atlas/auth": "workspace:^",
     "@atlas/config": "workspace:^",
     "@atlas/database": "workspace:^",
