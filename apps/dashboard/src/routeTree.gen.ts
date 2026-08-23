@@ -17,7 +17,6 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UsageRouteImport } from './routes/usage'
 import { Route as WebsitesRouteImport } from './routes/websites'
-import { Route as OrgsOrgIdRouteImport } from './routes/orgs/$orgId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,11 +58,6 @@ const WebsitesRoute = WebsitesRouteImport.update({
   path: '/websites',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrgsOrgIdRoute = OrgsOrgIdRouteImport.update({
-  id: '/orgs/$orgId',
-  path: '/orgs/$orgId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,7 +68,6 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/usage': typeof UsageRoute
   '/websites': typeof WebsitesRoute
-  '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/usage': typeof UsageRoute
   '/websites': typeof WebsitesRoute
-  '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +89,6 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/usage': typeof UsageRoute
   '/websites': typeof WebsitesRoute
-  '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +101,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/usage'
     | '/websites'
-    | '/orgs/$orgId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +111,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/usage'
     | '/websites'
-    | '/orgs/$orgId'
   id:
     | '__root__'
     | '/'
@@ -132,7 +121,6 @@ export interface FileRouteTypes {
     | '/settings'
     | '/usage'
     | '/websites'
-    | '/orgs/$orgId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,7 +132,6 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   UsageRoute: typeof UsageRoute
   WebsitesRoute: typeof WebsitesRoute
-  OrgsOrgIdRoute: typeof OrgsOrgIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebsitesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/orgs/$orgId': {
-      id: '/orgs/$orgId'
-      path: '/orgs/$orgId'
-      fullPath: '/orgs/$orgId'
-      preLoaderRoute: typeof OrgsOrgIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -224,7 +204,6 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   UsageRoute: UsageRoute,
   WebsitesRoute: WebsitesRoute,
-  OrgsOrgIdRoute: OrgsOrgIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

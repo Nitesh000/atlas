@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useSession } from "../lib/auth";
 import { api } from "../lib/api";
+import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Activity, Globe, Key, Building2, Zap, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -15,7 +17,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { data: session, isPending } = useSession();
 
-  if (isPending) return <div className="p-8">Loading...</div>;
+  if (isPending) return <div className="p-8 text-muted-foreground animate-pulse">Loading session...</div>;
 
   if (!session) {
     return (
@@ -37,20 +39,13 @@ function Index() {
     );
   }
 
-  return <DashboardHome session={session} />;
+  return <DashboardHome userName={session.user.name} />;
 }
 
-function DashboardHome({ session }: { session: any }) {
-  const [newOrgName, setNewOrgName] = useState("");
+function DashboardHome({ userName }: { userName: string }) {
+  const { data: org, isLoading: orgLoading } = useCurrentOrg();
   const queryClient = useQueryClient();
-
-  const { data: orgs, isLoading } = useQuery({
-    queryKey: ["orgs"],
-    queryFn: async () => {
-      const res = await api.get("/orgs");
-      return res.data as { id: string; name: string }[];
-    },
-  });
+  const [newOrgName, setNewOrgName] = useState("");
 
   const createOrg = useMutation({
     mutationFn: async (name: string) => {
@@ -59,77 +54,145 @@ function DashboardHome({ session }: { session: any }) {
     },
     onSuccess: () => {
       setNewOrgName("");
-      queryClient.invalidateQueries({ queryKey: ["orgs"] });
+      queryClient.invalidateQueries({ queryKey: ["currentOrg"] });
     },
   });
 
-  return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">
-          Welcome, {session.user.name}
-        </h2>
-      </div>
+  if (orgLoading) return <div className="p-8 text-muted-foreground animate-pulse">Loading dashboard...</div>;
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Organizations</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {isLoading ? (
-            <p className="text-sm text-muted-foreground">
-              Loading organizations...
-            </p>
-          ) : orgs?.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              You don't have any organizations yet.
-            </p>
-          ) : (
-            <ul className="space-y-3">
-              {orgs?.map((org) => (
-                <li
-                  key={org.id}
-                  className="border rounded-md p-4 flex justify-between items-center bg-card"
-                >
-                  <span className="font-medium text-lg">{org.name}</span>
-                  <Button asChild variant="secondary" size="sm">
-                    <Link to="/orgs/$orgId" params={{ orgId: org.id }}>
-                      Manage API Keys
-                    </Link>
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          )}
+  if (!org) {
+    return (
+      <div className="max-w-md mx-auto mt-12 space-y-6">
+        <div className="text-center space-y-2">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-4">
+            <Building2 className="w-6 h-6 text-primary" />
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight">Welcome, {userName}</h2>
+          <p className="text-muted-foreground">
+            Create your primary workspace to start indexing websites and generating API keys.
+          </p>
+        </div>
 
-          <div className="border-t pt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Create Workspace</CardTitle>
+            <CardDescription>You can only have one workspace per account.</CardDescription>
+          </CardHeader>
+          <CardContent>
             <form
-              className="flex items-end gap-4 max-w-md"
-              onSubmit={(e: React.FormEvent) => {
+              className="space-y-4"
+              onSubmit={(e) => {
                 e.preventDefault();
                 if (newOrgName.trim()) createOrg.mutate(newOrgName);
               }}
             >
-              <div className="flex-1 space-y-2">
-                <Label htmlFor="orgName">Create New Organization</Label>
+              <div className="space-y-2">
+                <Label htmlFor="orgName">Organization Name</Label>
                 <Input
                   id="orgName"
                   placeholder="e.g. Acme Corp"
                   value={newOrgName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setNewOrgName(e.target.value)
-                  }
+                  onChange={(e) => setNewOrgName(e.target.value)}
                   disabled={createOrg.isPending}
                   required
+                  className="bg-muted/50"
                 />
               </div>
-              <Button type="submit" disabled={createOrg.isPending}>
-                Create
+              <Button type="submit" className="w-full" disabled={createOrg.isPending}>
+                Create Workspace
               </Button>
             </form>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-5xl space-y-8">
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
+        <p className="text-muted-foreground mt-2">
+          Welcome back to {org.name}. Here's what's happening today.
+        </p>
+      </div>
+
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Total API Calls</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">1,245</div>
+            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+              <Zap className="h-3 w-3 text-green-500" /> +15% from last month
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Indexed Websites</CardTitle>
+            <Globe className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">4</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              3 active, 1 crawling
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardTitle className="text-sm font-medium">Active API Keys</CardTitle>
+            <Key className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">2 <span className="text-sm font-normal text-muted-foreground">/ 3</span></div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Limit 3 keys per account
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>Common tasks to get you started.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Link to="/websites" className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 text-primary rounded-md">
+                  <Globe className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="font-medium">Index New Website</div>
+                  <div className="text-sm text-muted-foreground">Crawl a documentation site for RAG.</div>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            </Link>
+            
+            <Link to="/api-keys" className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 text-primary rounded-md">
+                  <Key className="h-5 w-5" />
+                </div>
+                <div>
+                  <div className="font-medium">Generate API Key</div>
+                  <div className="text-sm text-muted-foreground">Create a secure token for requests.</div>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
