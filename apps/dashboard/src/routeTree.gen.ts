@@ -10,13 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiKeysRouteImport } from './routes/api-keys'
+import { Route as BillingRouteImport } from './routes/billing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as UsageRouteImport } from './routes/usage'
+import { Route as WebsitesRouteImport } from './routes/websites'
 import { Route as OrgsOrgIdRouteImport } from './routes/orgs/$orgId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiKeysRoute = ApiKeysRouteImport.update({
+  id: '/api-keys',
+  path: '/api-keys',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillingRoute = BillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -29,6 +44,21 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsageRoute = UsageRouteImport.update({
+  id: '/usage',
+  path: '/usage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebsitesRoute = WebsitesRouteImport.update({
+  id: '/websites',
+  path: '/websites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OrgsOrgIdRoute = OrgsOrgIdRouteImport.update({
   id: '/orgs/$orgId',
   path: '/orgs/$orgId',
@@ -37,35 +67,83 @@ const OrgsOrgIdRoute = OrgsOrgIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/billing': typeof BillingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/usage': typeof UsageRoute
+  '/websites': typeof WebsitesRoute
   '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/billing': typeof BillingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/usage': typeof UsageRoute
+  '/websites': typeof WebsitesRoute
   '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api-keys': typeof ApiKeysRoute
+  '/billing': typeof BillingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/settings': typeof SettingsRoute
+  '/usage': typeof UsageRoute
+  '/websites': typeof WebsitesRoute
   '/orgs/$orgId': typeof OrgsOrgIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/orgs/$orgId'
+  fullPaths:
+    | '/'
+    | '/api-keys'
+    | '/billing'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/usage'
+    | '/websites'
+    | '/orgs/$orgId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/orgs/$orgId'
-  id: '__root__' | '/' | '/login' | '/register' | '/orgs/$orgId'
+  to:
+    | '/'
+    | '/api-keys'
+    | '/billing'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/usage'
+    | '/websites'
+    | '/orgs/$orgId'
+  id:
+    | '__root__'
+    | '/'
+    | '/api-keys'
+    | '/billing'
+    | '/login'
+    | '/register'
+    | '/settings'
+    | '/usage'
+    | '/websites'
+    | '/orgs/$orgId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiKeysRoute: typeof ApiKeysRoute
+  BillingRoute: typeof BillingRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  SettingsRoute: typeof SettingsRoute
+  UsageRoute: typeof UsageRoute
+  WebsitesRoute: typeof WebsitesRoute
   OrgsOrgIdRoute: typeof OrgsOrgIdRoute
 }
 
@@ -76,6 +154,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api-keys': {
+      id: '/api-keys'
+      path: '/api-keys'
+      fullPath: '/api-keys'
+      preLoaderRoute: typeof ApiKeysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/billing': {
+      id: '/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof BillingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -92,6 +184,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/usage': {
+      id: '/usage'
+      path: '/usage'
+      fullPath: '/usage'
+      preLoaderRoute: typeof UsageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/websites': {
+      id: '/websites'
+      path: '/websites'
+      fullPath: '/websites'
+      preLoaderRoute: typeof WebsitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/orgs/$orgId': {
       id: '/orgs/$orgId'
       path: '/orgs/$orgId'
@@ -104,8 +217,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiKeysRoute: ApiKeysRoute,
+  BillingRoute: BillingRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  SettingsRoute: SettingsRoute,
+  UsageRoute: UsageRoute,
+  WebsitesRoute: WebsitesRoute,
   OrgsOrgIdRoute: OrgsOrgIdRoute,
 }
 export const routeTree = rootRouteImport

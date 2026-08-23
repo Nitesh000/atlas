@@ -1,7 +1,7 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useSession, signOut } from "../lib/auth";
+import { useSession } from "../lib/auth";
 import { api } from "../lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,7 +43,6 @@ function Index() {
 function DashboardHome({ session }: { session: any }) {
   const [newOrgName, setNewOrgName] = useState("");
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { data: orgs, isLoading } = useQuery({
     queryKey: ["orgs"],
@@ -64,20 +63,12 @@ function DashboardHome({ session }: { session: any }) {
     },
   });
 
-  const handleLogout = async () => {
-    await signOut();
-    navigate({ to: "/login" });
-  };
-
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">
           Welcome, {session.user.name}
         </h2>
-        <Button variant="ghost" onClick={handleLogout}>
-          Logout
-        </Button>
       </div>
 
       <Card>
