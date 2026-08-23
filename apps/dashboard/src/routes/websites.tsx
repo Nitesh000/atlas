@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../lib/api";
 import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
@@ -34,8 +34,31 @@ function WebsitesPage() {
       return res.data as { id: string; url: string; title: string | null; status: string; createdAt: string }[];
     },
     enabled: !!org?.id,
-    refetchInterval: 5000, // Refresh status periodically while crawling
   });
+
+  useEffect(() => {
+    if (!org?.id) return;
+    
+    // Ensure we hit the absolute base URL
+    const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+    const evtSource = new EventSource(`${baseUrl}/orgs/${org.id}/websites/events`, {
+      withCredentials: true,
+    });
+    
+    evtSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        queryClient.setQueryData(["websites", org.id], (old: any[]) => {
+          if (!old) return old;
+          return old.map((w) => (w.id === data.websiteId ? { ...w, status: data.status } : w));
+        });
+      } catch (err) {
+        // ignore JSON parse errors from pings
+      }
+    };
+
+    return () => evtSource.close();
+  }, [org?.id, queryClient]);
 
   const addWebsite = useMutation({
     mutationFn: async (data: { url: string; title?: string }) => {
@@ -47,6 +70,12 @@ function WebsitesPage() {
       setNewTitle("");
       queryClient.invalidateQueries({ queryKey: ["websites", org?.id] });
     },
+  });
+
+  const rescrape = useMutation({
+    mutationFn: async (websiteId: string) => {
+      await api.post(`/orgs/${org?.id}/websites/${websiteId}/scrape`);
+    }
   });
 
   if (orgLoading) return <div className="p-8 text-muted-foreground animate-pulse">Loading workspace...</div>;
@@ -112,8 +141,7 @@ function WebsitesPage() {
                         </TableCell>
                         <TableCell className="text-sm">{site.title || "—"}</TableCell>
                         <TableCell>
-                          <div className="flex items-center gap-2">
-                            {site.status === "crawling" && <RefreshCw className="h-3 w-3 animate-spin text-blue-500" />}
+                          <div className="flex items-center gap-3">
                             <span className={`text-xs font-medium px-2 py-1 rounded-full ${
                               site.status === "crawling" ? "bg-blue-500/10 text-blue-500" :
                               site.status === "completed" ? "bg-green-500/10 text-green-500" :
@@ -122,6 +150,16 @@ function WebsitesPage() {
                             }`}>
                               {site.status.charAt(0).toUpperCase() + site.status.slice(1)}
                             </span>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-6 w-6" 
+                              onClick={() => rescrape.mutate(site.id)}
+                              disabled={site.status === "crawling" || rescrape.isPending}
+                              title="Re-scrape website"
+                            >
+                              <RefreshCw className={`h-3 w-3 ${site.status === "crawling" ? "animate-spin opacity-50 text-blue-500" : "text-muted-foreground hover:text-foreground"}`} />
+                            </Button>
                           </div>
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">

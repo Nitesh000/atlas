@@ -16,12 +16,18 @@ const chromeSemaphore = new Sema(3);
 
 async function updateWebsiteStatus(
   websiteId: string,
+  organizationId: string,
   status: "crawling" | "completed" | "failed",
 ) {
   await dbClient
     .update(appSchema.website)
     .set({ status, updatedAt: new Date() })
     .where(eq(appSchema.website.id, websiteId));
+    
+  await redisClient.publish(
+    `org:${organizationId}:scrape-events`,
+    JSON.stringify({ websiteId, status })
+  );
 }
 
 const worker = new Worker<CrawlJobData>(
@@ -30,7 +36,7 @@ const worker = new Worker<CrawlJobData>(
     const { websiteId, url, organizationId } = job.data;
     console.log(`[CRAWLER] Starting job ${job.id} for ${url}`);
 
-    await updateWebsiteStatus(websiteId, "crawling");
+    await updateWebsiteStatus(websiteId, organizationId, "crawling");
 
     let crawler;
     try {
@@ -68,10 +74,10 @@ const worker = new Worker<CrawlJobData>(
       console.log(
         `[CRAWLER] Stored ${totalChunks} vectorized chunks for ${url}`,
       );
-      await updateWebsiteStatus(websiteId, "completed");
+      await updateWebsiteStatus(websiteId, organizationId, "completed");
     } catch (error) {
       console.error(`[CRAWLER] Failed job ${job.id} for ${url}:`, error);
-      await updateWebsiteStatus(websiteId, "failed");
+      await updateWebsiteStatus(websiteId, organizationId, "failed");
       throw error;
     } finally {
       if (crawler) {
