@@ -2,7 +2,7 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import type { CreateWebsiteInput } from "./websites.types.js";
 import { createWebsite, listWebsites } from "./websites.service.js";
 import { dbClient, appSchema } from "@atlas/database";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { UnauthorizedError } from "../../common/errors/index.js";
 import { redisClient, crawlQueue } from "@atlas/queue";
 
@@ -28,12 +28,25 @@ export async function createWebsiteHandler(
 ) {
   const params = request.params as { orgId: string };
   const body = request.body as Omit<CreateWebsiteInput, "organizationId">;
+  const { orgId } = params;
 
-  await verifyOrgMember(request.user!.id, params.orgId);
+  await verifyOrgMember(request.user!.id, orgId);
+
+  // Check limit (Max 3 websites per org)
+  const result = await dbClient
+    .select({ count: sql<number>`count(*)` })
+    .from(appSchema.website)
+    .where(eq(appSchema.website.organizationId, orgId));
+
+  const count = result[0]?.count || 0;
+
+  if (Number(count) >= 3) {
+    return reply.status(400).send({ message: "Website limit reached (max 3)." });
+  }
 
   const website = await createWebsite({
     url: body.url,
-    organizationId: params.orgId,
+    organizationId: orgId,
   });
 
   return reply.status(201).send(website);
@@ -132,4 +145,50 @@ export async function websiteEventsHandler(
     subscriber.unsubscribe();
     subscriber.quit();
   });
+}
+
+export async function deleteWebsiteHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  const params = request.params as { orgId: string; id: string };
+  await verifyOrgMember(request.user!.id, params.orgId);
+
+  // Delete chunks first
+  await dbClient
+    .delete(appSchema.documentChunk)
+    .where(eq(appSchema.documentChunk.websiteId, params.id));
+
+  // Delete website
+  await dbClient
+    .delete(appSchema.website)
+    .where(
+      and(
+        eq(appSchema.website.id, params.id),
+        eq(appSchema.website.organizationId, params.orgId),
+      ),
+    );
+
+  return reply.status(200).send({ success: true });
+}
+
+export async function websitePagesHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+) {
+  const params = request.params as { orgId: string; id: string };
+  await verifyOrgMember(request.user!.id, params.orgId);
+
+  // Get distinct URLs
+  const pages = await dbClient
+    .selectDistinct({ url: appSchema.documentChunk.url })
+    .from(appSchema.documentChunk)
+    .where(
+      and(
+        eq(appSchema.documentChunk.websiteId, params.id),
+        eq(appSchema.documentChunk.organizationId, params.orgId),
+      ),
+    );
+
+  return reply.status(200).send(pages);
 }

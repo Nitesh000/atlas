@@ -13,7 +13,8 @@ import {
   LogOut,
   User,
   Activity,
-  Zap
+  Zap,
+  MessageSquare
 } from "lucide-react";
 import { signOut } from "../lib/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -71,6 +72,13 @@ function RootComponent() {
             >
               <Key className="mr-3 h-4 w-4 opacity-70 group-hover:opacity-100 [&.active]:opacity-100" />
               API Keys
+            </Link>
+            <Link
+              to="/chat"
+              className="flex items-center py-2.5 px-3 rounded-md transition-all text-muted-foreground group hover:text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary [&.active]:font-medium"
+            >
+              <MessageSquare className="mr-3 h-4 w-4 opacity-70 group-hover:opacity-100 [&.active]:opacity-100" />
+              Playground
             </Link>
             <Link
               to="/usage"

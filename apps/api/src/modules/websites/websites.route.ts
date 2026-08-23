@@ -6,6 +6,8 @@ import {
   listWebsitesHandler,
   rescrapeWebsiteHandler,
   websiteEventsHandler,
+  deleteWebsiteHandler,
+  websitePagesHandler,
 } from "./websites.controller.js";
 import { createWebsiteSchema, listWebsitesSchema } from "./websites.schema.js";
 import { z } from "zod";
@@ -38,6 +40,32 @@ export async function websitesRoutes(app: FastifyInstance) {
       },
     },
     rescrapeWebsiteHandler,
+  );
+
+  typedApp.delete(
+    "/:orgId/websites/:id",
+    {
+      schema: {
+        params: z.object({
+          orgId: z.string().uuid(),
+          id: z.string().uuid(),
+        }),
+      },
+    },
+    deleteWebsiteHandler,
+  );
+
+  typedApp.get(
+    "/:orgId/websites/:id/pages",
+    {
+      schema: {
+        params: z.object({
+          orgId: z.string().uuid(),
+          id: z.string().uuid(),
+        }),
+      },
+    },
+    websitePagesHandler,
   );
 
   typedApp.post(
