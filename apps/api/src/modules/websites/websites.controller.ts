@@ -113,11 +113,6 @@ export async function websiteEventsHandler(
   reply.raw.setHeader("Content-Type", "text/event-stream");
   reply.raw.setHeader("Cache-Control", "no-cache");
   reply.raw.setHeader("Connection", "keep-alive");
-  
-  if (request.headers.origin) {
-    reply.raw.setHeader("Access-Control-Allow-Origin", request.headers.origin);
-    reply.raw.setHeader("Access-Control-Allow-Credentials", "true");
-  }
 
   // Duplicate redis client for this subscription connection
   const subscriber = redisClient.duplicate();

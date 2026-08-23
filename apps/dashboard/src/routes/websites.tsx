@@ -48,6 +48,11 @@ function WebsitesPage() {
     evtSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
+        
+        // Invalidate the query to fetch the freshest data (e.g. updated timestamps)
+        queryClient.invalidateQueries({ queryKey: ["websites", org.id] });
+        
+        // Optimistic update for immediate visual feedback
         queryClient.setQueryData(["websites", org.id], (old: any[]) => {
           if (!old) return old;
           return old.map((w) => (w.id === data.websiteId ? { ...w, status: data.status } : w));
@@ -75,6 +80,9 @@ function WebsitesPage() {
   const rescrape = useMutation({
     mutationFn: async (websiteId: string) => {
       await api.post(`/orgs/${org?.id}/websites/${websiteId}/scrape`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["websites", org?.id] });
     }
   });
 
