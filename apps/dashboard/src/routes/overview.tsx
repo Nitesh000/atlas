@@ -32,17 +32,21 @@ function Index() {
 
   if (!session) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle className="text-center">Please log in</CardTitle>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+        <Card className="w-full max-w-md shadow-2xl border-primary/10">
+          <CardHeader className="text-center space-y-2">
+            <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-2">
+              <img src="/logo-icon.png" alt="Atlas" className="w-6 h-6 opacity-90" />
+            </div>
+            <CardTitle className="text-2xl">Authentication Required</CardTitle>
+            <p className="text-sm text-muted-foreground">Please log in to access your dashboard.</p>
           </CardHeader>
-          <CardContent className="flex justify-center gap-4">
-            <Button asChild variant="default">
-              <Link to="/login">Login</Link>
+          <CardContent className="flex flex-col gap-3 pt-4">
+            <Button asChild variant="default" className="w-full h-11">
+              <Link to="/login">Log In</Link>
             </Button>
-            <Button asChild variant="outline">
-              <Link to="/register">Register</Link>
+            <Button asChild variant="outline" className="w-full h-11">
+              <Link to="/register">Create an Account</Link>
             </Button>
           </CardContent>
         </Card>

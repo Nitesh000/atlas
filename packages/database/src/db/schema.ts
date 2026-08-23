@@ -7,6 +7,7 @@ import {
   uniqueIndex,
   vector,
   index,
+  integer,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
 
@@ -77,6 +78,26 @@ export const website = pgTable("website", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const apiUsage = pgTable(
+  "api_usage",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    monthYear: text("month_year").notNull(), // e.g. "2023-10"
+    apiCallCount: integer("api_call_count").notNull().default(0),
+    limit: integer("limit").notNull().default(5000), // Configurable limit
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    uniqueIndex("org_month_unique").on(table.organizationId, table.monthYear),
+  ],
+);
 
 export const documentChunk = pgTable(
   "document_chunk",

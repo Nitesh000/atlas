@@ -12,7 +12,6 @@ import {
   CreditCard,
   Settings,
   Book,
-  LifeBuoy,
   Search,
   Key,
   Globe,
@@ -37,6 +36,8 @@ function RootComponent() {
   const navigate = useNavigate();
   const router = useRouterState();
   const isLandingPage = router.location.pathname === "/";
+  const isAuthPage = router.location.pathname === "/login" || router.location.pathname === "/register";
+  const hideSidebar = isLandingPage || isAuthPage;
 
   const handleLogout = async () => {
     await signOut();
@@ -50,7 +51,7 @@ function RootComponent() {
       attribute="class"
     >
       <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
-        {isLandingPage ? (
+        {hideSidebar ? (
           <Outlet />
         ) : (
           <>
@@ -125,20 +126,13 @@ function RootComponent() {
               </nav>
 
               <div className="px-3 pt-4 pb-6 space-y-1 border-t border-border/50 shrink-0">
-                <a
-                  href="#"
-                  className="flex items-center py-2.5 px-3 rounded-md transition-all text-muted-foreground group hover:text-foreground hover:bg-accent"
+                <Link
+                  to="/docs"
+                  className="flex items-center py-2.5 px-3 rounded-md transition-all text-muted-foreground group hover:text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary [&.active]:font-medium"
                 >
-                  <Book className="mr-3 h-4 w-4 opacity-70 group-hover:opacity-100" />
+                  <Book className="mr-3 h-4 w-4 opacity-70 group-hover:opacity-100 [&.active]:opacity-100" />
                   Documentation
-                </a>
-                <a
-                  href="#"
-                  className="flex items-center py-2.5 px-3 rounded-md transition-all text-muted-foreground group hover:text-foreground hover:bg-accent"
-                >
-                  <LifeBuoy className="mr-3 h-4 w-4 opacity-70 group-hover:opacity-100" />
-                  Support
-                </a>
+                </Link>
               </div>
             </aside>
 
