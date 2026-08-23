@@ -29,8 +29,8 @@ function DocsPage() {
               Add the following snippet right before your closing <code className="bg-muted px-1 py-0.5 rounded text-xs">&lt;/body&gt;</code> tag. 
               The widget is fully styled and responsive out of the box.
             </p>
-            <div className="bg-muted p-4 rounded-xl border font-mono text-sm overflow-x-auto">
-              <pre className="text-muted-foreground">
+            <div className="bg-muted p-4 rounded-xl border font-mono text-sm">
+              <pre className="text-muted-foreground whitespace-pre-wrap break-words">
 <span className="text-blue-400">&lt;script</span> <span className="text-green-300">src</span>=<span className="text-yellow-300">"https://atlas.com/embed.js"</span>
         <span className="text-green-300">data-layout</span>=<span className="text-yellow-300">"floating"</span>
         <span className="text-green-300">data-primary</span>=<span className="text-yellow-300">"#3b82f6"</span><span className="text-blue-400">&gt;&lt;/script&gt;</span>
@@ -50,8 +50,8 @@ function DocsPage() {
             <p className="text-sm text-foreground/80">
               Generate an API key in the API Keys tab, then send a POST request with the <code className="bg-muted px-1 py-0.5 rounded text-xs">x-atlas-api-key</code> header.
             </p>
-            <div className="bg-muted p-4 rounded-xl border font-mono text-sm overflow-x-auto">
-              <pre className="text-muted-foreground">
+            <div className="bg-muted p-4 rounded-xl border font-mono text-sm">
+              <pre className="text-muted-foreground whitespace-pre-wrap break-words">
 curl -X POST https://api.atlas.com/v1/chat \
   -H <span className="text-yellow-300">"Content-Type: application/json"</span> \
   -H <span className="text-yellow-300">"x-atlas-api-key: atl_your_secret_key"</span> \
@@ -69,8 +69,8 @@ curl -X POST https://api.atlas.com/v1/chat \
             <CardDescription>What you receive from the chat API.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="bg-muted p-4 rounded-xl border font-mono text-sm overflow-x-auto">
-              <pre className="text-muted-foreground">
+            <div className="bg-muted p-4 rounded-xl border font-mono text-sm">
+              <pre className="text-muted-foreground whitespace-pre-wrap break-words">
 {`{
   "reply": "To authenticate, you must include a bearer token in your header...",
   "sources": [

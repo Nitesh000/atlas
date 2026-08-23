@@ -32,7 +32,7 @@ function BillingPage() {
           <CardContent className="space-y-6">
             <div className="text-4xl font-extrabold">$0<span className="text-lg text-muted-foreground font-normal">/mo</span></div>
             <ul className="space-y-3">
-              {["5,000 API calls/month", "Up to 3 Indexed Websites", "3 API Keys", "Standard community support"].map((feat, i) => (
+              {["1,000 API calls/month", "Up to 100 Indexed Websites", "3 API Keys", "Standard community support"].map((feat, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-green-500 shrink-0" /> {feat}
                 </li>

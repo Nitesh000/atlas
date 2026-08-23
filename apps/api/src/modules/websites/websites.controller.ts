@@ -32,7 +32,7 @@ export async function createWebsiteHandler(
 
   await verifyOrgMember(request.user!.id, orgId);
 
-  // Check limit (Max 3 websites per org)
+  // Check limit (Max 100 websites per org)
   const result = await dbClient
     .select({ count: sql<number>`count(*)` })
     .from(appSchema.website)
@@ -40,10 +40,25 @@ export async function createWebsiteHandler(
 
   const count = result[0]?.count || 0;
 
-  if (Number(count) >= 3) {
+  if (Number(count) >= 100) {
     return reply
       .status(400)
-      .send({ message: "Website limit reached (max 3)." });
+      .send({ message: "Website limit reached (max 100)." });
+  }
+
+  // Check unique URL
+  const [existingWebsite] = await dbClient
+    .select()
+    .from(appSchema.website)
+    .where(
+      and(
+        eq(appSchema.website.organizationId, orgId),
+        eq(appSchema.website.url, body.url)
+      )
+    );
+
+  if (existingWebsite) {
+    return reply.status(409).send({ message: "This website has already been added to your organization." });
   }
 
   const website = await createWebsite({

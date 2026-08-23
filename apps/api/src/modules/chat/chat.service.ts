@@ -1,7 +1,7 @@
 import { dbClient, appSchema } from "@atlas/database";
 import { and, eq, sql } from "drizzle-orm";
 import { UnauthorizedError } from "../../common/errors/index.js";
-import { RateLimitError } from "../../common/errors/http-errors.js";
+import { RateLimitError, ForbiddenError } from "../../common/errors/http-errors.js";
 import type { ChatInput, ChatResponse } from "./chat.types.js";
 import { aiEngine } from "@atlas/ai";
 import { generateEmbedding } from "@atlas/embeddings";
@@ -9,6 +9,7 @@ import { generateEmbedding } from "@atlas/embeddings";
 export async function processChat(
   apiKey: string,
   input: ChatInput,
+  origin?: string,
 ): Promise<ChatResponse> {
   // 1. Validate API Key
   const [keyRecord] = await dbClient
@@ -18,6 +19,29 @@ export async function processChat(
 
   if (!keyRecord) {
     throw new UnauthorizedError("Invalid API key");
+  }
+
+  // Domain Validation
+  if (keyRecord.allowedDomains && keyRecord.allowedDomains.length > 0) {
+    if (!origin) {
+      throw new ForbiddenError("Missing origin header for domain-restricted API key");
+    }
+    
+    try {
+      const originUrl = new URL(origin);
+      const isAllowed = keyRecord.allowedDomains.some(domain => {
+        // Strip protocol and exact match or subdomain match
+        const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        return originUrl.hostname === cleanDomain || originUrl.hostname.endsWith(`.${cleanDomain}`);
+      });
+
+      if (!isAllowed) {
+        throw new ForbiddenError(`Origin ${originUrl.hostname} is not permitted by this API key`);
+      }
+    } catch (e) {
+      if (e instanceof ForbiddenError) throw e;
+      throw new ForbiddenError("Invalid origin header");
+    }
   }
 
   const organizationId = keyRecord.organizationId;

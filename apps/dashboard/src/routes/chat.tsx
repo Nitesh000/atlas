@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ type Message = {
 
 function ChatPlayground() {
   const { data: org, isLoading: orgLoading } = useCurrentOrg();
+  const queryClient = useQueryClient();
 
   // Fetch API keys to test chat
   const { data: apiKeys, isLoading: keysLoading } = useQuery({
@@ -87,6 +88,9 @@ function ChatPlayground() {
         sources: res.data.sources,
       };
       setMessages((prev) => [...prev, aiMessage]);
+      
+      // Update usage stats immediately
+      queryClient.invalidateQueries({ queryKey: ["usage", org?.id] });
     } catch (error) {
       setMessages((prev) => [
         ...prev,

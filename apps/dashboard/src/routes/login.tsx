@@ -45,7 +45,12 @@ function Login() {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         </div>
 
-        <div className="flex relative z-10 gap-3 items-center text-2xl font-bold tracking-tight text-white">
+        <div
+          className="flex relative z-10 gap-3 items-center text-2xl font-bold tracking-tight text-white"
+          onClick={() => {
+            navigate({ to: "/" });
+          }}
+        >
           <img
             src="/logo-icon.png"
             alt="Atlas Logo"

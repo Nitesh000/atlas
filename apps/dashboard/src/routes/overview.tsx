@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useSession } from "../lib/auth";
 import { api } from "../lib/api";
@@ -14,7 +14,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Activity, Globe, Key, Building2, Zap, ArrowRight } from "lucide-react";
+import { Activity, Globe, Key, Building2, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/overview")({
   component: Index,
@@ -61,6 +61,33 @@ function DashboardHome({ userName }: { userName: string }) {
   const { data: org, isLoading: orgLoading } = useCurrentOrg();
   const queryClient = useQueryClient();
   const [newOrgName, setNewOrgName] = useState("");
+
+  const { data: usage } = useQuery({
+    queryKey: ["usage", org?.id],
+    queryFn: async () => {
+      const res = await api.get(`/orgs/${org?.id}/usage`);
+      return res.data as { apiCallCount: number; limit: number; monthYear: string };
+    },
+    enabled: !!org?.id,
+  });
+
+  const { data: websites } = useQuery({
+    queryKey: ["websites", org?.id],
+    queryFn: async () => {
+      const res = await api.get(`/orgs/${org?.id}/websites`);
+      return res.data as { status: string }[];
+    },
+    enabled: !!org?.id,
+  });
+
+  const { data: apiKeys } = useQuery({
+    queryKey: ["apiKeys", org?.id],
+    queryFn: async () => {
+      const res = await api.get(`/orgs/${org?.id}/api-keys`);
+      return res.data as { id: string }[];
+    },
+    enabled: !!org?.id,
+  });
 
   const createOrg = useMutation({
     mutationFn: async (name: string) => {
@@ -137,6 +164,9 @@ function DashboardHome({ userName }: { userName: string }) {
     );
   }
 
+  const activeWebsites = websites?.filter(w => w.status === 'completed').length || 0;
+  const crawlingWebsites = websites?.filter(w => w.status === 'crawling').length || 0;
+
   return (
     <div className="max-w-5xl space-y-8">
       <div>
@@ -155,9 +185,9 @@ function DashboardHome({ userName }: { userName: string }) {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,245</div>
-            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-              <Zap className="h-3 w-3 text-green-500" /> +15% from last month
+            <div className="text-2xl font-bold">{usage?.apiCallCount.toLocaleString() ?? "-"}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Limit: {usage?.limit.toLocaleString() ?? "-"} / month
             </p>
           </CardContent>
         </Card>
@@ -170,9 +200,9 @@ function DashboardHome({ userName }: { userName: string }) {
             <Globe className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4</div>
+            <div className="text-2xl font-bold">{websites?.length ?? "-"}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              3 active, 1 crawling
+              {activeWebsites} active, {crawlingWebsites} crawling
             </p>
           </CardContent>
         </Card>
@@ -186,7 +216,7 @@ function DashboardHome({ userName }: { userName: string }) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              2{" "}
+              {apiKeys?.length ?? "-"}{" "}
               <span className="text-sm font-normal text-muted-foreground">
                 / 3
               </span>

@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { ThemeProvider } from "../components/theme-provider";
 import { ModeToggle } from "../components/mode-toggle";
+import { UsageHeaderBadge } from "../lib/usage-badge";
 import {
   BarChart,
   CreditCard,
@@ -18,7 +19,6 @@ import {
   LogOut,
   User,
   Activity,
-  Zap,
   MessageSquare,
 } from "lucide-react";
 import { signOut } from "../lib/auth";
@@ -142,13 +142,7 @@ function RootComponent() {
               <header className="sticky top-0 z-40 flex items-center justify-between px-6 h-16 border-b bg-background/80 backdrop-blur-xl border-border/50">
                 {/* Left: Usage Stats */}
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary">
-                    <Zap className="w-3.5 h-3.5" />
-                    <span>1,245 / 50,000</span>
-                    <span className="text-primary/70 font-normal hidden sm:inline">
-                      calls this month
-                    </span>
-                  </div>
+                  <UsageHeaderBadge />
                 </div>
 
                 {/* Right: Search & Profile */}

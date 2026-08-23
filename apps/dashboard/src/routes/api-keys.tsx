@@ -31,6 +31,7 @@ function ApiKeysPage() {
   const { data: org, isLoading: orgLoading } = useCurrentOrg();
   const queryClient = useQueryClient();
   const [newKeyName, setNewKeyName] = useState("");
+  const [allowedDomains, setAllowedDomains] = useState("");
   const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null);
 
   const { data: apiKeys, isLoading: keysLoading } = useQuery({
@@ -49,12 +50,13 @@ function ApiKeysPage() {
   });
 
   const createApiKey = useMutation({
-    mutationFn: async (name: string) => {
-      const res = await api.post(`/orgs/${org?.id}/api-keys`, { name });
+    mutationFn: async (data: { name: string; allowedDomains?: string[] }) => {
+      const res = await api.post(`/orgs/${org?.id}/api-keys`, data);
       return res.data;
     },
     onSuccess: () => {
       setNewKeyName("");
+      setAllowedDomains("");
       queryClient.invalidateQueries({ queryKey: ["apiKeys", org?.id] });
     },
   });
@@ -116,6 +118,7 @@ function ApiKeysPage() {
                   <TableRow>
                     <TableHead>Name</TableHead>
                     <TableHead>Secret Key</TableHead>
+                    <TableHead>Domains</TableHead>
                     <TableHead>Created</TableHead>
                     <TableHead>Last Used</TableHead>
                   </TableRow>
@@ -124,14 +127,14 @@ function ApiKeysPage() {
                   {apiKeys?.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={4}
+                        colSpan={5}
                         className="text-center py-6 text-muted-foreground"
                       >
                         No API keys generated yet.
                       </TableCell>
                     </TableRow>
                   ) : (
-                    apiKeys?.map((key) => (
+                    apiKeys?.map((key: any) => (
                       <TableRow key={key.id}>
                         <TableCell className="font-medium">
                           {key.name}
@@ -154,6 +157,15 @@ function ApiKeysPage() {
                               )}
                             </Button>
                           </div>
+                        </TableCell>
+                        <TableCell>
+                          {key.allowedDomains && key.allowedDomains.length > 0 ? (
+                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded border border-primary/20">
+                              Restricted
+                            </span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">Any</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {new Date(key.createdAt).toLocaleDateString()}
@@ -186,7 +198,16 @@ function ApiKeysPage() {
                   className="space-y-4"
                   onSubmit={(e) => {
                     e.preventDefault();
-                    if (newKeyName.trim()) createApiKey.mutate(newKeyName);
+                    if (newKeyName.trim()) {
+                      const domains = allowedDomains
+                        .split(",")
+                        .map((d) => d.trim())
+                        .filter(Boolean);
+                      createApiKey.mutate({
+                        name: newKeyName,
+                        allowedDomains: domains.length > 0 ? domains : undefined,
+                      });
+                    }
                   }}
                 >
                   <div className="space-y-2">
@@ -200,6 +221,18 @@ function ApiKeysPage() {
                       required
                       className="bg-muted/50"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="domains">Allowed Domains (Optional)</Label>
+                    <Input
+                      id="domains"
+                      placeholder="e.g. example.com, app.example.com"
+                      value={allowedDomains}
+                      onChange={(e) => setAllowedDomains(e.target.value)}
+                      disabled={isLoading}
+                      className="bg-muted/50"
+                    />
+                    <p className="text-xs text-muted-foreground">Comma-separated domains to restrict usage.</p>
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     <Key className="mr-2 h-4 w-4" /> Generate Key

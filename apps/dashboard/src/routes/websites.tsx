@@ -345,7 +345,7 @@ function WebsitesPage() {
                   Limit Reached
                 </CardTitle>
                 <CardDescription>
-                  You have reached the maximum limit of 3 websites for your
+                  You have reached the maximum limit of 100 websites for your
                   account. Delete an existing source to add a new one.
                 </CardDescription>
               </CardHeader>

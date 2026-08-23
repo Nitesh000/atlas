@@ -65,19 +65,25 @@ export const apiKey = pgTable("api_key", {
   lastUsedAt: timestamp("last_used_at"),
 });
 
-export const website = pgTable("website", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  organizationId: uuid("organization_id")
-    .notNull()
-    .references(() => organization.id, { onDelete: "cascade" }),
-  url: text("url").notNull(),
-  status: crawlStatus("status").notNull().default("pending"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-});
+export const website = pgTable(
+  "website",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    status: crawlStatus("status").notNull().default("pending"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    uniqueIndex("org_url_unique").on(table.organizationId, table.url),
+  ]
+);
 
 export const apiUsage = pgTable(
   "api_usage",
@@ -88,7 +94,7 @@ export const apiUsage = pgTable(
       .references(() => organization.id, { onDelete: "cascade" }),
     monthYear: text("month_year").notNull(), // e.g. "2023-10"
     apiCallCount: integer("api_call_count").notNull().default(0),
-    limit: integer("limit").notNull().default(5000), // Configurable limit
+    limit: integer("limit").notNull().default(1000), // Configurable limit
     updatedAt: timestamp("updated_at")
       .defaultNow()
       .$onUpdate(() => new Date())
