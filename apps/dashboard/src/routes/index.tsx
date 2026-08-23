@@ -16,7 +16,7 @@ function LandingPage() {
       <header className="px-6 lg:px-12 h-20 flex items-center justify-between border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <img
-            src="/logo.png"
+            src="/logo-icon.png"
             alt="Atlas Logo"
             className="h-8 w-8 rounded-lg shadow-sm"
           />

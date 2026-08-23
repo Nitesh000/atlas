@@ -62,7 +62,7 @@ function RootComponent() {
                   className="flex items-center gap-3 transition-opacity hover:opacity-90"
                 >
                   <img
-                    src="/logo.png"
+                    src="/logo-icon.png"
                     alt="Atlas Logo"
                     className="h-8 w-8 object-cover rounded-lg shadow-sm"
                   />

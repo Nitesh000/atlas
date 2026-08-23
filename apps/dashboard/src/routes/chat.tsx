@@ -167,7 +167,7 @@ function ChatPlayground() {
                   <User className="w-4 h-4" />
                 ) : (
                   <img
-                    src="/logo.png"
+                    src="/logo-icon.png"
                     className="w-5 h-5 rounded-sm opacity-90"
                     alt="Atlas"
                   />
@@ -209,7 +209,7 @@ function ChatPlayground() {
             <div className="flex gap-4 max-w-[80%]">
               <div className="w-8 h-8 rounded-full bg-card border shadow-sm flex items-center justify-center shrink-0 mt-1">
                 <img
-                  src="/logo.png"
+                  src="/logo-icon.png"
                   className="w-5 h-5 rounded-sm opacity-90"
                   alt="Atlas"
                 />

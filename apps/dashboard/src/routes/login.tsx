@@ -27,16 +27,16 @@ function Login() {
         setError(authError.message || "Failed to login");
         return;
       }
-      navigate({ to: "/" });
+      navigate({ to: "/overview" });
     } catch (err: any) {
       setError(err.message);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex w-full h-screen bg-background text-foreground">
+    <div className="flex fixed inset-0 z-50 w-full h-screen bg-background text-foreground">
       {/* Left Panel: Brand & Value Prop */}
-      <div className="hidden relative flex-col justify-between p-12 w-1/2 bg-black border-r border-border/50 lg:flex overflow-hidden">
+      <div className="hidden overflow-hidden relative flex-col justify-between p-12 w-1/2 bg-black border-r lg:flex border-border/50">
         {/* Deep Pitch Black Background with Technical Abstract Glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 blur-[120px] rounded-full"></div>
@@ -45,21 +45,21 @@ function Login() {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         </div>
 
-        <div className="relative z-10 flex items-center gap-3 text-white font-bold text-2xl tracking-tight">
+        <div className="flex relative z-10 gap-3 items-center text-2xl font-bold tracking-tight text-white">
           <img
-            src="/logo.png"
+            src="/logo-icon.png"
             alt="Atlas Logo"
-            className="h-10 w-10 object-cover rounded-xl shadow-lg border border-white/10"
+            className="object-cover w-10 h-10 rounded-xl border shadow-lg border-white/10"
           />
           Atlas
         </div>
 
-        <div className="relative z-10 flex flex-col gap-8 max-w-lg mt-auto mb-auto">
+        <div className="flex relative z-10 flex-col gap-8 mt-auto mb-auto max-w-lg">
           <div className="flex flex-col gap-4">
-            <span className="py-1.5 px-3 tracking-widest text-xs uppercase rounded-md border font-mono text-primary bg-primary/10 w-fit border-primary/20">
+            <span className="py-1.5 px-3 font-mono text-xs tracking-widest uppercase rounded-md border text-primary bg-primary/10 w-fit border-primary/20">
               Welcome Back
             </span>
-            <h1 className="font-bold tracking-tight text-white text-5xl lg:text-6xl leading-[1.1]">
+            <h1 className="text-5xl font-bold tracking-tight text-white lg:text-6xl leading-[1.1]">
               Access your workspace.
             </h1>
           </div>
@@ -75,9 +75,9 @@ function Login() {
       </div>
 
       {/* Right Panel: Auth Form */}
-      <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8 relative">
-        <div className="w-full max-w-md space-y-8">
-          <div className="text-center lg:text-left space-y-2">
+      <div className="flex relative flex-col justify-center items-center p-8 w-full lg:w-1/2">
+        <div className="space-y-8 w-full max-w-md">
+          <div className="space-y-2 text-center lg:text-left">
             <h2 className="text-3xl font-bold tracking-tight">Welcome back</h2>
             <p className="text-muted-foreground">
               Sign in to your account to continue.
@@ -86,7 +86,7 @@ function Login() {
 
           <form onSubmit={handleLogin} className="space-y-6">
             {error && (
-              <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
+              <div className="p-3 text-sm font-medium rounded-md border text-destructive bg-destructive/10 border-destructive/20">
                 {error}
               </div>
             )}
@@ -106,11 +106,11 @@ function Login() {
                 />
               </div>
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
+                <div className="flex justify-between items-center">
                   <Label htmlFor="password">Password</Label>
                   <a
                     href="#"
-                    className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                    className="text-sm font-medium transition-colors text-primary hover:text-primary/80"
                   >
                     Forgot password?
                   </a>
@@ -131,17 +131,17 @@ function Login() {
 
             <Button
               type="submit"
-              className="w-full h-11 text-base shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)] transition-shadow"
+              className="w-full h-11 text-base transition-shadow shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)]"
             >
               Sign In
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-sm text-center text-muted-foreground">
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-semibold text-primary hover:text-primary/80 transition-colors"
+              className="font-semibold transition-colors text-primary hover:text-primary/80"
             >
               Create one
             </Link>
