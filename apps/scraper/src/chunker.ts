@@ -16,8 +16,8 @@ export function chunkMarkdown(markdown: string, title: string, maxLength: number
     const lines = section.split('\n');
     let currentHeading = '';
     
-    if (lines[0].startsWith('#')) {
-      currentHeading = lines[0].replace(/^#{1,3}\s+/, '').trim();
+    if (lines.length > 0 && lines[0]!.startsWith('#')) {
+      currentHeading = lines[0]!.replace(/^#{1,3}\s+/, '').trim();
     }
     
     // If a section is too long, split by double newlines (paragraphs)

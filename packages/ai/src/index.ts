@@ -25,20 +25,25 @@ export class AIEngine {
       try {
         const groq = createGroq({ apiKey: key });
         const { text } = await generateText({
-          model: groq("llama3-8b-8192"),
+          model: groq("openai/gpt-oss-20b"),
           prompt,
           system: systemContext,
         });
-        
+
         return text;
       } catch (error: any) {
-        console.warn(`[AI Engine] Key index ${i} failed. Trying next... Error:`, error?.message);
+        console.warn(
+          `[AI Engine] Key index ${i} failed. Trying next... Error:`,
+          error?.message,
+        );
         lastError = error;
         continue; // Try the next key in the chain
       }
     }
 
-    throw new Error(`All ${this.keys.length} LLM keys failed. Last error: ${lastError?.message}`);
+    throw new Error(
+      `All ${this.keys.length} LLM keys failed. Last error: ${lastError?.message}`,
+    );
   }
 }
 

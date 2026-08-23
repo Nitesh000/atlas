@@ -1,11 +1,19 @@
 import { Worker } from "bullmq";
-import { crawlQueue, redisClient, QUEUE_NAMES, type CrawlJobData } from "@atlas/queue";
+import {
+  crawlQueue,
+  redisClient,
+  QUEUE_NAMES,
+  type CrawlJobData,
+} from "@atlas/queue";
 import { dbClient, appSchema } from "@atlas/database";
 import { eq } from "drizzle-orm";
-import { ScraperEngine } from "./index.js";
+import { Crawler } from "./crawler.js";
 import { generateEmbedding } from "@atlas/embeddings";
 
-async function updateWebsiteStatus(websiteId: string, status: "crawling" | "completed" | "failed") {
+async function updateWebsiteStatus(
+  websiteId: string,
+  status: "crawling" | "completed" | "failed",
+) {
   await dbClient
     .update(appSchema.website)
     .set({ status, updatedAt: new Date() })
@@ -20,40 +28,52 @@ const worker = new Worker<CrawlJobData>(
 
     await updateWebsiteStatus(websiteId, "crawling");
 
+    let crawler;
     try {
-      const engine = new ScraperEngine(1);
-      await engine.init();
+      crawler = new Crawler({
+        startUrl: url,
+        maxPages: 5,
+        ignoreExternal: true,
+      });
 
-      const chunks = await engine.processUrl(url);
-      console.log(`[CRAWLER] Processed ${url}, generated ${chunks.length} chunks.`);
+      const pages = await crawler.run();
+      console.log(`[CRAWLER] Processed ${url}, scraped ${pages.length} pages.`);
 
-      // Embed and insert chunks
-      for (const chunk of chunks) {
-        if (!chunk.text.trim()) continue;
-        
-        const embedding = await generateEmbedding(chunk.text);
-        
-        await dbClient.insert(appSchema.documentChunk).values({
-          organizationId,
-          websiteId,
-          url: chunk.url,
-          content: chunk.text,
-          embedding,
-        });
+      let totalChunks = 0;
+      // Embed and insert chunks for all crawled pages
+      for (const page of pages) {
+        for (const chunk of page.chunks) {
+          if (!chunk.content.trim()) continue;
+          
+          const embedding = await generateEmbedding(chunk.content);
+          
+          await dbClient.insert(appSchema.documentChunk).values({
+            organizationId,
+            websiteId,
+            url: page.url,
+            content: chunk.content,
+            embedding,
+          });
+          totalChunks++;
+        }
       }
 
-      console.log(`[CRAWLER] Stored ${chunks.length} vectorized chunks for ${url}`);
+      console.log(`[CRAWLER] Stored ${totalChunks} vectorized chunks for ${url}`);
       await updateWebsiteStatus(websiteId, "completed");
     } catch (error) {
       console.error(`[CRAWLER] Failed job ${job.id} for ${url}:`, error);
       await updateWebsiteStatus(websiteId, "failed");
       throw error;
+    } finally {
+      if (crawler) {
+        await crawler.close();
+      }
     }
   },
   {
     connection: redisClient,
     concurrency: 2,
-  }
+  },
 );
 
 worker.on("completed", (job) => {

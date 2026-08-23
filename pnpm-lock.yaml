@@ -230,6 +230,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      drizzle-orm:
+        specifier: ^0.45.2
+        version: 0.45.2(@types/pg@8.21.0)(kysely@0.29.5)(pg@8.23.0)(postgres@3.4.9)
       ioredis:
         specifier: ^6.0.0
         version: 6.0.0
@@ -243,6 +246,9 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@atlas/typescript-config':
+        specifier: workspace:^
+        version: link:../../packages/typescript-config
       '@types/node':
         specifier: ^26.2.0
         version: 26.2.0

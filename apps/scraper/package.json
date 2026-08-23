@@ -6,6 +6,7 @@
   "scripts": {
     "start": "tsx src/worker.ts",
     "dev": "tsx watch src/worker.ts",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,12 +22,14 @@
     "bullmq": "^6.0.10",
     "cheerio": "^1.2.0",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "ioredis": "^6.0.0",
     "playwright": "^1.62.1",
     "turndown": "^7.2.4",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@atlas/typescript-config": "workspace:^",
     "@types/node": "^26.2.0",
     "@types/turndown": "^5.0.6",
     "tsx": "^4.23.11",
