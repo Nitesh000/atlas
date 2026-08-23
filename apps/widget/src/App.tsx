@@ -16,6 +16,26 @@ type LayoutMode = "floating" | "bottom" | "sidebar";
 export default function AtlasWidget() {
   const searchParams = new URLSearchParams(window.location.search);
   const layout = (searchParams.get("layout") || "floating") as LayoutMode;
+  const isCustomTheme = searchParams.get("theme") === "custom";
+  
+  // Custom theme overrides
+  const customStyles = useMemo(() => {
+    if (!isCustomTheme) return null;
+    
+    const primary = searchParams.get("primary");
+    const background = searchParams.get("background");
+    const foreground = searchParams.get("foreground");
+    const card = searchParams.get("card");
+    const radius = searchParams.get("radius");
+    
+    return {
+      ...(primary && { "--primary": primary }),
+      ...(background && { "--background": background }),
+      ...(foreground && { "--foreground": foreground }),
+      ...(card && { "--card": card }),
+      ...(radius && { "--radius": radius }),
+    } as React.CSSProperties;
+  }, [isCustomTheme]);
 
   const [isOpen, setIsOpen] = useState(layout === "sidebar");
   const [messages, setMessages] = useState<Message[]>([
@@ -118,7 +138,7 @@ export default function AtlasWidget() {
   }, [layout]);
 
   return (
-    <div className={layoutConfig.containerClass}>
+    <div className={layoutConfig.containerClass} style={customStyles || undefined}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
