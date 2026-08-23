@@ -2,7 +2,8 @@ import { Worker } from "bullmq";
 import { crawlQueue, redisClient, QUEUE_NAMES, type CrawlJobData } from "@atlas/queue";
 import { dbClient, appSchema } from "@atlas/database";
 import { eq } from "drizzle-orm";
-import { ScraperEngine } from "./index.js"; // Using your existing scraper setup
+import { ScraperEngine } from "./index.js";
+import { generateEmbedding } from "@atlas/embeddings";
 
 async function updateWebsiteStatus(websiteId: string, status: "crawling" | "completed" | "failed") {
   await dbClient
@@ -14,28 +15,39 @@ async function updateWebsiteStatus(websiteId: string, status: "crawling" | "comp
 const worker = new Worker<CrawlJobData>(
   QUEUE_NAMES.WEBSITE_CRAWL,
   async (job) => {
-    const { websiteId, url } = job.data;
+    const { websiteId, url, organizationId } = job.data;
     console.log(`[CRAWLER] Starting job ${job.id} for ${url}`);
 
     await updateWebsiteStatus(websiteId, "crawling");
 
     try {
-      const engine = new ScraperEngine(1); // 1 concurrency for now
+      const engine = new ScraperEngine(1);
       await engine.init();
 
-      // For MVP, just crawl the single page or home page
-      // Future: add depth crawling
       const chunks = await engine.processUrl(url);
-
-      // We have the markdown chunks now.
-      // Next step would be embedding generation. For now, log success.
       console.log(`[CRAWLER] Processed ${url}, generated ${chunks.length} chunks.`);
 
+      // Embed and insert chunks
+      for (const chunk of chunks) {
+        if (!chunk.text.trim()) continue;
+        
+        const embedding = await generateEmbedding(chunk.text);
+        
+        await dbClient.insert(appSchema.documentChunk).values({
+          organizationId,
+          websiteId,
+          url: chunk.url,
+          content: chunk.text,
+          embedding,
+        });
+      }
+
+      console.log(`[CRAWLER] Stored ${chunks.length} vectorized chunks for ${url}`);
       await updateWebsiteStatus(websiteId, "completed");
     } catch (error) {
       console.error(`[CRAWLER] Failed job ${job.id} for ${url}:`, error);
       await updateWebsiteStatus(websiteId, "failed");
-      throw error; // Let BullMQ handle retries
+      throw error;
     }
   },
   {

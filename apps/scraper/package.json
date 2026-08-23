@@ -15,6 +15,7 @@
   "dependencies": {
     "@atlas/config": "workspace:^",
     "@atlas/database": "workspace:^",
+    "@atlas/embeddings": "workspace:^",
     "@atlas/queue": "workspace:^",
     "@playwright/test": "^1.62.1",
     "bullmq": "^6.0.10",

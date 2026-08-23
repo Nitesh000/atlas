@@ -5,6 +5,8 @@ import {
   uuid,
   pgEnum,
   uniqueIndex,
+  vector,
+  index,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
 
@@ -75,3 +77,23 @@ export const website = pgTable("website", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const documentChunk = pgTable(
+  "document_chunk",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    websiteId: uuid("website_id")
+      .notNull()
+      .references(() => website.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    content: text("content").notNull(),
+    embedding: vector("embedding", { dimensions: 384 }), // For all-MiniLM-L6-v2
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("embedding_idx").using("hnsw", table.embedding.op("vector_cosine_ops")),
+  ],
+);
