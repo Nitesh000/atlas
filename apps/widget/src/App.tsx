@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, X, Bot, User, Sparkles } from "lucide-react";
+import { Send, X, User, MessageSquare } from "lucide-react";
 import axios from "axios";
 import { cn } from "./utils";
 
@@ -11,8 +11,13 @@ type Message = {
   sources?: string[];
 };
 
+type LayoutMode = "floating" | "bottom" | "sidebar";
+
 export default function AtlasWidget() {
-  const [isOpen, setIsOpen] = useState(false);
+  const searchParams = new URLSearchParams(window.location.search);
+  const layout = (searchParams.get("layout") || "floating") as LayoutMode;
+
+  const [isOpen, setIsOpen] = useState(layout === "sidebar");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -75,26 +80,61 @@ export default function AtlasWidget() {
     }
   };
 
+  // Layout Configuration
+  const layoutConfig = useMemo(() => {
+    switch (layout) {
+      case "sidebar":
+        return {
+          containerClass: "fixed top-0 right-0 z-50 h-full flex flex-col",
+          windowClass: "w-[400px] h-full bg-card border-l border-border shadow-2xl rounded-none flex flex-col overflow-hidden",
+          animation: {
+            initial: { opacity: 0, x: 20 },
+            animate: { opacity: 1, x: 0 },
+            exit: { opacity: 0, x: 20 },
+          },
+        };
+      case "bottom":
+        return {
+          containerClass: "fixed bottom-0 right-10 z-50 flex flex-col items-end",
+          windowClass: "mb-0 w-[380px] h-[500px] max-h-[70vh] bg-card border-t border-l border-r border-border shadow-[0_-5px_40px_rgba(0,0,0,0.15)] rounded-t-2xl flex flex-col overflow-hidden",
+          animation: {
+            initial: { opacity: 0, y: 40 },
+            animate: { opacity: 1, y: 0 },
+            exit: { opacity: 0, y: 40 },
+          },
+        };
+      case "floating":
+      default:
+        return {
+          containerClass: "fixed bottom-6 right-6 z-50 flex flex-col items-end",
+          windowClass: "mb-4 w-[380px] h-[600px] max-h-[80vh] bg-card border border-border shadow-2xl rounded-2xl flex flex-col overflow-hidden",
+          animation: {
+            initial: { opacity: 0, scale: 0.95, y: 20 },
+            animate: { opacity: 1, scale: 1, y: 0 },
+            exit: { opacity: 0, scale: 0.95, y: 20 },
+          },
+        };
+    }
+  }, [layout]);
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className={layoutConfig.containerClass}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="mb-4 flex flex-col w-[380px] h-[600px] max-h-[80vh] bg-card border border-border shadow-2xl rounded-2xl overflow-hidden"
+            initial={layoutConfig.animation.initial}
+            animate={layoutConfig.animation.animate}
+            exit={layoutConfig.animation.exit}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={layoutConfig.windowClass}
           >
             {/* Header */}
-            <div className="flex justify-between items-center px-4 py-3 bg-card border-b border-border/50">
+            <div className="flex justify-between items-center px-4 py-3 bg-card border-b border-border/50 shrink-0">
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary border border-primary/20">
-                  <Sparkles className="w-4 h-4" />
-                </div>
+                <img src="/logo-no-bg.png" alt="Atlas Logo" className="w-8 h-8 object-contain bg-primary/5 rounded-md p-1 border border-primary/20" />
                 <div>
                   <h3 className="font-semibold text-sm text-foreground">
-                    Atlas AI
+                    Atlas Support
                   </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
@@ -107,6 +147,7 @@ export default function AtlasWidget() {
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
+                aria-label="Close chat"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -133,7 +174,7 @@ export default function AtlasWidget() {
                     {msg.role === "user" ? (
                       <User className="w-3 h-3" />
                     ) : (
-                      <Bot className="w-3 h-3" />
+                      <img src="/logo-no-bg.png" alt="Atlas" className="w-4 h-4 object-contain opacity-80" />
                     )}
                   </div>
                   <div
@@ -172,7 +213,7 @@ export default function AtlasWidget() {
               {isTyping && (
                 <div className="flex gap-3 max-w-[85%]">
                   <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center shrink-0 mt-1">
-                    <Bot className="w-3 h-3" />
+                    <img src="/logo-no-bg.png" alt="Atlas" className="w-4 h-4 object-contain opacity-80" />
                   </div>
                   <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-muted flex items-center gap-1">
                     <span
@@ -194,7 +235,7 @@ export default function AtlasWidget() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-card border-t border-border/50">
+            <div className="p-4 bg-card border-t border-border/50 shrink-0">
               <form
                 onSubmit={handleSend}
                 className="relative flex items-center"
@@ -215,8 +256,8 @@ export default function AtlasWidget() {
                 </button>
               </form>
               <div className="text-center mt-3">
-                <span className="text-[10px] text-muted-foreground font-medium">
-                  Powered by Atlas
+                <span className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-medium">
+                  Powered by <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-3 w-auto object-contain inline-block grayscale opacity-70" />
                 </span>
               </div>
             </div>
@@ -224,7 +265,7 @@ export default function AtlasWidget() {
         )}
       </AnimatePresence>
 
-      {/* FAB */}
+      {/* FAB - Only shown when closed and not in sidebar mode (unless sidebar supports toggling) */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
@@ -234,10 +275,14 @@ export default function AtlasWidget() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="w-14 h-14 rounded-full bg-primary shadow-xl flex items-center justify-center text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background relative group"
+            className={cn(
+              "rounded-full bg-primary shadow-xl flex items-center justify-center text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background relative group",
+              layout === "bottom" ? "w-14 h-14 mb-6" : "w-14 h-14",
+              layout === "sidebar" && "fixed bottom-6 right-6 z-50" // Enforce position if sidebar is toggled closed
+            )}
           >
             <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Sparkles className="w-6 h-6 relative z-10" />
+            <MessageSquare className="w-6 h-6 relative z-10" />
           </motion.button>
         )}
       </AnimatePresence>

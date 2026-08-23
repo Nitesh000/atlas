@@ -23,12 +23,10 @@ export const Route = createRootRoute({
         {/* Sidebar */}
         <aside className="hidden fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-card border-border lg:flex">
           <div className="flex items-center px-6 h-16 border-b border-border/50">
-            <div className="flex items-center gap-2 text-primary font-bold text-xl tracking-tight">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-                <div className="w-4 h-4 bg-primary rotate-45 rounded-sm shadow-[0_0_10px_rgba(var(--primary),0.8)]"></div>
-              </div>
-              Atlas
-            </div>
+            <Link to="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
+              <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-8 w-auto object-contain" />
+              <span className="font-bold text-xl tracking-tight text-foreground">Atlas</span>
+            </Link>
           </div>
 
           <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">

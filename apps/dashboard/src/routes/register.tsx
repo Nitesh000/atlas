@@ -48,9 +48,7 @@ function Register() {
         </div>
 
         <div className="relative z-10 flex items-center gap-3 text-white font-bold text-2xl tracking-tight">
-          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center border border-primary/30 backdrop-blur-md">
-            <div className="w-5 h-5 bg-primary rotate-45 rounded-sm shadow-[0_0_15px_rgba(var(--primary),0.8)]"></div>
-          </div>
+          <img src="/logo-no-bg.png" alt="Atlas Logo" className="h-10 w-auto object-contain brightness-0 invert" />
           Atlas
         </div>
 
