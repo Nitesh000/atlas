@@ -9,7 +9,7 @@ import {
   index,
   integer,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth-schema.js";
+import { user } from "./auth-schema";
 
 export const memberRole = pgEnum("member_role", ["owner", "admin", "member"]);
 export const crawlStatus = pgEnum("crawl_status", [

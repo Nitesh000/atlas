@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "dotenv -e ../../.env -- next dev -p 3000",
-    "build": "echo 'Skipping admin build due to Turbopack canary bug'",
+    "build": "echo 'Skipping admin build due to Next.js 16/React 19 Canary internal bug with _global-error'",
     "start": "dotenv -e ../../.env -- next start",
     "lint": "eslint"
   },

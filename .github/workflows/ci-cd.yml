@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["production"]
+  pull_request:
+    branches: ["production"]
+
+jobs:
+  ci:
+    name: Build & Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9.0.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+        
+      - name: Build
+        run: pnpm build
+
+  deploy:
+    name: Trigger Deployments
+    needs: ci
+    # Only run deployments when changes are pushed to production
+    if: github.ref == 'refs/heads/production' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Koyeb Deploy (Scraper)
+        env:
+          KOYEB_API_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+          KOYEB_SERVICE_ID: ${{ secrets.KOYEB_SERVICE_ID }}
+        if: env.KOYEB_API_TOKEN != '' && env.KOYEB_SERVICE_ID != ''
+        run: |
+          echo "Triggering Scraper deployment on Koyeb..."
+          curl -X POST "https://app.koyeb.com/v1/services/$KOYEB_SERVICE_ID/redeploy" \
+            -H "Authorization: Bearer $KOYEB_API_TOKEN"
+
+      - name: Native GitHub Deployments (Render & Vercel)
+        run: |
+          echo "API (Render) and Frontends (Vercel) are handled natively via their GitHub integrations."
+          echo "Ensure both Vercel and Render are connected to your repository and set to auto-deploy on the 'production' branch."
