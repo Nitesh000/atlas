@@ -10,7 +10,11 @@ export function UsageHeaderBadge() {
     queryKey: ["usage", org?.id],
     queryFn: async () => {
       const res = await api.get(`/orgs/${org?.id}/usage`);
-      return res.data as { apiCallCount: number; limit: number; monthYear: string };
+      return res.data as {
+        apiCallCount: number;
+        limit: number;
+        monthYear: string;
+      };
     },
     enabled: !!org?.id,
   });
@@ -27,17 +31,23 @@ export function UsageHeaderBadge() {
   const isNearingLimit = usage.apiCallCount >= usage.limit * 0.9;
   const isOverLimit = usage.apiCallCount >= usage.limit;
 
-  const bgClass = isOverLimit 
-    ? "bg-destructive/10 border-destructive/20 text-destructive" 
-    : isNearingLimit 
-    ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-600 dark:text-yellow-400"
-    : "bg-primary/10 border-primary/20 text-primary";
+  const bgClass = isOverLimit
+    ? "bg-destructive/10 border-destructive/20 text-destructive"
+    : isNearingLimit
+      ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-600 dark:text-yellow-400"
+      : "bg-primary/10 border-primary/20 text-primary";
 
   return (
-    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium ${bgClass}`}>
+    <div
+      className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium ${bgClass}`}
+    >
       <Zap className="w-3.5 h-3.5" />
-      <span>{usage.apiCallCount.toLocaleString()} / {usage.limit.toLocaleString()}</span>
-      <span className="opacity-70 font-normal hidden sm:inline">calls this month</span>
+      <span>
+        {usage.apiCallCount.toLocaleString()} / {usage.limit.toLocaleString()}
+      </span>
+      <span className="opacity-70 font-normal hidden sm:inline">
+        calls this month
+      </span>
     </div>
   );
 }

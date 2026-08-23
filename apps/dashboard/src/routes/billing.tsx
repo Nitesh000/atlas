@@ -1,5 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useCurrentOrg } from "../hooks/use-current-org";
@@ -27,12 +34,24 @@ function BillingPage() {
           </div>
           <CardHeader>
             <CardTitle className="text-2xl">Hobby</CardTitle>
-            <CardDescription>Perfect for testing and small personal projects.</CardDescription>
+            <CardDescription>
+              Perfect for testing and small personal projects.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="text-4xl font-extrabold">$0<span className="text-lg text-muted-foreground font-normal">/mo</span></div>
+            <div className="text-4xl font-extrabold">
+              $0
+              <span className="text-lg text-muted-foreground font-normal">
+                /mo
+              </span>
+            </div>
             <ul className="space-y-3">
-              {["1,000 API calls/month", "Up to 100 Indexed Websites", "3 API Keys", "Standard community support"].map((feat, i) => (
+              {[
+                "1,000 API calls/month",
+                "Up to 100 Indexed Websites",
+                "3 API Keys",
+                "Standard community support",
+              ].map((feat, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-green-500 shrink-0" /> {feat}
                 </li>
@@ -40,7 +59,9 @@ function BillingPage() {
             </ul>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" disabled variant="outline">Current Plan</Button>
+            <Button className="w-full" disabled variant="outline">
+              Current Plan
+            </Button>
           </CardFooter>
         </Card>
 
@@ -50,12 +71,24 @@ function BillingPage() {
           </div>
           <CardHeader>
             <CardTitle className="text-2xl">Pro</CardTitle>
-            <CardDescription>For growing businesses that need more power.</CardDescription>
+            <CardDescription>
+              For growing businesses that need more power.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="text-4xl font-extrabold">$29<span className="text-lg text-muted-foreground font-normal">/mo</span></div>
+            <div className="text-4xl font-extrabold">
+              $29
+              <span className="text-lg text-muted-foreground font-normal">
+                /mo
+              </span>
+            </div>
             <ul className="space-y-3">
-              {["100,000 API calls/month", "Unlimited Indexed Websites", "Unlimited API Keys", "Priority email support"].map((feat, i) => (
+              {[
+                "100,000 API calls/month",
+                "Unlimited Indexed Websites",
+                "Unlimited API Keys",
+                "Priority email support",
+              ].map((feat, i) => (
                 <li key={i} className="flex items-center gap-3 text-sm">
                   <Check className="h-4 w-4 text-primary shrink-0" /> {feat}
                 </li>

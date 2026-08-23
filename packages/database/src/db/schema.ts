@@ -82,7 +82,7 @@ export const website = pgTable(
   },
   (table) => [
     uniqueIndex("org_url_unique").on(table.organizationId, table.url),
-  ]
+  ],
 );
 
 export const apiUsage = pgTable(

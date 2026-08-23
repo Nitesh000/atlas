@@ -5,7 +5,9 @@ import { fullSchema as schema, appSchema, authSchema } from "./db/index";
 
 export const name = "@atlas/database";
 
-export const queryClient = postgres(env.DATABASE_URL || "postgres://localhost:5432/atlas");
+export const queryClient = postgres(
+  env.DATABASE_URL || "postgres://localhost:5432/atlas",
+);
 export const dbClient = drizzle(queryClient, { schema });
 
 export * from "./db/index";

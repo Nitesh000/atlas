@@ -159,12 +159,15 @@ function ApiKeysPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {key.allowedDomains && key.allowedDomains.length > 0 ? (
+                          {key.allowedDomains &&
+                          key.allowedDomains.length > 0 ? (
                             <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded border border-primary/20">
                               Restricted
                             </span>
                           ) : (
-                            <span className="text-xs text-muted-foreground">Any</span>
+                            <span className="text-xs text-muted-foreground">
+                              Any
+                            </span>
                           )}
                         </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
@@ -205,7 +208,8 @@ function ApiKeysPage() {
                         .filter(Boolean);
                       createApiKey.mutate({
                         name: newKeyName,
-                        allowedDomains: domains.length > 0 ? domains : undefined,
+                        allowedDomains:
+                          domains.length > 0 ? domains : undefined,
                       });
                     }
                   }}
@@ -232,7 +236,9 @@ function ApiKeysPage() {
                       disabled={isLoading}
                       className="bg-muted/50"
                     />
-                    <p className="text-xs text-muted-foreground">Comma-separated domains to restrict usage.</p>
+                    <p className="text-xs text-muted-foreground">
+                      Comma-separated domains to restrict usage.
+                    </p>
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     <Key className="mr-2 h-4 w-4" /> Generate Key

@@ -36,10 +36,16 @@ function Index() {
         <Card className="w-full max-w-md shadow-2xl border-primary/10">
           <CardHeader className="text-center space-y-2">
             <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-2">
-              <img src="/logo-icon.png" alt="Atlas" className="w-6 h-6 opacity-90" />
+              <img
+                src="/logo-icon.png"
+                alt="Atlas"
+                className="w-6 h-6 opacity-90"
+              />
             </div>
             <CardTitle className="text-2xl">Authentication Required</CardTitle>
-            <p className="text-sm text-muted-foreground">Please log in to access your dashboard.</p>
+            <p className="text-sm text-muted-foreground">
+              Please log in to access your dashboard.
+            </p>
           </CardHeader>
           <CardContent className="flex flex-col gap-3 pt-4">
             <Button asChild variant="default" className="w-full h-11">
@@ -66,7 +72,11 @@ function DashboardHome({ userName }: { userName: string }) {
     queryKey: ["usage", org?.id],
     queryFn: async () => {
       const res = await api.get(`/orgs/${org?.id}/usage`);
-      return res.data as { apiCallCount: number; limit: number; monthYear: string };
+      return res.data as {
+        apiCallCount: number;
+        limit: number;
+        monthYear: string;
+      };
     },
     enabled: !!org?.id,
   });
@@ -164,8 +174,10 @@ function DashboardHome({ userName }: { userName: string }) {
     );
   }
 
-  const activeWebsites = websites?.filter(w => w.status === 'completed').length || 0;
-  const crawlingWebsites = websites?.filter(w => w.status === 'crawling').length || 0;
+  const activeWebsites =
+    websites?.filter((w) => w.status === "completed").length || 0;
+  const crawlingWebsites =
+    websites?.filter((w) => w.status === "crawling").length || 0;
 
   return (
     <div className="max-w-5xl space-y-8">
@@ -185,7 +197,9 @@ function DashboardHome({ userName }: { userName: string }) {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{usage?.apiCallCount.toLocaleString() ?? "-"}</div>
+            <div className="text-2xl font-bold">
+              {usage?.apiCallCount.toLocaleString() ?? "-"}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               Limit: {usage?.limit.toLocaleString() ?? "-"} / month
             </p>

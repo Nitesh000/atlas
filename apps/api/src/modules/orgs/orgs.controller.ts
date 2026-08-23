@@ -58,8 +58,8 @@ export async function getOrgUsageHandler(
     .where(
       and(
         eq(appSchema.apiUsage.organizationId, params.orgId),
-        eq(appSchema.apiUsage.monthYear, monthYear)
-      )
+        eq(appSchema.apiUsage.monthYear, monthYear),
+      ),
     );
 
   if (!usage) {

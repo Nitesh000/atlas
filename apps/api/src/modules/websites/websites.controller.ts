@@ -53,12 +53,16 @@ export async function createWebsiteHandler(
     .where(
       and(
         eq(appSchema.website.organizationId, orgId),
-        eq(appSchema.website.url, body.url)
-      )
+        eq(appSchema.website.url, body.url),
+      ),
     );
 
   if (existingWebsite) {
-    return reply.status(409).send({ message: "This website has already been added to your organization." });
+    return reply
+      .status(409)
+      .send({
+        message: "This website has already been added to your organization.",
+      });
   }
 
   const website = await createWebsite({

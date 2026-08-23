@@ -131,13 +131,15 @@ function LandingPage() {
             </div>
             <div className="grid md:grid-cols-3 gap-12 relative">
               <div className="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-border z-0"></div>
-              
+
               <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                 <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold ring-8 ring-background">
                   1
                 </div>
                 <h3 className="text-xl font-bold">Add your website</h3>
-                <p className="text-muted-foreground">Provide the URL to your documentation or knowledge base.</p>
+                <p className="text-muted-foreground">
+                  Provide the URL to your documentation or knowledge base.
+                </p>
               </div>
 
               <div className="relative z-10 flex flex-col items-center text-center space-y-4">
@@ -145,7 +147,10 @@ function LandingPage() {
                   2
                 </div>
                 <h3 className="text-xl font-bold">AI indexes content</h3>
-                <p className="text-muted-foreground">Atlas automatically crawls and generates vector embeddings locally.</p>
+                <p className="text-muted-foreground">
+                  Atlas automatically crawls and generates vector embeddings
+                  locally.
+                </p>
               </div>
 
               <div className="relative z-10 flex flex-col items-center text-center space-y-4">
@@ -153,7 +158,9 @@ function LandingPage() {
                   3
                 </div>
                 <h3 className="text-xl font-bold">Embed the widget</h3>
-                <p className="text-muted-foreground">Paste a single script tag into your HTML and you are live!</p>
+                <p className="text-muted-foreground">
+                  Paste a single script tag into your HTML and you are live!
+                </p>
               </div>
             </div>
           </div>
@@ -170,21 +177,41 @@ function LandingPage() {
                 Start for free, upgrade when you need more power.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* Free Plan */}
               <div className="bg-card border rounded-2xl p-8 shadow-sm">
                 <h3 className="text-2xl font-bold mb-2">Hobby</h3>
-                <p className="text-muted-foreground mb-6">Perfect for side projects and testing.</p>
+                <p className="text-muted-foreground mb-6">
+                  Perfect for side projects and testing.
+                </p>
                 <div className="mb-6">
                   <span className="text-5xl font-extrabold">$0</span>
                   <span className="text-muted-foreground">/mo</span>
                 </div>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-green-500 shrink-0" /> <span><strong>1,000</strong> API calls/month</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-green-500 shrink-0" /> <span><strong>100</strong> Indexed Websites</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-green-500 shrink-0" /> <span><strong>3</strong> API Keys</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-green-500 shrink-0" /> <span>Community Support</span></li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-500 shrink-0" />{" "}
+                    <span>
+                      <strong>1,000</strong> API calls/month
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-500 shrink-0" />{" "}
+                    <span>
+                      <strong>100</strong> Indexed Websites
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-500 shrink-0" />{" "}
+                    <span>
+                      <strong>3</strong> API Keys
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-500 shrink-0" />{" "}
+                    <span>Community Support</span>
+                  </li>
                 </ul>
                 <Button className="w-full" asChild variant="outline">
                   <Link to="/register">Get Started Free</Link>
@@ -194,19 +221,41 @@ function LandingPage() {
               {/* Pro Plan */}
               <div className="bg-card border-2 border-primary rounded-2xl p-8 shadow-md relative">
                 <div className="absolute top-0 right-6 transform -translate-y-1/2">
-                  <span className="bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">Popular</span>
+                  <span className="bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full">
+                    Popular
+                  </span>
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Pro</h3>
-                <p className="text-muted-foreground mb-6">For growing businesses scaling AI.</p>
+                <p className="text-muted-foreground mb-6">
+                  For growing businesses scaling AI.
+                </p>
                 <div className="mb-6">
                   <span className="text-5xl font-extrabold">$29</span>
                   <span className="text-muted-foreground">/mo</span>
                 </div>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-primary shrink-0" /> <span><strong>100,000</strong> API calls/month</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-primary shrink-0" /> <span><strong>Unlimited</strong> Indexed Websites</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-primary shrink-0" /> <span><strong>Unlimited</strong> API Keys</span></li>
-                  <li className="flex items-center gap-3"><Check className="w-5 h-5 text-primary shrink-0" /> <span>Priority Support</span></li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-primary shrink-0" />{" "}
+                    <span>
+                      <strong>100,000</strong> API calls/month
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-primary shrink-0" />{" "}
+                    <span>
+                      <strong>Unlimited</strong> Indexed Websites
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-primary shrink-0" />{" "}
+                    <span>
+                      <strong>Unlimited</strong> API Keys
+                    </span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-primary shrink-0" />{" "}
+                    <span>Priority Support</span>
+                  </li>
                 </ul>
                 <Button className="w-full" asChild>
                   <Link to="/register">Upgrade to Pro</Link>

@@ -1,7 +1,10 @@
 import { dbClient, appSchema } from "@atlas/database";
 import { and, eq, sql } from "drizzle-orm";
 import { UnauthorizedError } from "../../common/errors/index.js";
-import { RateLimitError, ForbiddenError } from "../../common/errors/http-errors.js";
+import {
+  RateLimitError,
+  ForbiddenError,
+} from "../../common/errors/http-errors.js";
 import type { ChatInput, ChatResponse } from "./chat.types.js";
 import { aiEngine } from "@atlas/ai";
 import { generateEmbedding } from "@atlas/embeddings";
@@ -24,19 +27,28 @@ export async function processChat(
   // Domain Validation
   if (keyRecord.allowedDomains && keyRecord.allowedDomains.length > 0) {
     if (!origin) {
-      throw new ForbiddenError("Missing origin header for domain-restricted API key");
+      throw new ForbiddenError(
+        "Missing origin header for domain-restricted API key",
+      );
     }
-    
+
     try {
       const originUrl = new URL(origin);
-      const isAllowed = keyRecord.allowedDomains.some(domain => {
+      const isAllowed = keyRecord.allowedDomains.some((domain) => {
         // Strip protocol and exact match or subdomain match
-        const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
-        return originUrl.hostname === cleanDomain || originUrl.hostname.endsWith(`.${cleanDomain}`);
+        const cleanDomain = domain
+          .replace(/^https?:\/\//, "")
+          .replace(/\/$/, "");
+        return (
+          originUrl.hostname === cleanDomain ||
+          originUrl.hostname.endsWith(`.${cleanDomain}`)
+        );
       });
 
       if (!isAllowed) {
-        throw new ForbiddenError(`Origin ${originUrl.hostname} is not permitted by this API key`);
+        throw new ForbiddenError(
+          `Origin ${originUrl.hostname} is not permitted by this API key`,
+        );
       }
     } catch (e) {
       if (e instanceof ForbiddenError) throw e;
@@ -55,8 +67,8 @@ export async function processChat(
     .where(
       and(
         eq(appSchema.apiUsage.organizationId, organizationId),
-        eq(appSchema.apiUsage.monthYear, monthYear)
-      )
+        eq(appSchema.apiUsage.monthYear, monthYear),
+      ),
     );
 
   let usageRecord = usageRecords[0];
@@ -75,7 +87,9 @@ export async function processChat(
   }
 
   if (usageRecord.apiCallCount >= usageRecord.limit) {
-    throw new RateLimitError(`API rate limit reached (${usageRecord.limit} calls) for this month.`);
+    throw new RateLimitError(
+      `API rate limit reached (${usageRecord.limit} calls) for this month.`,
+    );
   }
 
   // 3. Generate embedding for user query

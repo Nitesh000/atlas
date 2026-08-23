@@ -36,7 +36,9 @@ function RootComponent() {
   const navigate = useNavigate();
   const router = useRouterState();
   const isLandingPage = router.location.pathname === "/";
-  const isAuthPage = router.location.pathname === "/login" || router.location.pathname === "/register";
+  const isAuthPage =
+    router.location.pathname === "/login" ||
+    router.location.pathname === "/register";
   const hideSidebar = isLandingPage || isAuthPage;
 
   const handleLogout = async () => {

@@ -88,7 +88,7 @@ function ChatPlayground() {
         sources: res.data.sources,
       };
       setMessages((prev) => [...prev, aiMessage]);
-      
+
       // Update usage stats immediately
       queryClient.invalidateQueries({ queryKey: ["usage", org?.id] });
     } catch (error) {
