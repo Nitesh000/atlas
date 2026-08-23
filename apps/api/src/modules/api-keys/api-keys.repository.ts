@@ -2,7 +2,9 @@ import { dbClient, appSchema } from "@atlas/database";
 import { eq } from "drizzle-orm";
 import type { CreateApiKeyInput, ApiKey } from "./api-keys.types.js";
 
-export async function insertApiKey(input: CreateApiKeyInput & { key: string }): Promise<ApiKey> {
+export async function insertApiKey(
+  input: CreateApiKeyInput & { key: string },
+): Promise<ApiKey> {
   const [apiKey] = await dbClient
     .insert(appSchema.apiKey)
     .values({

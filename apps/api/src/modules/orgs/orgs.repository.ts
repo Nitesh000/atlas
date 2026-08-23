@@ -42,7 +42,10 @@ export async function findOrgsByUserId(userId: string): Promise<Org[]> {
     .from(appSchema.organization)
     .innerJoin(
       appSchema.organizationMember,
-      eq(appSchema.organization.id, appSchema.organizationMember.organizationId),
+      eq(
+        appSchema.organization.id,
+        appSchema.organizationMember.organizationId,
+      ),
     )
     .where(eq(appSchema.organizationMember.userId, userId));
 

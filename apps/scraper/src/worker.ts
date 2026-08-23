@@ -44,9 +44,9 @@ const worker = new Worker<CrawlJobData>(
       for (const page of pages) {
         for (const chunk of page.chunks) {
           if (!chunk.content.trim()) continue;
-          
+
           const embedding = await generateEmbedding(chunk.content);
-          
+
           await dbClient.insert(appSchema.documentChunk).values({
             organizationId,
             websiteId,
@@ -58,7 +58,9 @@ const worker = new Worker<CrawlJobData>(
         }
       }
 
-      console.log(`[CRAWLER] Stored ${totalChunks} vectorized chunks for ${url}`);
+      console.log(
+        `[CRAWLER] Stored ${totalChunks} vectorized chunks for ${url}`,
+      );
       await updateWebsiteStatus(websiteId, "completed");
     } catch (error) {
       console.error(`[CRAWLER] Failed job ${job.id} for ${url}:`, error);

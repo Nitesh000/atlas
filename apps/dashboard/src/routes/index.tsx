@@ -72,7 +72,9 @@ function DashboardHome({ session }: { session: any }) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">Welcome, {session.user.name}</h2>
+        <h2 className="text-3xl font-bold tracking-tight">
+          Welcome, {session.user.name}
+        </h2>
         <Button variant="ghost" onClick={handleLogout}>
           Logout
         </Button>
@@ -84,13 +86,20 @@ function DashboardHome({ session }: { session: any }) {
         </CardHeader>
         <CardContent className="space-y-6">
           {isLoading ? (
-            <p className="text-sm text-muted-foreground">Loading organizations...</p>
+            <p className="text-sm text-muted-foreground">
+              Loading organizations...
+            </p>
           ) : orgs?.length === 0 ? (
-            <p className="text-sm text-muted-foreground">You don't have any organizations yet.</p>
+            <p className="text-sm text-muted-foreground">
+              You don't have any organizations yet.
+            </p>
           ) : (
             <ul className="space-y-3">
               {orgs?.map((org) => (
-                <li key={org.id} className="border rounded-md p-4 flex justify-between items-center bg-card">
+                <li
+                  key={org.id}
+                  className="border rounded-md p-4 flex justify-between items-center bg-card"
+                >
                   <span className="font-medium text-lg">{org.name}</span>
                   <Button asChild variant="secondary" size="sm">
                     <Link to="/orgs/$orgId" params={{ orgId: org.id }}>
@@ -103,7 +112,7 @@ function DashboardHome({ session }: { session: any }) {
           )}
 
           <div className="border-t pt-6">
-            <form 
+            <form
               className="flex items-end gap-4 max-w-md"
               onSubmit={(e: React.FormEvent) => {
                 e.preventDefault();
@@ -116,7 +125,9 @@ function DashboardHome({ session }: { session: any }) {
                   id="orgName"
                   placeholder="e.g. Acme Corp"
                   value={newOrgName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewOrgName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewOrgName(e.target.value)
+                  }
                   disabled={createOrg.isPending}
                   required
                 />

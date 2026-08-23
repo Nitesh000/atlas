@@ -2,7 +2,9 @@ import type { CreateWebsiteInput, Website } from "./websites.types.js";
 import { insertWebsite, findWebsitesByOrgId } from "./websites.repository.js";
 import { crawlQueue } from "@atlas/queue";
 
-export async function createWebsite(input: CreateWebsiteInput): Promise<Website> {
+export async function createWebsite(
+  input: CreateWebsiteInput,
+): Promise<Website> {
   // Normalize URL
   const parsedUrl = new URL(input.url);
   const normalizedUrl = `${parsedUrl.protocol}//${parsedUrl.host}${parsedUrl.pathname}`;

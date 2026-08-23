@@ -62,7 +62,8 @@ function Login() {
             </h1>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-zinc-400">
-            Manage your API keys, monitor crawls, and test your intelligent workflows in one place.
+            Manage your API keys, monitor crawls, and test your intelligent
+            workflows in one place.
           </p>
         </div>
 
@@ -76,7 +77,9 @@ function Login() {
         <div className="w-full max-w-md space-y-8">
           <div className="text-center lg:text-left space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Welcome back</h2>
-            <p className="text-muted-foreground">Sign in to your account to continue.</p>
+            <p className="text-muted-foreground">
+              Sign in to your account to continue.
+            </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -93,7 +96,9 @@ function Login() {
                   type="email"
                   placeholder="name@example.com"
                   value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEmail(e.target.value)
+                  }
                   required
                   className="bg-muted/50"
                 />
@@ -101,7 +106,10 @@ function Login() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <a href="#" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
                     Forgot password?
                   </a>
                 </div>
@@ -110,21 +118,29 @@ function Login() {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                  }
                   required
                   className="bg-muted/50"
                 />
               </div>
             </div>
-            
-            <Button type="submit" className="w-full h-11 text-base shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)] transition-shadow">
+
+            <Button
+              type="submit"
+              className="w-full h-11 text-base shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)] transition-shadow"
+            >
               Sign In
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link to="/register" className="font-semibold text-primary hover:text-primary/80 transition-colors">
+            <Link
+              to="/register"
+              className="font-semibold text-primary hover:text-primary/80 transition-colors"
+            >
               Create one
             </Link>
           </p>

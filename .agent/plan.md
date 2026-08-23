@@ -249,6 +249,7 @@ apps/api/
 ---
 
 ## API Keys
+
 - [ ] Generate API keys (Limits: 1 for Free, 5 for Pro)
 - [ ] Revoke API keys
 - [ ] Restrict keys by allowed domains

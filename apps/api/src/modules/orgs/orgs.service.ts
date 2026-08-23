@@ -8,7 +8,9 @@ import { ConflictError } from "../../common/errors/index.js";
 export async function createOrg(input: CreateOrgInput): Promise<Org> {
   const existingOrgs = await findOrgsByUserId(input.userId);
   if (existingOrgs.length > 0) {
-    throw new ConflictError("Users are limited to 1 organization on this tier.");
+    throw new ConflictError(
+      "Users are limited to 1 organization on this tier.",
+    );
   }
 
   const normalizedName = input.name.trim();

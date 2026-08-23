@@ -10,7 +10,7 @@ export async function chatHandler(
   reply: FastifyReply,
 ) {
   const apiKey = request.headers["x-atlas-api-key"];
-  
+
   const response = await processChat(apiKey, request.body);
 
   return reply.status(200).send(response);

@@ -21,7 +21,7 @@ export async function processChat(
 
   // 2. Generate embedding for user query
   const queryEmbedding = await generateEmbedding(input.message);
-  
+
   // 3. Vector Similarity Search
   // We use pgvector cosine distance `<=>` and limit to top 5 chunks
   const vectorStr = `[${queryEmbedding.join(",")}]`;
@@ -46,7 +46,10 @@ CONTEXT:
 ${contextText}`;
 
   // 4. Call LLM with the Fallback Chain
-  const reply = await aiEngine.generateWithFallback(input.message, systemPrompt);
+  const reply = await aiEngine.generateWithFallback(
+    input.message,
+    systemPrompt,
+  );
 
   return {
     reply,

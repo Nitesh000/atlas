@@ -64,7 +64,8 @@ function Register() {
             </h1>
           </div>
           <p className="max-w-md text-lg leading-relaxed text-zinc-400">
-            Join 5,000+ technical teams building high-performance support infrastructure with Atlas.
+            Join 5,000+ technical teams building high-performance support
+            infrastructure with Atlas.
           </p>
         </div>
 
@@ -77,8 +78,12 @@ function Register() {
       <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-8 relative">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center lg:text-left space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Create an account</h2>
-            <p className="text-muted-foreground">Enter your details below to get started.</p>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Create an account
+            </h2>
+            <p className="text-muted-foreground">
+              Enter your details below to get started.
+            </p>
           </div>
 
           <form onSubmit={handleRegister} className="space-y-6">
@@ -95,7 +100,9 @@ function Register() {
                   type="text"
                   placeholder="John Doe"
                   value={name}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setName(e.target.value)
+                  }
                   required
                   className="bg-muted/50"
                 />
@@ -107,7 +114,9 @@ function Register() {
                   type="email"
                   placeholder="name@example.com"
                   value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEmail(e.target.value)
+                  }
                   required
                   className="bg-muted/50"
                 />
@@ -119,21 +128,29 @@ function Register() {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(e.target.value)
+                  }
                   required
                   className="bg-muted/50"
                 />
               </div>
             </div>
-            
-            <Button type="submit" className="w-full h-11 text-base shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)] transition-shadow">
+
+            <Button
+              type="submit"
+              className="w-full h-11 text-base shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:shadow-[0_0_25px_rgba(var(--primary),0.5)] transition-shadow"
+            >
               Sign Up
             </Button>
           </form>
 
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link to="/login" className="font-semibold text-primary hover:text-primary/80 transition-colors">
+            <Link
+              to="/login"
+              className="font-semibold text-primary hover:text-primary/80 transition-colors"
+            >
               Sign in
             </Link>
           </p>

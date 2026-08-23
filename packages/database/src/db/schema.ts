@@ -94,6 +94,9 @@ export const documentChunk = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (table) => [
-    index("embedding_idx").using("hnsw", table.embedding.op("vector_cosine_ops")),
+    index("embedding_idx").using(
+      "hnsw",
+      table.embedding.op("vector_cosine_ops"),
+    ),
   ],
 );

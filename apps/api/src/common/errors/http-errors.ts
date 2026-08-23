@@ -52,7 +52,11 @@ export class ConflictError extends AppError {
 }
 
 export class RateLimitError extends AppError {
-  constructor(message = "Too many requests", retryAfter?: number, details?: unknown) {
+  constructor(
+    message = "Too many requests",
+    retryAfter?: number,
+    details?: unknown,
+  ) {
     super(message, {
       statusCode: HTTP_STATUS_CODE.TOO_MANY_REQUESTS,
       code: "RATE_LIMITED",

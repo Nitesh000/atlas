@@ -1,1 +1,1 @@
-export const name = '@atlas/validation';
+export const name = "@atlas/validation";

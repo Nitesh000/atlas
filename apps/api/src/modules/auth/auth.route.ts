@@ -11,7 +11,7 @@ export async function authRoutes(app: FastifyInstance) {
       try {
         // Construct request URL
         const url = new URL(request.url, env.BETTER_AUTH_URL);
-        
+
         // Convert Fastify headers to standard Headers object
         const headers = fromNodeHeaders(request.headers);
 

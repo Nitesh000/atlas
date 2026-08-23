@@ -96,7 +96,10 @@ function OrgDetails() {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
+        <Link
+          to="/"
+          className="text-sm text-muted-foreground hover:text-foreground"
+        >
           &larr; Back to Dashboard
         </Link>
         <h2 className="text-2xl font-bold flex-1">Manage Organization</h2>
@@ -149,7 +152,9 @@ function OrgDetails() {
                         {key.key.substring(0, 8)}...
                       </code>
                     </TableCell>
-                    <TableCell>{new Date(key.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(key.createdAt).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -158,14 +163,19 @@ function OrgDetails() {
 
           <div className="border-t pt-6">
             <h3 className="text-lg font-medium mb-4">Create New Key</h3>
-            <form onSubmit={handleCreateKey} className="flex items-end gap-4 max-w-md">
+            <form
+              onSubmit={handleCreateKey}
+              className="flex items-end gap-4 max-w-md"
+            >
               <div className="flex-1 space-y-2">
                 <Label htmlFor="keyName">Key Name</Label>
                 <Input
                   id="keyName"
                   placeholder="e.g. Production Widget"
                   value={newKeyName}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewKeyName(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewKeyName(e.target.value)
+                  }
                   disabled={createApiKey.isPending}
                   required
                 />
@@ -213,7 +223,9 @@ function OrgDetails() {
                         {site.status.toUpperCase()}
                       </span>
                     </TableCell>
-                    <TableCell>{new Date(site.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(site.createdAt).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -222,7 +234,10 @@ function OrgDetails() {
 
           <div className="border-t pt-6">
             <h3 className="text-lg font-medium mb-4">Add Website to Crawl</h3>
-            <form onSubmit={handleAddWebsite} className="flex items-end gap-4 max-w-md">
+            <form
+              onSubmit={handleAddWebsite}
+              className="flex items-end gap-4 max-w-md"
+            >
               <div className="flex-1 space-y-2">
                 <Label htmlFor="websiteUrl">Website URL</Label>
                 <Input
@@ -230,7 +245,9 @@ function OrgDetails() {
                   type="url"
                   placeholder="https://example.com"
                   value={newWebsiteUrl}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewWebsiteUrl(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewWebsiteUrl(e.target.value)
+                  }
                   disabled={createWebsite.isPending}
                   required
                 />

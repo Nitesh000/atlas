@@ -14,7 +14,11 @@ type Message = {
 export default function AtlasWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { id: "1", role: "ai", content: "Hi there! I'm Atlas. How can I help you today?" }
+    {
+      id: "1",
+      role: "ai",
+      content: "Hi there! I'm Atlas. How can I help you today?",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -31,8 +35,12 @@ export default function AtlasWidget() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMessage: Message = { id: Date.now().toString(), role: "user", content: input };
-    setMessages(prev => [...prev, userMessage]);
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: input,
+    };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
 
@@ -43,8 +51,8 @@ export default function AtlasWidget() {
         {
           headers: {
             "x-atlas-api-key": "atl_preview_key", // We will make this configurable
-          }
-        }
+          },
+        },
       );
 
       const aiMessage: Message = {
@@ -53,14 +61,15 @@ export default function AtlasWidget() {
         content: res.data.reply,
         sources: res.data.sources,
       };
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "ai",
-        content: "I'm sorry, I'm having trouble connecting to the server right now."
+        content:
+          "I'm sorry, I'm having trouble connecting to the server right now.",
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
     } finally {
       setIsTyping(false);
     }
@@ -84,14 +93,18 @@ export default function AtlasWidget() {
                   <Sparkles className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm text-foreground">Atlas AI</h3>
+                  <h3 className="font-semibold text-sm text-foreground">
+                    Atlas AI
+                  </h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Online</span>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+                      Online
+                    </span>
                   </div>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
               >
@@ -102,33 +115,50 @@ export default function AtlasWidget() {
             {/* Chat Body */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {messages.map((msg) => (
-                <div 
-                  key={msg.id} 
+                <div
+                  key={msg.id}
                   className={cn(
                     "flex gap-3 max-w-[85%]",
-                    msg.role === "user" ? "ml-auto flex-row-reverse" : ""
+                    msg.role === "user" ? "ml-auto flex-row-reverse" : "",
                   )}
                 >
-                  <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-1",
-                    msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                  )}>
-                    {msg.role === "user" ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
+                  <div
+                    className={cn(
+                      "w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-1",
+                      msg.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground",
+                    )}
+                  >
+                    {msg.role === "user" ? (
+                      <User className="w-3 h-3" />
+                    ) : (
+                      <Bot className="w-3 h-3" />
+                    )}
                   </div>
-                  <div className={cn(
-                    "px-4 py-2.5 rounded-2xl text-sm leading-relaxed",
-                    msg.role === "user" 
-                      ? "bg-primary text-primary-foreground rounded-tr-sm" 
-                      : "bg-muted text-foreground rounded-tl-sm"
-                  )}>
+                  <div
+                    className={cn(
+                      "px-4 py-2.5 rounded-2xl text-sm leading-relaxed",
+                      msg.role === "user"
+                        ? "bg-primary text-primary-foreground rounded-tr-sm"
+                        : "bg-muted text-foreground rounded-tl-sm",
+                    )}
+                  >
                     {msg.content}
                     {msg.sources && msg.sources.length > 0 && (
                       <div className="mt-3 pt-3 border-t border-border/50 space-y-1.5">
-                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Sources</span>
+                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                          Sources
+                        </span>
                         <ul className="space-y-1">
                           {msg.sources.map((src, i) => (
                             <li key={i}>
-                              <a href={src} target="_blank" rel="noreferrer" className="text-xs text-primary hover:underline truncate block">
+                              <a
+                                href={src}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-xs text-primary hover:underline truncate block"
+                              >
                                 {src}
                               </a>
                             </li>
@@ -145,9 +175,18 @@ export default function AtlasWidget() {
                     <Bot className="w-3 h-3" />
                   </div>
                   <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-muted flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span
+                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      style={{ animationDelay: "0ms" }}
+                    />
+                    <span
+                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      style={{ animationDelay: "150ms" }}
+                    />
+                    <span
+                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      style={{ animationDelay: "300ms" }}
+                    />
                   </div>
                 </div>
               )}
@@ -156,7 +195,10 @@ export default function AtlasWidget() {
 
             {/* Input Area */}
             <div className="p-4 bg-card border-t border-border/50">
-              <form onSubmit={handleSend} className="relative flex items-center">
+              <form
+                onSubmit={handleSend}
+                className="relative flex items-center"
+              >
                 <input
                   type="text"
                   value={input}
@@ -164,7 +206,7 @@ export default function AtlasWidget() {
                   placeholder="Ask a question..."
                   className="w-full bg-muted border-none rounded-full pl-4 pr-12 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground placeholder:text-muted-foreground"
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={!input.trim()}
                   className="absolute right-1.5 p-2 bg-primary text-primary-foreground rounded-full disabled:opacity-50 transition-opacity hover:opacity-90"
@@ -173,7 +215,9 @@ export default function AtlasWidget() {
                 </button>
               </form>
               <div className="text-center mt-3">
-                <span className="text-[10px] text-muted-foreground font-medium">Powered by Atlas</span>
+                <span className="text-[10px] text-muted-foreground font-medium">
+                  Powered by Atlas
+                </span>
               </div>
             </div>
           </motion.div>

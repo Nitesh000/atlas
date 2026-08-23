@@ -9,14 +9,17 @@ import {
   Book,
   LifeBuoy,
   Search,
-  Bell
+  Bell,
 } from "lucide-react";
 
 export const Route = createRootRoute({
   component: () => (
-    <ThemeProvider defaultTheme="dark" storageKey="atlas-ui-theme" attribute="class">
+    <ThemeProvider
+      defaultTheme="dark"
+      storageKey="atlas-ui-theme"
+      attribute="class"
+    >
       <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
-        
         {/* Sidebar */}
         <aside className="hidden fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-card border-border lg:flex">
           <div className="flex items-center px-6 h-16 border-b border-border/50">
@@ -27,7 +30,7 @@ export const Route = createRootRoute({
               Atlas
             </div>
           </div>
-          
+
           <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
             <Link
               to="/"
@@ -82,7 +85,9 @@ export const Route = createRootRoute({
           {/* Top Header */}
           <header className="sticky top-0 z-40 flex items-center justify-between px-6 h-16 border-b bg-background/60 backdrop-blur-xl border-border/50">
             <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <span className="hover:text-foreground cursor-pointer transition-colors">Atlas</span>
+              <span className="hover:text-foreground cursor-pointer transition-colors">
+                Atlas
+              </span>
               <span className="text-border">/</span>
               <span className="text-foreground">Dashboard</span>
             </div>
@@ -109,7 +114,6 @@ export const Route = createRootRoute({
             <Outlet />
           </main>
         </div>
-
       </div>
     </ThemeProvider>
   ),

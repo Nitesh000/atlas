@@ -5,7 +5,10 @@ import { UnauthorizedError } from "../common/errors/index.js";
 /**
  * Validates Better Auth session and attaches user to request.
  */
-export async function requireAuth(request: FastifyRequest, _reply: FastifyReply) {
+export async function requireAuth(
+  request: FastifyRequest,
+  _reply: FastifyReply,
+) {
   const session = await auth.api.getSession({
     headers: request.headers as Record<string, string>,
   });

@@ -2,7 +2,9 @@ import { dbClient, appSchema } from "@atlas/database";
 import { eq } from "drizzle-orm";
 import type { CreateWebsiteInput, Website } from "./websites.types.js";
 
-export async function insertWebsite(input: CreateWebsiteInput): Promise<Website> {
+export async function insertWebsite(
+  input: CreateWebsiteInput,
+): Promise<Website> {
   const [website] = await dbClient
     .insert(appSchema.website)
     .values({
