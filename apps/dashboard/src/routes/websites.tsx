@@ -122,6 +122,15 @@ function WebsitesPage() {
     },
   });
 
+  const recrawlWebsite = useMutation({
+    mutationFn: async (websiteId: string) => {
+      await api.post(`/orgs/${org?.id}/websites/${websiteId}/recrawl`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["websites", org?.id] });
+    },
+  });
+
   if (orgLoading)
     return (
       <div className="p-8 text-muted-foreground animate-pulse">
@@ -264,6 +273,16 @@ function WebsitesPage() {
                                 title="Delete website"
                               >
                                 <Trash2 className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => recrawlWebsite.mutate(site.id)}
+                                disabled={recrawlWebsite.isPending || site.status === "crawling"}
+                                className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
+                                title="Re-crawl website"
+                              >
+                                <RefreshCw className="h-4 w-4" />
                               </Button>
                             </div>
                           </TableCell>
