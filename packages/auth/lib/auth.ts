@@ -12,6 +12,7 @@ export const auth = betterAuth({
     "http://localhost:3000",
     ...env.FRONTEND_URLS
   ],
+  trustHost: true,
   database: drizzleAdapter(dbClient, {
     provider: "pg",
   }),
