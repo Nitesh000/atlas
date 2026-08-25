@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "dotenv -e ../../.env -- tsx src/worker.ts",
+    "start:prod": "tsx src/worker.ts",
     "dev": "dotenv -e ../../.env -- tsx watch src/worker.ts",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"

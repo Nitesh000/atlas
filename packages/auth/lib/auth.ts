@@ -6,7 +6,12 @@ import { env } from "@atlas/config";
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   basePath: "/api/auth",
-  trustedOrigins: ["http://localhost:5173", "http://localhost:5174"],
+  trustedOrigins: [
+    "http://localhost:5173", 
+    "http://localhost:5174", 
+    "http://localhost:3000",
+    ...env.FRONTEND_URLS
+  ],
   database: drizzleAdapter(dbClient, {
     provider: "pg",
   }),

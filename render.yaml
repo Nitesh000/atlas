@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: atlas-api
+    env: docker
+    dockerfilePath: apps/api/Dockerfile
+    dockerContext: .
+    plan: starter
+    branch: prod
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3001"
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: FRONTEND_URLS
+        sync: false
+      - key: GROQ_API_KEYS
+        sync: false
+      - key: DODO_PAYMENTS_API_KEY
+        sync: false
+      - key: DODO_WEBHOOK_SECRET
+        sync: false
+      - key: DODO_PRO_PRODUCT_ID
+        sync: false
+
+  - type: worker
+    name: atlas-scraper
+    env: docker
+    dockerfilePath: apps/scraper/Dockerfile
+    dockerContext: .
+    plan: starter
+    branch: prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: GROQ_API_KEYS
+        sync: false

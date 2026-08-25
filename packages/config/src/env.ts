@@ -15,6 +15,15 @@ const EnvSchema = z.object({
     .url("better auth url is required")
     .default("http://localhost:3001"),
   BETTER_AUTH_SECRET: z.string("Secret is required").default("000000000"),
+  FRONTEND_URLS: z
+    .string()
+    .default("")
+    .transform((s) =>
+      s
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean),
+    ),
   GROQ_API_KEYS: z
     .string()
     .default("")

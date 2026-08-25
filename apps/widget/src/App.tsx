@@ -84,8 +84,10 @@ export default function AtlasWidget() {
     setIsTyping(true);
 
     try {
+      const baseUrl =
+        import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
       const res = await axios.post(
-        "http://localhost:3001/api/v1/chat",
+        `${baseUrl}/chat`,
         { message: userMessage.content, sessionId },
         {
           headers: {
@@ -174,20 +176,20 @@ export default function AtlasWidget() {
             className={layoutConfig.windowClass}
           >
             {/* Header */}
-            <div className="flex justify-between items-center px-4 py-3 bg-card border-b border-border/50 shrink-0">
-              <div className="flex items-center gap-3">
+            <div className="flex justify-between items-center py-3 px-4 border-b bg-card border-border/50 shrink-0">
+              <div className="flex gap-3 items-center">
                 <img
                   src="/logo-icon.png"
                   alt="Atlas Logo"
-                  className="w-8 h-8 object-cover rounded-lg shadow-sm border border-primary/20"
+                  className="object-cover w-8 h-8 rounded-lg border shadow-sm border-primary/20"
                 />
                 <div>
-                  <h3 className="font-semibold text-sm text-foreground">
+                  <h3 className="text-sm font-semibold text-foreground">
                     Atlas Support
                   </h3>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+                  <div className="flex gap-1.5 items-center mt-0.5">
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                    <span className="font-medium tracking-wider uppercase text-[10px] text-muted-foreground">
                       Online
                     </span>
                   </div>
@@ -195,7 +197,7 @@ export default function AtlasWidget() {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-full transition-colors"
+                className="p-2 rounded-full transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                 aria-label="Close chat"
               >
                 <X className="w-4 h-4" />
@@ -203,7 +205,7 @@ export default function AtlasWidget() {
             </div>
 
             {/* Chat Body */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="overflow-y-auto flex-1 p-4 space-y-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -226,7 +228,7 @@ export default function AtlasWidget() {
                       <img
                         src="/logo-icon.png"
                         alt="Atlas"
-                        className="w-4 h-4 object-cover rounded-sm opacity-90"
+                        className="object-cover w-4 h-4 rounded-sm opacity-90"
                       />
                     )}
                   </div>
@@ -238,19 +240,21 @@ export default function AtlasWidget() {
                         : "bg-muted text-foreground rounded-tl-sm",
                     )}
                   >
-                    <div className={cn(
-                      "prose dark:prose-invert max-w-none text-sm", 
-                      msg.role === "user" 
-                        ? "text-primary-foreground prose-p:text-primary-foreground prose-a:text-primary-foreground prose-strong:text-primary-foreground prose-code:text-primary-foreground" 
-                        : "text-foreground prose-p:leading-relaxed prose-pre:bg-background/50 prose-pre:border prose-pre:border-border"
-                    )}>
+                    <div
+                      className={cn(
+                        "prose dark:prose-invert max-w-none text-sm",
+                        msg.role === "user"
+                          ? "text-primary-foreground prose-p:text-primary-foreground prose-a:text-primary-foreground prose-strong:text-primary-foreground prose-code:text-primary-foreground"
+                          : "text-foreground prose-p:leading-relaxed prose-pre:bg-background/50 prose-pre:border prose-pre:border-border",
+                      )}
+                    >
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {msg.content}
                       </ReactMarkdown>
                     </div>
                     {msg.sources && msg.sources.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-border/50 space-y-1.5">
-                        <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                      <div className="pt-3 mt-3 space-y-1.5 border-t border-border/50">
+                        <span className="font-semibold tracking-wider uppercase text-[10px] text-muted-foreground">
                           Sources
                         </span>
                         <ul className="space-y-1">
@@ -260,7 +264,7 @@ export default function AtlasWidget() {
                                 href={src}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="text-xs text-primary hover:underline truncate block"
+                                className="block text-xs hover:underline text-primary truncate"
                               >
                                 {src}
                               </a>
@@ -274,24 +278,24 @@ export default function AtlasWidget() {
               ))}
               {isTyping && (
                 <div className="flex gap-3 max-w-[85%]">
-                  <div className="w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center shrink-0 mt-1">
+                  <div className="flex justify-center items-center mt-1 w-6 h-6 rounded-full bg-muted text-muted-foreground shrink-0">
                     <img
                       src="/logo-icon.png"
                       alt="Atlas"
-                      className="w-4 h-4 object-cover rounded-sm opacity-90"
+                      className="object-cover w-4 h-4 rounded-sm opacity-90"
                     />
                   </div>
-                  <div className="px-4 py-3 rounded-2xl rounded-tl-sm bg-muted flex items-center gap-1">
+                  <div className="flex gap-1 items-center py-3 px-4 rounded-2xl rounded-tl-sm bg-muted">
                     <span
-                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 rounded-full animate-bounce bg-foreground/40"
                       style={{ animationDelay: "0ms" }}
                     />
                     <span
-                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 rounded-full animate-bounce bg-foreground/40"
                       style={{ animationDelay: "150ms" }}
                     />
                     <span
-                      className="w-1.5 h-1.5 bg-foreground/40 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 rounded-full animate-bounce bg-foreground/40"
                       style={{ animationDelay: "300ms" }}
                     />
                   </div>
@@ -301,33 +305,33 @@ export default function AtlasWidget() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-card border-t border-border/50 shrink-0">
+            <div className="p-4 border-t bg-card border-border/50 shrink-0">
               <form
                 onSubmit={handleSend}
-                className="relative flex items-center"
+                className="flex relative items-center"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask a question..."
-                  className="w-full bg-muted border-none rounded-full pl-4 pr-12 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground placeholder:text-muted-foreground"
+                  className="py-3 pr-12 pl-4 w-full text-sm rounded-full border-none focus:ring-1 focus:outline-none bg-muted text-foreground placeholder:text-muted-foreground focus:ring-primary"
                 />
                 <button
                   type="submit"
                   disabled={!input.trim()}
-                  className="absolute right-1.5 p-2 bg-primary text-primary-foreground rounded-full disabled:opacity-50 transition-opacity hover:opacity-90"
+                  className="absolute right-1.5 p-2 rounded-full transition-opacity hover:opacity-90 disabled:opacity-50 bg-primary text-primary-foreground"
                 >
                   <Send className="w-3.5 h-3.5" />
                 </button>
               </form>
-              <div className="text-center mt-3">
-                <span className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-medium">
+              <div className="mt-3 text-center">
+                <span className="flex gap-1 justify-center items-center font-medium text-[10px] text-muted-foreground">
                   Powered by Atlas{" "}
                   <img
                     src="/logo-icon.png"
                     alt="Atlas Logo"
-                    className="h-4 w-4 object-cover rounded shadow-sm inline-block"
+                    className="inline-block object-cover w-4 h-4 rounded shadow-sm"
                   />
                 </span>
               </div>
@@ -352,8 +356,8 @@ export default function AtlasWidget() {
               layout === "sidebar" && "fixed bottom-6 right-6 z-50", // Enforce position if sidebar is toggled closed
             )}
           >
-            <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <MessageSquare className="w-6 h-6 relative z-10" />
+            <div className="absolute inset-0 rounded-full opacity-0 transition-opacity group-hover:opacity-100 bg-primary/20 blur-xl" />
+            <MessageSquare className="relative z-10 w-6 h-6" />
           </motion.button>
         )}
       </AnimatePresence>

@@ -1,0 +1,33 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: atlas-api
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3001}:${PORT:-3001}"
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-3001}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - FRONTEND_URLS=${FRONTEND_URLS}
+      - GROQ_API_KEYS=${GROQ_API_KEYS}
+      - DODO_PAYMENTS_API_KEY=${DODO_PAYMENTS_API_KEY}
+      - DODO_WEBHOOK_SECRET=${DODO_WEBHOOK_SECRET}
+      - DODO_PRO_PRODUCT_ID=${DODO_PRO_PRODUCT_ID}
+
+  scraper:
+    build:
+      context: .
+      dockerfile: apps/scraper/Dockerfile
+    container_name: atlas-scraper
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - GROQ_API_KEYS=${GROQ_API_KEYS}
