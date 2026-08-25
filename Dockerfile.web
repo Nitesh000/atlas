@@ -34,5 +34,5 @@ COPY --from=installer /root/.cache/ms-playwright /root/.cache/ms-playwright
 
 EXPOSE 3001
 
-# Run migrations, then boot BOTH the scraper worker and the API together
-CMD ["sh", "-c", "pnpm --filter @atlas/database run db:migrate:prod && pnpm exec concurrently \"pnpm --filter scraper run start:prod\" \"pnpm --filter api run start\""]
+# Boot BOTH the scraper worker and the API together
+CMD ["sh", "-c", "pnpm exec concurrently \"pnpm --filter scraper run start:prod\" \"pnpm --filter api run start\""]

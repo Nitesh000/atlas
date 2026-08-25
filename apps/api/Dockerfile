@@ -35,4 +35,4 @@ USER api_user
 COPY --from=installer /app .
 
 EXPOSE 3001
-CMD [ "sh", "-c", "pnpm --filter @atlas/database run db:migrate:prod && pnpm --filter api run start" ]
+CMD [ "pnpm", "--filter", "api", "run", "start" ]
