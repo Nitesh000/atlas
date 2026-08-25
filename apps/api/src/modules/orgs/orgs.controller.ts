@@ -3,11 +3,19 @@ import type { CreateOrgInput } from "./orgs.types.js";
 import { createOrg, listOrgs } from "./orgs.service.js";
 import { dbClient, appSchema, authSchema } from "@atlas/database";
 import { and, eq } from "drizzle-orm";
-import { UnauthorizedError, ConflictError, NotFoundError } from "../../common/errors/index.js";
+import {
+  UnauthorizedError,
+  ConflictError,
+  NotFoundError,
+} from "../../common/errors/index.js";
 import { randomBytes } from "crypto";
-import { ROLES, type Role } from "@atlas/types";
+import { ROLES, type Role, LIMITS } from "@atlas/types";
 
-async function verifyOrgMember(userId: string, orgId: string, requiredRole?: Role) {
+async function verifyOrgMember(
+  userId: string,
+  orgId: string,
+  requiredRole?: Role,
+) {
   const [member] = await dbClient
     .select()
     .from(appSchema.organizationMember)
@@ -74,7 +82,7 @@ export async function getOrgUsageHandler(
   if (!usage) {
     return reply.status(200).send({
       apiCallCount: 0,
-      limit: 1000,
+      limit: LIMITS.FREE_API_CALLS,
       monthYear,
     });
   }
@@ -88,7 +96,7 @@ export async function createInviteHandler(
 ) {
   const params = request.params as { orgId: string };
   const body = request.body as { email: string; role: Role };
-  
+
   await verifyOrgMember(request.user!.id, params.orgId, ROLES.ADMIN);
 
   const token = randomBytes(32).toString("hex");
@@ -96,26 +104,35 @@ export async function createInviteHandler(
   expiresAt.setDate(expiresAt.getDate() + 7); // 7 days valid
 
   // Check if user is already a member
-  const [existingUser] = await dbClient.select().from(authSchema.user).where(eq(authSchema.user.email, body.email));
+  const [existingUser] = await dbClient
+    .select()
+    .from(authSchema.user)
+    .where(eq(authSchema.user.email, body.email));
   if (existingUser) {
-    const [alreadyMember] = await dbClient.select().from(appSchema.organizationMember).where(
-      and(
-        eq(appSchema.organizationMember.organizationId, params.orgId),
-        eq(appSchema.organizationMember.userId, existingUser.id)
-      )
-    );
+    const [alreadyMember] = await dbClient
+      .select()
+      .from(appSchema.organizationMember)
+      .where(
+        and(
+          eq(appSchema.organizationMember.organizationId, params.orgId),
+          eq(appSchema.organizationMember.userId, existingUser.id),
+        ),
+      );
     if (alreadyMember) {
       throw new ConflictError("User is already a member of this organization");
     }
   }
 
-  const [invite] = await dbClient.insert(appSchema.organizationInvite).values({
-    organizationId: params.orgId,
-    email: body.email,
-    role: body.role,
-    token,
-    expiresAt,
-  }).returning();
+  const [invite] = await dbClient
+    .insert(appSchema.organizationInvite)
+    .values({
+      organizationId: params.orgId,
+      email: body.email,
+      role: body.role,
+      token,
+      expiresAt,
+    })
+    .returning();
 
   // TODO: Send actual email here (e.g. Resend)
   request.log.info(`Invite created for ${body.email}. Token: ${token}`);
@@ -154,9 +171,14 @@ export async function acceptInviteHandler(
   if (invite.expiresAt < new Date()) throw new ConflictError("Invite expired");
 
   // Verify email matches logged in user
-  const [user] = await dbClient.select().from(authSchema.user).where(eq(authSchema.user.id, userId));
+  const [user] = await dbClient
+    .select()
+    .from(authSchema.user)
+    .where(eq(authSchema.user.id, userId));
   if (!user || user.email !== invite.email) {
-    throw new UnauthorizedError("This invite was sent to a different email address");
+    throw new UnauthorizedError(
+      "This invite was sent to a different email address",
+    );
   }
 
   await dbClient.transaction(async (tx) => {
@@ -165,8 +187,10 @@ export async function acceptInviteHandler(
       userId: userId,
       role: invite.role,
     });
-    
-    await tx.delete(appSchema.organizationInvite).where(eq(appSchema.organizationInvite.id, invite.id));
+
+    await tx
+      .delete(appSchema.organizationInvite)
+      .where(eq(appSchema.organizationInvite.id, invite.id));
   });
 
   return reply.status(200).send({

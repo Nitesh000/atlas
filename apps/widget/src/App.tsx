@@ -59,6 +59,7 @@ export default function AtlasWidget() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [sessionId, setSessionId] = useState<string | undefined>();
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -85,13 +86,17 @@ export default function AtlasWidget() {
     try {
       const res = await axios.post(
         "http://localhost:3001/api/v1/chat",
-        { message: userMessage.content },
+        { message: userMessage.content, sessionId },
         {
           headers: {
             "x-atlas-api-key": "atl_preview_key", // We will make this configurable
           },
         },
       );
+
+      if (res.data.sessionId && !sessionId) {
+        setSessionId(res.data.sessionId);
+      }
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),

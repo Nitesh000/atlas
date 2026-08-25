@@ -5,6 +5,7 @@ import { dbClient, appSchema } from "@atlas/database";
 import { and, eq, sql } from "drizzle-orm";
 import { UnauthorizedError } from "../../common/errors/index.js";
 import { redisClient, crawlQueue } from "@atlas/queue";
+import { LIMITS } from "@atlas/types";
 
 async function verifyOrgMember(userId: string, orgId: string) {
   const [member] = await dbClient
@@ -32,7 +33,7 @@ export async function createWebsiteHandler(
 
   await verifyOrgMember(request.user!.id, orgId);
 
-  // Check limit (Max 100 websites per org)
+  // Check limit
   const result = await dbClient
     .select({ count: sql<number>`count(*)` })
     .from(appSchema.website)
@@ -40,10 +41,10 @@ export async function createWebsiteHandler(
 
   const count = result[0]?.count || 0;
 
-  if (Number(count) >= 100) {
+  if (Number(count) >= LIMITS.FREE_WEBSITES) {
     return reply
       .status(400)
-      .send({ message: "Website limit reached (max 100)." });
+      .send({ message: `Website limit reached (max ${LIMITS.FREE_WEBSITES}).` });
   }
 
   // Check unique URL

@@ -47,6 +47,7 @@ function ChatPlayground() {
     },
   ]);
   const [input, setInput] = useState("");
+  const [sessionId, setSessionId] = useState<string | undefined>();
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -75,13 +76,17 @@ function ChatPlayground() {
         import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
       const res = await axios.post(
         `${baseUrl}/chat`,
-        { message: userMessage.content },
+        { message: userMessage.content, sessionId },
         {
           headers: {
             "x-atlas-api-key": activeApiKey,
           },
         },
       );
+
+      if (res.data.sessionId && !sessionId) {
+        setSessionId(res.data.sessionId);
+      }
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),

@@ -9,6 +9,9 @@ import type { ChatInput, ChatResponse } from "./chat.types.js";
 import { aiEngine } from "@atlas/ai";
 import { generateEmbedding } from "@atlas/embeddings";
 
+import { redisClient } from "@atlas/queue";
+import { randomUUID } from "crypto";
+
 export async function processChat(
   apiKey: string,
   input: ChatInput,
@@ -118,11 +121,44 @@ If the context does not contain the answer, say you do not know.
 CONTEXT:
 ${contextText}`;
 
-  // 5. Call LLM with the Fallback Chain
+  // Process History
+  const sessionId = input.sessionId || randomUUID();
+  const historyKey = `chat:history:${sessionId}`;
+  
+  let history: { role: "user" | "assistant"; content: string }[] = [];
+  const rawHistory = await redisClient.get(historyKey);
+  if (rawHistory) {
+    try {
+      history = JSON.parse(rawHistory);
+    } catch (e) {}
+  }
+
+  // Formatting history for the prompt context (simple text append for now since generateWithFallback is text-based)
+  let conversationContext = "PREVIOUS CONVERSATION HISTORY:\n";
+  history.forEach(msg => {
+    conversationContext += `${msg.role === "user" ? "User" : "You"}: ${msg.content}\n`;
+  });
+  
+  const finalSystemPrompt = history.length > 0 
+    ? `${systemPrompt}\n\n${conversationContext}` 
+    : systemPrompt;
+
+  // Call LLM with the Fallback Chain
   const reply = await aiEngine.generateWithFallback(
     input.message,
-    systemPrompt,
+    finalSystemPrompt,
   );
+
+  // Update History
+  history.push({ role: "user", content: input.message });
+  history.push({ role: "assistant", content: reply });
+  
+  // Keep only the last 10 messages (5 turns)
+  if (history.length > 10) {
+    history = history.slice(history.length - 10);
+  }
+  
+  await redisClient.setex(historyKey, 86400, JSON.stringify(history)); // 24 hours expiry
 
   // 6. Increment Usage
   await dbClient
@@ -142,5 +178,6 @@ ${contextText}`;
   return {
     reply,
     sources: [...new Set(sources)], // unique URLs
+    sessionId,
   };
 }
