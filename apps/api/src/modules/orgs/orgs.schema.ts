@@ -21,3 +21,45 @@ export const listOrgsSchema = {
     200: z.array(orgResponseSchema),
   },
 };
+
+export const createInviteBodySchema = z.object({
+  email: z.string().email(),
+  role: z.enum(["owner", "admin", "member"]).default("member"),
+});
+
+export const inviteResponseSchema = z.object({
+  id: z.string().uuid(),
+  email: z.string(),
+  role: z.string(),
+  token: z.string(),
+  expiresAt: z.string().or(z.date()),
+});
+
+export const createInviteSchema = {
+  params: z.object({ orgId: z.string().uuid() }),
+  body: createInviteBodySchema,
+  response: {
+    201: inviteResponseSchema,
+  },
+};
+
+export const listInvitesSchema = {
+  params: z.object({ orgId: z.string().uuid() }),
+  response: {
+    200: z.array(inviteResponseSchema),
+  },
+};
+
+export const acceptInviteBodySchema = z.object({
+  token: z.string(),
+});
+
+export const acceptInviteSchema = {
+  body: acceptInviteBodySchema,
+  response: {
+    200: z.object({
+      success: z.boolean(),
+      organizationId: z.string().uuid(),
+    }),
+  },
+};

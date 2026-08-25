@@ -1,7 +1,7 @@
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { env } from "@atlas/config";
-import { fullSchema as schema, appSchema, authSchema } from "./db/index";
+import { fullSchema as schema, appSchema, authSchema } from "./db/index.js";
 
 export const name = "@atlas/database";
 
@@ -10,5 +10,5 @@ export const queryClient = postgres(
 );
 export const dbClient = drizzle(queryClient, { schema });
 
-export * from "./db/index";
+export * from "./db/index.js";
 export { appSchema, authSchema };

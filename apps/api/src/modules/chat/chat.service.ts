@@ -34,7 +34,7 @@ export async function processChat(
 
     try {
       const originUrl = new URL(origin);
-      const isAllowed = keyRecord.allowedDomains.some((domain) => {
+      const isAllowed = keyRecord.allowedDomains.some((domain: string) => {
         // Strip protocol and exact match or subdomain match
         const cleanDomain = domain
           .replace(/^https?:\/\//, "")

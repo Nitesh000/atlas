@@ -1,2 +1,2 @@
-export * from "./env";
+export * from "./env.js";
 export const name = "@atlas/config";

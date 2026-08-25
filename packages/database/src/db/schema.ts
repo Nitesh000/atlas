@@ -9,7 +9,7 @@ import {
   index,
   integer,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth-schema";
+import { user } from "./auth-schema.js";
 
 export const memberRole = pgEnum("member_role", ["owner", "admin", "member"]);
 export const crawlStatus = pgEnum("crawl_status", [
@@ -19,6 +19,24 @@ export const crawlStatus = pgEnum("crawl_status", [
   "failed",
 ]);
 export const orgPlan = pgEnum("org_plan", ["free", "pro"]);
+
+export const organizationInvite = pgTable(
+  "organization_invite",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    organizationId: uuid("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    role: memberRole("role").notNull().default("member"),
+    token: text("token").notNull().unique(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    uniqueIndex("org_email_invite_idx").on(table.organizationId, table.email),
+  ]
+);
 
 export const organization = pgTable("organization", {
   id: uuid("id").primaryKey().defaultRandom(),

@@ -14,6 +14,7 @@ import { Route as ApiKeysRouteImport } from './routes/api-keys'
 import { Route as BillingRouteImport } from './routes/billing'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as DocsRouteImport } from './routes/docs'
+import { Route as InviteRouteImport } from './routes/invite'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as OverviewRouteImport } from './routes/overview'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -44,6 +45,11 @@ const ChatRoute = ChatRouteImport.update({
 const DocsRoute = DocsRouteImport.update({
   id: '/docs',
   path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InviteRoute = InviteRouteImport.update({
+  id: '/invite',
+  path: '/invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/billing': typeof BillingRoute
   '/chat': typeof ChatRoute
   '/docs': typeof DocsRoute
+  '/invite': typeof InviteRoute
   '/login': typeof LoginRoute
   '/overview': typeof OverviewRoute
   '/register': typeof RegisterRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/billing': typeof BillingRoute
   '/chat': typeof ChatRoute
   '/docs': typeof DocsRoute
+  '/invite': typeof InviteRoute
   '/login': typeof LoginRoute
   '/overview': typeof OverviewRoute
   '/register': typeof RegisterRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/billing': typeof BillingRoute
   '/chat': typeof ChatRoute
   '/docs': typeof DocsRoute
+  '/invite': typeof InviteRoute
   '/login': typeof LoginRoute
   '/overview': typeof OverviewRoute
   '/register': typeof RegisterRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/chat'
     | '/docs'
+    | '/invite'
     | '/login'
     | '/overview'
     | '/register'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/chat'
     | '/docs'
+    | '/invite'
     | '/login'
     | '/overview'
     | '/register'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/billing'
     | '/chat'
     | '/docs'
+    | '/invite'
     | '/login'
     | '/overview'
     | '/register'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   BillingRoute: typeof BillingRoute
   ChatRoute: typeof ChatRoute
   DocsRoute: typeof DocsRoute
+  InviteRoute: typeof InviteRoute
   LoginRoute: typeof LoginRoute
   OverviewRoute: typeof OverviewRoute
   RegisterRoute: typeof RegisterRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/docs'
       fullPath: '/docs'
       preLoaderRoute: typeof DocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invite': {
+      id: '/invite'
+      path: '/invite'
+      fullPath: '/invite'
+      preLoaderRoute: typeof InviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   BillingRoute: BillingRoute,
   ChatRoute: ChatRoute,
   DocsRoute: DocsRoute,
+  InviteRoute: InviteRoute,
   LoginRoute: LoginRoute,
   OverviewRoute: OverviewRoute,
   RegisterRoute: RegisterRoute,
