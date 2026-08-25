@@ -12,13 +12,7 @@ export const auth = betterAuth({
     "http://localhost:3000",
     ...env.FRONTEND_URLS
   ],
-  advanced: {
-    trustHost: true,
-    defaultCookieAttributes: {
-      sameSite: "lax",
-      secure: true,
-    }
-  },
+  trustHost: true,
   database: drizzleAdapter(dbClient, {
     provider: "pg",
   }),
