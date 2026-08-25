@@ -6,4 +6,5 @@ export type CreateOrgInput = {
 export type Org = {
   id: string;
   name: string;
+  plan?: string;
 };

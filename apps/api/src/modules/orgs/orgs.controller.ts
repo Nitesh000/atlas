@@ -5,8 +5,9 @@ import { dbClient, appSchema, authSchema } from "@atlas/database";
 import { and, eq } from "drizzle-orm";
 import { UnauthorizedError, ConflictError, NotFoundError } from "../../common/errors/index.js";
 import { randomBytes } from "crypto";
+import { ROLES, type Role } from "@atlas/types";
 
-async function verifyOrgMember(userId: string, orgId: string, requiredRole?: "owner" | "admin" | "member") {
+async function verifyOrgMember(userId: string, orgId: string, requiredRole?: Role) {
   const [member] = await dbClient
     .select()
     .from(appSchema.organizationMember)
@@ -21,10 +22,10 @@ async function verifyOrgMember(userId: string, orgId: string, requiredRole?: "ow
     throw new UnauthorizedError("Not a member of this organization");
   }
 
-  if (requiredRole === "owner" && member.role !== "owner") {
+  if (requiredRole === ROLES.OWNER && member.role !== ROLES.OWNER) {
     throw new UnauthorizedError("Must be an owner");
   }
-  if (requiredRole === "admin" && member.role === "member") {
+  if (requiredRole === ROLES.ADMIN && member.role === ROLES.MEMBER) {
     throw new UnauthorizedError("Must be an admin");
   }
 }
@@ -86,9 +87,9 @@ export async function createInviteHandler(
   reply: FastifyReply,
 ) {
   const params = request.params as { orgId: string };
-  const body = request.body as { email: string; role: "owner" | "admin" | "member" };
+  const body = request.body as { email: string; role: Role };
   
-  await verifyOrgMember(request.user!.id, params.orgId, "admin");
+  await verifyOrgMember(request.user!.id, params.orgId, ROLES.ADMIN);
 
   const token = randomBytes(32).toString("hex");
   const expiresAt = new Date();
@@ -127,7 +128,7 @@ export async function listInvitesHandler(
   reply: FastifyReply,
 ) {
   const params = request.params as { orgId: string };
-  await verifyOrgMember(request.user!.id, params.orgId, "admin");
+  await verifyOrgMember(request.user!.id, params.orgId, ROLES.ADMIN);
 
   const invites = await dbClient
     .select()

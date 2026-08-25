@@ -10,15 +10,16 @@ import {
   integer,
 } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
+import { ROLES, PLANS } from "@atlas/types";
 
-export const memberRole = pgEnum("member_role", ["owner", "admin", "member"]);
+export const memberRole = pgEnum("member_role", [ROLES.OWNER, ROLES.ADMIN, ROLES.MEMBER]);
 export const crawlStatus = pgEnum("crawl_status", [
   "pending",
   "crawling",
   "completed",
   "failed",
 ]);
-export const orgPlan = pgEnum("org_plan", ["free", "pro"]);
+export const orgPlan = pgEnum("org_plan", [PLANS.FREE, PLANS.PRO]);
 
 export const organizationInvite = pgTable(
   "organization_invite",
@@ -28,7 +29,7 @@ export const organizationInvite = pgTable(
       .notNull()
       .references(() => organization.id, { onDelete: "cascade" }),
     email: text("email").notNull(),
-    role: memberRole("role").notNull().default("member"),
+    role: memberRole("role").notNull().default(ROLES.MEMBER),
     token: text("token").notNull().unique(),
     expiresAt: timestamp("expires_at").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -41,7 +42,9 @@ export const organizationInvite = pgTable(
 export const organization = pgTable("organization", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  plan: orgPlan("plan").notNull().default("free"),
+  plan: orgPlan("plan").notNull().default(PLANS.FREE),
+  dodoCustomerId: text("dodo_customer_id"),
+  dodoSubscriptionId: text("dodo_subscription_id"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -59,7 +62,7 @@ export const organizationMember = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    role: memberRole("role").notNull().default("member"),
+    role: memberRole("role").notNull().default(ROLES.MEMBER),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()

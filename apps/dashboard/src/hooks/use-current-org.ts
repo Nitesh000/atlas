@@ -6,6 +6,7 @@ type Organization = {
   name: string;
   slug: string;
   createdAt: string;
+  plan: string;
 };
 
 export function useCurrentOrg() {

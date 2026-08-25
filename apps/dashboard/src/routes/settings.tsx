@@ -15,6 +15,7 @@ import { Copy, Check, Users, Mail, UserPlus } from "lucide-react";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../lib/api";
+import { ROLES } from "@atlas/types";
 
 export const Route = createFileRoute("/settings")({
   component: SettingsPage,
@@ -39,7 +40,7 @@ function SettingsPage() {
     mutationFn: async (email: string) => {
       const res = await api.post(`/orgs/${org?.id}/invites`, {
         email,
-        role: "member",
+        role: ROLES.MEMBER,
       });
       return res.data;
     },

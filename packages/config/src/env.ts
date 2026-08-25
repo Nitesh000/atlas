@@ -24,6 +24,9 @@ const EnvSchema = z.object({
         .map((k) => k.trim())
         .filter(Boolean),
     ),
+  DODO_PAYMENTS_API_KEY: z.string().optional(),
+  DODO_WEBHOOK_SECRET: z.string().optional(),
+  DODO_PRO_PRODUCT_ID: z.string().optional(),
 });
 
 export const env = EnvSchema.parse(process.env);

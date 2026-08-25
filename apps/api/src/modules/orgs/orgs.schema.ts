@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { ROLES } from "@atlas/types";
+
 export const createOrgBodySchema = z.object({
   name: z.string().trim().min(2),
 });
@@ -7,6 +9,7 @@ export const createOrgBodySchema = z.object({
 export const orgResponseSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
+  plan: z.string().optional(),
 });
 
 export const createOrgSchema = {
@@ -24,7 +27,7 @@ export const listOrgsSchema = {
 
 export const createInviteBodySchema = z.object({
   email: z.string().email(),
-  role: z.enum(["owner", "admin", "member"]).default("member"),
+  role: z.enum([ROLES.OWNER, ROLES.ADMIN, ROLES.MEMBER]).default(ROLES.MEMBER),
 });
 
 export const inviteResponseSchema = z.object({

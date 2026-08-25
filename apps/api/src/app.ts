@@ -15,7 +15,9 @@ import { orgsRoutes } from "./modules/orgs/orgs.route.js";
 import { apiKeysRoutes } from "./modules/api-keys/api-keys.route.js";
 import { websitesRoutes } from "./modules/websites/websites.route.js";
 import { chatRoutes } from "./modules/chat/chat.route.js";
+import { billingRoutes } from "./modules/billing/billing.route.js";
 import { errorHandlerPlugin } from "./plugins/errorHandler.js";
+import fastifyRawBody from "fastify-raw-body";
 
 export async function buildApp() {
   const logger = createLogger({
@@ -26,6 +28,13 @@ export async function buildApp() {
   const app = Fastify({
     loggerInstance: logger,
   }).withTypeProvider<ZodTypeProvider>();
+
+  await app.register(fastifyRawBody, {
+    field: "rawBody",
+    global: false,
+    encoding: "utf8",
+    runFirst: true,
+  });
 
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
@@ -51,6 +60,7 @@ export async function buildApp() {
   await app.register(apiKeysRoutes, { prefix: "/api/v1/orgs" });
   await app.register(websitesRoutes, { prefix: "/api/v1/orgs" });
   await app.register(chatRoutes, { prefix: "/api/v1/chat" });
+  await app.register(billingRoutes, { prefix: "/api/v1/billing" });
 
   return app;
 }
