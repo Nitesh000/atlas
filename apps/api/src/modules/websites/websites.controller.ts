@@ -144,9 +144,17 @@ export async function websiteEventsHandler(
 
   await verifyOrgMember(request.user!.id, params.orgId);
 
+  // Set standard SSE headers
   reply.raw.setHeader("Content-Type", "text/event-stream");
   reply.raw.setHeader("Cache-Control", "no-cache");
   reply.raw.setHeader("Connection", "keep-alive");
+
+  // Fix CORS for hijacked SSE stream
+  const origin = request.headers.origin;
+  if (origin) {
+    reply.raw.setHeader("Access-Control-Allow-Origin", origin);
+    reply.raw.setHeader("Access-Control-Allow-Credentials", "true");
+  }
 
   reply.hijack(); // Prevent Fastify from automatically closing the response
 

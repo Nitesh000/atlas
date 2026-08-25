@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Send, User, MessageSquare, AlertCircle } from "lucide-react";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const Route = createFileRoute("/chat")({
   component: ChatPlayground,
@@ -178,13 +180,17 @@ function ChatPlayground() {
                 )}
               </div>
               <div
-                className={`px-5 py-3 rounded-2xl text-sm leading-relaxed shadow-sm ${
+                className={`px-5 py-3 rounded-2xl text-sm leading-relaxed shadow-sm overflow-hidden ${
                   msg.role === "user"
                     ? "bg-primary text-primary-foreground rounded-tr-sm"
                     : "bg-card border text-card-foreground rounded-tl-sm"
                 }`}
               >
-                {msg.content}
+                <div className={`prose dark:prose-invert max-w-none ${msg.role === "user" ? "text-primary-foreground prose-p:text-primary-foreground prose-a:text-primary-foreground" : "text-card-foreground"}`}>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
                 {msg.sources && msg.sources.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-border/50 space-y-2">
                     <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">

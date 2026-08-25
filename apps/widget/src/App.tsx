@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Send, X, User, MessageSquare } from "lucide-react";
 import axios from "axios";
 import { cn } from "./utils";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Message = {
   id: string;
@@ -225,13 +227,22 @@ export default function AtlasWidget() {
                   </div>
                   <div
                     className={cn(
-                      "px-4 py-2.5 rounded-2xl text-sm leading-relaxed",
+                      "px-4 py-2.5 rounded-2xl text-sm leading-relaxed overflow-hidden",
                       msg.role === "user"
                         ? "bg-primary text-primary-foreground rounded-tr-sm"
                         : "bg-muted text-foreground rounded-tl-sm",
                     )}
                   >
-                    {msg.content}
+                    <div className={cn(
+                      "prose dark:prose-invert max-w-none text-sm", 
+                      msg.role === "user" 
+                        ? "text-primary-foreground prose-p:text-primary-foreground prose-a:text-primary-foreground prose-strong:text-primary-foreground prose-code:text-primary-foreground" 
+                        : "text-foreground prose-p:leading-relaxed prose-pre:bg-background/50 prose-pre:border prose-pre:border-border"
+                    )}>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
                     {msg.sources && msg.sources.length > 0 && (
                       <div className="mt-3 pt-3 border-t border-border/50 space-y-1.5">
                         <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
