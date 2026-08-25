@@ -1,0 +1,38 @@
+FROM node:20-bookworm AS base
+
+# Install pnpm and turbo
+RUN npm install -g pnpm@9.0.0 turbo
+
+# 1. Prune the workspace to include BOTH api and scraper
+FROM base AS builder
+WORKDIR /app
+COPY . .
+# We use turbo to prune focusing on BOTH apps
+RUN turbo prune api scraper --docker
+
+# 2. Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+WORKDIR /app
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install --frozen-lockfile
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+RUN pnpm turbo run build --filter=api... --filter=scraper...
+
+# Install playwright dependencies for the scraper
+RUN cd apps/scraper && pnpm exec playwright install --with-deps chromium
+
+# 3. Final production image
+FROM base AS runner
+WORKDIR /app
+
+# Copy the entire installer stage to keep playwright binaries in place
+COPY --from=installer /app .
+COPY --from=installer /root/.cache/ms-playwright /root/.cache/ms-playwright
+
+EXPOSE 3001
+
+# Run migrations, then boot BOTH the scraper worker and the API together
+CMD ["sh", "-c", "pnpm --filter @atlas/database run db:migrate:prod && pnpm exec concurrently \"pnpm --filter scraper run start:prod\" \"pnpm --filter api run start\""]
