@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://atlas-1azo.onrender.com/api/:match*"
+    }
+  ]
+}
