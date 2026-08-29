@@ -25,17 +25,17 @@ function Index() {
 
   if (isPending)
     return (
-      <div className="p-8 text-muted-foreground animate-pulse">
+      <div className="p-8 animate-pulse text-muted-foreground">
         Loading session...
       </div>
     );
 
   if (!session) {
     return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-sm">
+      <div className="flex fixed inset-0 justify-center items-center z-[100] bg-background/80 backdrop-blur-sm">
         <Card className="w-full max-w-md shadow-2xl border-primary/10">
-          <CardHeader className="text-center space-y-2">
-            <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-2">
+          <CardHeader className="space-y-2 text-center">
+            <div className="flex justify-center items-center mx-auto mb-2 w-12 h-12 rounded-xl border bg-primary/10 border-primary/20">
               <img
                 src="/logo-icon.png"
                 alt="Atlas"
@@ -112,16 +112,16 @@ function DashboardHome({ userName }: { userName: string }) {
 
   if (orgLoading)
     return (
-      <div className="p-8 text-muted-foreground animate-pulse">
+      <div className="p-8 animate-pulse text-muted-foreground">
         Loading dashboard...
       </div>
     );
 
   if (!org) {
     return (
-      <div className="max-w-md mx-auto mt-12 space-y-6">
-        <div className="text-center space-y-2">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 mb-4">
+      <div className="mx-auto mt-12 space-y-6 max-w-md">
+        <div className="space-y-2 text-center">
+          <div className="flex justify-center items-center mx-auto mb-4 w-12 h-12 rounded-xl border bg-primary/10 border-primary/20">
             <Building2 className="w-6 h-6 text-primary" />
           </div>
           <h2 className="text-3xl font-bold tracking-tight">
@@ -180,53 +180,53 @@ function DashboardHome({ userName }: { userName: string }) {
     websites?.filter((w) => w.status === "crawling").length || 0;
 
   return (
-    <div className="max-w-5xl space-y-8">
+    <div className="space-y-8 max-w-5xl">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
-        <p className="text-muted-foreground mt-2">
+        <p className="mt-2 text-muted-foreground">
           Welcome back to {org.name}. Here's what's happening today.
         </p>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <Card className="transition-shadow hover:shadow-md">
+          <CardHeader className="flex flex-row justify-between items-center pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">
               Total API Calls
             </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {usage?.apiCallCount.toLocaleString() ?? "-"}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               Limit: {usage?.limit.toLocaleString() ?? "-"} / month
             </p>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+        <Card className="transition-shadow hover:shadow-md">
+          <CardHeader className="flex flex-row justify-between items-center pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">
               Indexed Websites
             </CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
+            <Globe className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{websites?.length ?? "-"}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               {activeWebsites} active, {crawlingWebsites} crawling
             </p>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+        <Card className="transition-shadow hover:shadow-md">
+          <CardHeader className="flex flex-row justify-between items-center pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">
               Active API Keys
             </CardTitle>
-            <Key className="h-4 w-4 text-muted-foreground" />
+            <Key className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -235,14 +235,14 @@ function DashboardHome({ userName }: { userName: string }) {
                 / 3
               </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="mt-1 text-xs text-muted-foreground">
               Limit 3 keys per account
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
@@ -251,11 +251,11 @@ function DashboardHome({ userName }: { userName: string }) {
           <CardContent className="space-y-4">
             <Link
               to="/websites"
-              className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group"
+              className="flex justify-between items-center p-4 rounded-lg border transition-colors group hover:bg-muted/50"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 text-primary rounded-md">
-                  <Globe className="h-5 w-5" />
+              <div className="flex gap-3 items-center">
+                <div className="p-2 rounded-md bg-primary/10 text-primary">
+                  <Globe className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="font-medium">Index New Website</div>
@@ -264,16 +264,16 @@ function DashboardHome({ userName }: { userName: string }) {
                   </div>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <ArrowRight className="w-4 h-4 transition-colors text-muted-foreground group-hover:text-foreground" />
             </Link>
 
             <Link
               to="/api-keys"
-              className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors group"
+              className="flex justify-between items-center p-4 rounded-lg border transition-colors group hover:bg-muted/50"
             >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 text-primary rounded-md">
-                  <Key className="h-5 w-5" />
+              <div className="flex gap-3 items-center">
+                <div className="p-2 rounded-md bg-primary/10 text-primary">
+                  <Key className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="font-medium">Generate API Key</div>
@@ -282,7 +282,7 @@ function DashboardHome({ userName }: { userName: string }) {
                   </div>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <ArrowRight className="w-4 h-4 transition-colors text-muted-foreground group-hover:text-foreground" />
             </Link>
           </CardContent>
         </Card>

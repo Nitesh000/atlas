@@ -53,10 +53,10 @@ function BillingPage() {
   const isPro = org.plan === PLANS.PRO;
 
   return (
-    <div className="max-w-5xl space-y-8">
+    <div className="space-y-8 max-w-5xl">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Billing</h2>
-        <p className="text-muted-foreground mt-2">
+        <p className="mt-2 text-muted-foreground">
           Manage your subscription and billing details.
         </p>
       </div>
@@ -65,24 +65,30 @@ function BillingPage() {
         <Card className="mb-8 border-primary/20 bg-primary/5">
           <CardHeader>
             <CardTitle>Active Subscription</CardTitle>
-            <CardDescription>You are currently on the Atlas Pro plan.</CardDescription>
+            <CardDescription>
+              You are currently on the Atlas Pro plan.
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button 
-              onClick={() => portalMutation.mutate()} 
+            <Button
+              onClick={() => portalMutation.mutate()}
               disabled={portalMutation.isPending}
             >
-              {portalMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-              Manage Billing in Stripe
+              {portalMutation.isPending ? (
+                <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+              ) : null}
+              Manage Billing
             </Button>
           </CardContent>
         </Card>
       )}
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <Card className={`border-2 relative overflow-hidden shadow-sm ${!isPro ? "border-primary/20" : "border-muted"}`}>
+      <div className="grid gap-8 md:grid-cols-2">
+        <Card
+          className={`border-2 relative overflow-hidden shadow-sm ${!isPro ? "border-primary/20" : "border-muted"}`}
+        >
           {!isPro && (
-            <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-bl-lg">
+            <div className="absolute top-0 right-0 py-1 px-3 font-bold tracking-wider uppercase rounded-bl-lg bg-primary text-primary-foreground text-[10px]">
               Current Plan
             </div>
           )}
@@ -95,7 +101,7 @@ function BillingPage() {
           <CardContent className="space-y-6">
             <div className="text-4xl font-extrabold">
               $0
-              <span className="text-lg text-muted-foreground font-normal">
+              <span className="text-lg font-normal text-muted-foreground">
                 /mo
               </span>
             </div>
@@ -106,22 +112,28 @@ function BillingPage() {
                 "3 API Keys",
                 "Standard community support",
               ].map((feat, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-green-500 shrink-0" /> {feat}
+                <li key={i} className="flex gap-3 items-center text-sm">
+                  <Check className="w-4 h-4 text-green-500 shrink-0" /> {feat}
                 </li>
               ))}
             </ul>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" disabled={!isPro} variant={!isPro ? "outline" : "default"}>
+            <Button
+              className="w-full"
+              disabled={!isPro}
+              variant={!isPro ? "outline" : "default"}
+            >
               {!isPro ? "Current Plan" : "Downgrade"}
             </Button>
           </CardFooter>
         </Card>
 
-        <Card className={`border-2 relative overflow-hidden shadow-sm ${isPro ? "border-primary/20" : "border-muted"}`}>
+        <Card
+          className={`border-2 relative overflow-hidden shadow-sm ${isPro ? "border-primary/20" : "border-muted"}`}
+        >
           {isPro && (
-            <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-bl-lg">
+            <div className="absolute top-0 right-0 py-1 px-3 font-bold tracking-wider uppercase rounded-bl-lg bg-primary text-primary-foreground text-[10px]">
               Current Plan
             </div>
           )}
@@ -134,7 +146,7 @@ function BillingPage() {
           <CardContent className="space-y-6">
             <div className="text-4xl font-extrabold">
               $29
-              <span className="text-lg text-muted-foreground font-normal">
+              <span className="text-lg font-normal text-muted-foreground">
                 /mo
               </span>
             </div>
@@ -145,19 +157,21 @@ function BillingPage() {
                 "Unlimited API Keys",
                 "Priority email support",
               ].map((feat, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm">
-                  <Check className="h-4 w-4 text-primary shrink-0" /> {feat}
+                <li key={i} className="flex gap-3 items-center text-sm">
+                  <Check className="w-4 h-4 text-primary shrink-0" /> {feat}
                 </li>
               ))}
             </ul>
           </CardContent>
           <CardFooter>
-            <Button 
-              className="w-full" 
+            <Button
+              className="w-full"
               disabled={isPro || checkoutMutation.isPending}
               onClick={() => checkoutMutation.mutate()}
             >
-              {checkoutMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              {checkoutMutation.isPending ? (
+                <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+              ) : null}
               {isPro ? "Current Plan" : "Upgrade to Pro"}
             </Button>
           </CardFooter>

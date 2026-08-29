@@ -47,6 +47,8 @@ export async function buildApp() {
       cb(null, true);
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-atlas-api-key"],
   });
 
   app.addHook("onClose", async () => {

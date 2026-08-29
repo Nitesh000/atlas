@@ -133,7 +133,7 @@ function WebsitesPage() {
 
   if (orgLoading)
     return (
-      <div className="p-8 text-muted-foreground animate-pulse">
+      <div className="p-8 animate-pulse text-muted-foreground">
         Loading workspace...
       </div>
     );
@@ -143,8 +143,8 @@ function WebsitesPage() {
       <div className="p-8">
         <Card className="max-w-md bg-destructive/5 border-destructive/20">
           <CardHeader>
-            <CardTitle className="text-destructive flex items-center gap-2">
-              <AlertCircle className="h-5 w-5" /> Workspace Required
+            <CardTitle className="flex gap-2 items-center text-destructive">
+              <AlertCircle className="w-5 h-5" /> Workspace Required
             </CardTitle>
             <CardDescription>
               You need to create an organization in the Overview tab first.
@@ -160,18 +160,18 @@ function WebsitesPage() {
   const isLimitReached = (websites?.length ?? 0) >= 3;
 
   return (
-    <div className="max-w-5xl space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 max-w-5xl">
+      <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Websites</h2>
-          <p className="text-muted-foreground mt-2">
+          <p className="mt-2 text-muted-foreground">
             Manage and track documentation websites for RAG context.
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <div className="space-y-6 sm:order-2 md:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Indexed Sources</CardTitle>
@@ -194,9 +194,9 @@ function WebsitesPage() {
                     <TableRow>
                       <TableCell
                         colSpan={4}
-                        className="text-center py-8 text-muted-foreground"
+                        className="py-8 text-center text-muted-foreground"
                       >
-                        <Globe className="h-8 w-8 mx-auto mb-3 opacity-20" />
+                        <Globe className="mx-auto mb-3 w-8 h-8 opacity-20" />
                         No websites added yet. Add your first data source.
                       </TableCell>
                     </TableRow>
@@ -204,7 +204,7 @@ function WebsitesPage() {
                     websites?.map((site) => (
                       <React.Fragment key={site.id}>
                         <TableRow>
-                          <TableCell className="font-medium text-primary hover:underline">
+                          <TableCell className="font-medium hover:underline text-primary">
                             <a href={site.url} target="_blank" rel="noreferrer">
                               {site.url}
                             </a>
@@ -213,7 +213,7 @@ function WebsitesPage() {
                             {site.title || "—"}
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-3">
+                            <div className="flex gap-3 items-center">
                               <span
                                 className={`text-xs font-medium px-2 py-1 rounded-full ${
                                   site.status === "crawling"
@@ -231,7 +231,7 @@ function WebsitesPage() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-6 w-6"
+                                className="w-6 h-6 cursor-pointer"
                                 onClick={() => rescrape.mutate(site.id)}
                                 disabled={
                                   site.status === "crawling" ||
@@ -246,7 +246,7 @@ function WebsitesPage() {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-2">
+                            <div className="flex gap-2 items-center">
                               <Button
                                 variant="ghost"
                                 size="sm"
@@ -255,34 +255,37 @@ function WebsitesPage() {
                                     expandedId === site.id ? null : site.id,
                                   )
                                 }
-                                className="text-xs h-8 text-muted-foreground hover:text-foreground"
+                                className="h-8 text-xs cursor-pointer text-muted-foreground hover:text-foreground"
                               >
-                                {expandedId === site.id ? (
-                                  <ChevronUp className="h-4 w-4 mr-1" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4 mr-1" />
-                                )}
                                 Pages
+                                {expandedId === site.id ? (
+                                  <ChevronUp className="mr-1 w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="mr-1 w-4 h-4" />
+                                )}
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => deleteWebsite.mutate(site.id)}
                                 disabled={deleteWebsite.isPending}
-                                className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                className="w-8 h-8 cursor-pointer text-destructive hover:text-destructive hover:bg-destructive/30"
                                 title="Delete website"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <Trash2 className="w-4 h-4" />
                               </Button>
                               <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => recrawlWebsite.mutate(site.id)}
-                                disabled={recrawlWebsite.isPending || site.status === "crawling"}
-                                className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
+                                disabled={
+                                  recrawlWebsite.isPending ||
+                                  site.status === "crawling"
+                                }
+                                className="w-8 h-8 cursor-pointer text-primary hover:text-primary hover:bg-primary/20"
                                 title="Re-crawl website"
                               >
-                                <RefreshCw className="h-4 w-4" />
+                                <RefreshCw className="w-4 h-4" />
                               </Button>
                             </div>
                           </TableCell>
@@ -306,7 +309,7 @@ function WebsitesPage() {
           </Card>
         </div>
 
-        <div>
+        <div className="sm:order-1">
           {!isLimitReached ? (
             <Card>
               <CardHeader>
@@ -352,15 +355,15 @@ function WebsitesPage() {
                     />
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    <Plus className="mr-2 h-4 w-4" /> Start Crawl
+                    <Plus className="mr-2 w-4 h-4" /> Start Crawl
                   </Button>
                 </form>
               </CardContent>
             </Card>
           ) : (
-            <Card className="bg-muted/30 border-dashed">
+            <Card className="border-dashed bg-muted/30">
               <CardHeader>
-                <CardTitle className="text-muted-foreground flex items-center gap-2">
+                <CardTitle className="flex gap-2 items-center text-muted-foreground">
                   Limit Reached
                 </CardTitle>
                 <CardDescription>
@@ -393,7 +396,7 @@ function WebsitePagesList({
 
   if (isLoading) {
     return (
-      <div className="p-6 text-sm text-muted-foreground text-center animate-pulse">
+      <div className="p-6 text-sm text-center animate-pulse text-muted-foreground">
         Loading pages...
       </div>
     );
@@ -401,28 +404,28 @@ function WebsitePagesList({
 
   if (!pages || pages.length === 0) {
     return (
-      <div className="p-6 text-sm text-muted-foreground text-center">
+      <div className="p-6 text-sm text-center text-muted-foreground">
         No sub-routes found. This source might still be crawling or failed.
       </div>
     );
   }
 
   return (
-    <div className="p-4 max-h-[300px] overflow-y-auto">
-      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 px-2">
+    <div className="overflow-y-auto p-4 max-h-[300px]">
+      <div className="px-2 mb-3 text-xs font-semibold tracking-wider uppercase text-muted-foreground">
         Indexed Pages ({pages.length})
       </div>
       <ul className="space-y-1">
         {pages.map((page, i) => (
           <li
             key={i}
-            className="text-sm px-2 py-1.5 hover:bg-muted rounded text-foreground/80 break-all"
+            className="py-1.5 px-2 text-sm break-all rounded text-foreground/80 hover:bg-muted"
           >
             <a
               href={page.url}
               target="_blank"
               rel="noreferrer"
-              className="hover:text-primary transition-colors"
+              className="transition-colors hover:text-primary"
             >
               {page.url}
             </a>

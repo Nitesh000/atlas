@@ -3,11 +3,16 @@ import { Webhook } from "standardwebhooks";
 import { env } from "@atlas/config";
 import { dbClient, appSchema } from "@atlas/database";
 import { eq, and } from "drizzle-orm";
-import { UnauthorizedError, NotFoundError, ConflictError } from "../../common/errors/index.js";
+import {
+  UnauthorizedError,
+  NotFoundError,
+  ConflictError,
+} from "../../common/errors/index.js";
 import { ROLES, PLANS } from "@atlas/types";
 
 const dodo = new DodoPayments({
   bearerToken: env.DODO_PAYMENTS_API_KEY || "",
+  environment: env.DODO_PAYMENT_MODE,
 });
 
 export async function verifyOrgAdmin(userId: string, orgId: string) {
@@ -27,10 +32,10 @@ export async function verifyOrgAdmin(userId: string, orgId: string) {
 }
 
 export async function createCheckout(
-  userId: string, 
-  userEmail: string, 
-  organizationId: string, 
-  successUrl: string
+  userId: string,
+  userEmail: string,
+  organizationId: string,
+  successUrl: string,
 ) {
   await verifyOrgAdmin(userId, organizationId);
 
@@ -53,6 +58,7 @@ export async function createCheckout(
       email: userEmail,
     });
     customerId = customer.customer_id;
+
     await dbClient
       .update(appSchema.organization)
       .set({ dodoCustomerId: customerId })
@@ -73,7 +79,17 @@ export async function createCheckout(
   return session.checkout_url;
 }
 
-export async function createPortal(userId: string, organizationId: string, returnUrl: string) {
+export async function createPortal(
+  userId: string,
+  organizationId: string,
+  returnUrl: string,
+) {
+  if (!env.DODO_PAYMENTS_API_KEY) {
+    throw new ConflictError(
+      "Billing is not configured. Please add DODO_PAYMENTS_API_KEY to your environment variables.",
+    );
+  }
+
   await verifyOrgAdmin(userId, organizationId);
 
   const [org] = await dbClient
@@ -85,33 +101,52 @@ export async function createPortal(userId: string, organizationId: string, retur
     throw new NotFoundError("No active billing profile found");
   }
 
-  const session = await dodo.customers.customerPortal.create(org.dodoCustomerId, {
-    return_url: returnUrl,
-  });
+  const session = await dodo.customers.customerPortal.create(
+    org.dodoCustomerId,
+    {
+      return_url: returnUrl,
+    },
+  );
 
   return session.link;
 }
 
-export async function processWebhook(payload: string, headers: { sig: string; id: string; timestamp: string }) {
+export async function processWebhook(
+  payload: string,
+  headers: { sig: string; id: string; timestamp: string },
+) {
   const wh = new Webhook(env.DODO_WEBHOOK_SECRET || "");
 
   const event = wh.verify(payload, {
     "webhook-id": headers.id,
     "webhook-signature": headers.sig,
-    "webhook-timestamp": headers.timestamp
+    "webhook-timestamp": headers.timestamp,
   }) as any;
 
   if (event.type === "subscription.active") {
     const metadata = event.data?.metadata || {};
     if (metadata.organizationId) {
-      await dbClient.update(appSchema.organization)
-        .set({ plan: PLANS.PRO, dodoSubscriptionId: event.data.subscription_id })
+      await dbClient
+        .update(appSchema.organization)
+        .set({
+          plan: PLANS.PRO,
+          dodoSubscriptionId: event.data.subscription_id,
+        })
         .where(eq(appSchema.organization.id, metadata.organizationId));
     }
-  } else if (event.type === "subscription.canceled" || event.type === "subscription.failed") {
-    await dbClient.update(appSchema.organization)
+  } else if (
+    event.type === "subscription.canceled" ||
+    event.type === "subscription.failed"
+  ) {
+    await dbClient
+      .update(appSchema.organization)
       .set({ plan: PLANS.FREE, dodoSubscriptionId: null })
-      .where(eq(appSchema.organization.dodoSubscriptionId, event.data.subscription_id));
+      .where(
+        eq(
+          appSchema.organization.dodoSubscriptionId,
+          event.data.subscription_id,
+        ),
+      );
   }
 
   return true;

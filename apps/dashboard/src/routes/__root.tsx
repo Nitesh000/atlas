@@ -52,30 +52,30 @@ function RootComponent() {
       storageKey="atlas-ui-theme"
       attribute="class"
     >
-      <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
+      <div className="min-h-screen font-sans bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
         {hideSidebar ? (
           <Outlet />
         ) : (
           <>
             {/* Sidebar */}
-            <aside className="hidden fixed top-0 left-0 z-50 flex-col w-64 h-full border-r bg-card border-border lg:flex">
+            <aside className="hidden fixed top-0 left-0 z-50 flex-col w-64 h-full border-r lg:flex bg-card border-border">
               <div className="flex items-center px-6 h-16 border-b border-border/50 shrink-0">
                 <Link
                   to="/"
-                  className="flex items-center gap-3 transition-opacity hover:opacity-90"
+                  className="flex gap-3 items-center transition-opacity hover:opacity-90"
                 >
                   <img
                     src="/logo-icon.png"
                     alt="Atlas Logo"
-                    className="h-8 w-8 object-cover rounded-lg shadow-sm"
+                    className="object-cover w-8 h-8 rounded-lg shadow-sm"
                   />
-                  <span className="font-bold text-xl tracking-tight text-foreground">
+                  <span className="text-xl font-bold tracking-tight text-foreground">
                     Atlas
                   </span>
                 </Link>
               </div>
 
-              <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+              <nav className="overflow-y-auto flex-1 py-6 px-3 space-y-1">
                 <Link
                   to="/overview"
                   className="flex items-center py-2.5 px-3 rounded-md transition-all text-muted-foreground group hover:text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary [&.active]:font-medium"
@@ -139,33 +139,33 @@ function RootComponent() {
             </aside>
 
             {/* Main Content Area */}
-            <div className="lg:pl-64 flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen lg:pl-64">
               {/* Top Header */}
-              <header className="sticky top-0 z-40 flex items-center justify-between px-6 h-16 border-b bg-background/80 backdrop-blur-xl border-border/50">
+              <header className="flex sticky top-0 z-40 justify-between items-center px-6 h-16 border-b bg-background/80 backdrop-blur-xl border-border/50">
                 {/* Left: Usage Stats */}
-                <div className="flex items-center gap-3">
+                <div className="flex gap-3 items-center">
                   <UsageHeaderBadge />
                 </div>
 
                 {/* Right: Search & Profile */}
-                <div className="flex items-center gap-4">
-                  <div className="hidden md:flex items-center gap-2 py-1.5 px-3 rounded-md border bg-muted/50 border-border/50 min-w-[240px] text-muted-foreground group hover:border-primary/50 transition-colors cursor-pointer">
-                    <Search className="h-4 w-4" />
+                <div className="flex gap-4 items-center">
+                  <div className="hidden gap-2 items-center py-1.5 px-3 rounded-md border transition-colors cursor-pointer md:flex bg-muted/50 border-border/50 min-w-[240px] text-muted-foreground group hover:border-primary/50">
+                    <Search className="w-4 h-4" />
                     <span className="flex-1 text-sm">Search...</span>
-                    <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100">
+                    <kbd className="hidden gap-1 items-center px-1.5 h-5 font-mono font-medium rounded border opacity-100 sm:inline-flex bg-muted text-[10px]">
                       <span className="text-xs">⌘</span>K
                     </kbd>
                   </div>
 
-                  <div className="flex items-center gap-4 pl-4 border-l border-border/50">
+                  <div className="flex gap-4 items-center pl-4 border-l border-border/50">
                     <ModeToggle />
 
                     <DropdownMenu>
                       <DropdownMenuTrigger className="focus:outline-none">
-                        <Avatar className="h-8 w-8 cursor-pointer ring-2 ring-transparent hover:ring-primary/50 transition-all">
+                        <Avatar className="w-8 h-8 ring-2 ring-transparent transition-all cursor-pointer hover:ring-primary/50">
                           <AvatarImage src="" />
-                          <AvatarFallback className="bg-primary/20 text-primary text-xs font-semibold">
-                            <User className="h-4 w-4" />
+                          <AvatarFallback className="text-xs font-semibold bg-primary/20 text-primary">
+                            <User className="w-4 h-4" />
                           </AvatarFallback>
                         </Avatar>
                       </DropdownMenuTrigger>
@@ -176,14 +176,14 @@ function RootComponent() {
                           className="cursor-pointer"
                           onClick={() => navigate({ to: "/settings" })}
                         >
-                          <Settings className="mr-2 h-4 w-4" />
+                          <Settings className="mr-2 w-4 h-4" />
                           <span>Settings</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="cursor-pointer"
                           onClick={() => navigate({ to: "/billing" })}
                         >
-                          <CreditCard className="mr-2 h-4 w-4" />
+                          <CreditCard className="mr-2 w-4 h-4" />
                           <span>Billing</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
@@ -191,7 +191,7 @@ function RootComponent() {
                           className="cursor-pointer text-destructive focus:bg-destructive focus:text-destructive-foreground"
                           onClick={handleLogout}
                         >
-                          <LogOut className="mr-2 h-4 w-4" />
+                          <LogOut className="mr-2 w-4 h-4" />
                           <span>Log out</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -200,7 +200,7 @@ function RootComponent() {
                 </div>
               </header>
 
-              <main className="flex-1 p-6 lg:p-8">
+              <main className="flex flex-1 justify-center p-6 align-top lg:p-8">
                 <Outlet />
               </main>
             </div>
