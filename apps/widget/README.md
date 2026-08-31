@@ -1,32 +1,52 @@
-# React + TypeScript + Vite
+# @thecodingant/atlas-widget
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Embeddable AI Chat Widget for your Atlas RAG pipeline.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install @thecodingant/atlas-widget
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Usage
+
+You can use the widget in two ways: via a direct `<script>` tag, or via NPM.
+
+### 1. Via NPM (React/Vue/Vanilla JS)
+
+Import the package and initialize it with your configuration:
+
+```javascript
+import "@thecodingant/atlas-widget";
+
+// Initialize the widget
+window.AtlasWidget.init({
+  org: "your-organization-uuid", // Required
+  layout: "floating",            // 'floating', 'sidebar', or 'bottom'
+  primary: "#3b82f6",            // Custom HEX color
+  host: "https://atlas.thecodingant.in"
+});
+```
+
+### 2. Via Script Tag (HTML)
+
+Place this right before your closing `</body>` tag:
+
+```html
+<script 
+  src="https://atlas.thecodingant.in/embed.js"
+  data-org="your-organization-uuid"
+  data-layout="floating"
+  data-primary="#3b82f6"
+></script>
+```
+
+## Configuration Options
+
+| Option | HTML Attribute | Description | Default |
+|--------|----------------|-------------|---------|
+| `org` | `data-org` | **Required.** Your Organization ID | - |
+| `layout` | `data-layout` | Widget style (`floating`, `sidebar`, `bottom`) | `floating` |
+| `theme` | `data-theme` | `light`, `dark`, or `system` | `system` |
+| `primary` | `data-primary` | Hex color code for branding | `#9333ea` |
+| `radius` | `data-radius` | Border radius (e.g. `0.5rem`) | `0.5rem` |
