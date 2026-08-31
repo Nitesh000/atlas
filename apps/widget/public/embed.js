@@ -1,4 +1,7 @@
 (function (global) {
+  // Prevent SSR crashes in Next.js / Nuxt
+  if (typeof window === "undefined" || typeof document === "undefined") return;
+
   function initWidget(customConfig) {
     var config = customConfig || {};
     
