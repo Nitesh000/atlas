@@ -9,7 +9,7 @@ const resolvedBaseURL = rawAuthUrl.startsWith("http")
     : rawAuthUrl;
 
 export const authClient = createAuthClient({
-  baseURL: resolvedBaseURL,
+  baseURL: import.meta.env.VITE_AUTH_URL,
 });
 
 export const { signIn, signUp, signOut, useSession } = authClient;
