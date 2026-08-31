@@ -54,6 +54,29 @@ function DocsPage() {
                 <span className="text-blue-400">&gt;&lt;/script&gt;</span>
               </pre>
             </div>
+
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold tracking-tight mb-2">
+                Install via NPM
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Alternatively, you can install the widget directly via NPM.
+              </p>
+              <div className="bg-muted p-4 rounded-xl border font-mono text-sm mb-4">
+                <pre className="text-foreground">
+                  npm install @thecodingant/atlas-widget
+                </pre>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Import it once in your client application entry point:
+              </p>
+              <div className="bg-muted p-4 rounded-xl border font-mono text-sm">
+                <pre className="text-muted-foreground">
+                  <span className="text-blue-400">import</span>{" "}
+                  <span className="text-yellow-300">"@thecodingant/atlas-widget"</span>;
+                </pre>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
