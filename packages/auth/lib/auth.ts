@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { bearer } from "better-auth/plugins";
 import { dbClient } from "@atlas/database";
 import { env } from "@atlas/config";
 
@@ -11,6 +12,9 @@ export const auth = betterAuth({
     "http://localhost:5174",
     "http://localhost:3000",
     ...env.FRONTEND_URLS,
+  ],
+  plugins: [
+    bearer(),
   ],
   advanced: {
     trustHost: true,
