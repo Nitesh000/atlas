@@ -5,9 +5,11 @@ import path from "node:path";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
+  // Load env from the monorepo root
+  const env = loadEnv(mode, path.resolve(process.cwd(), "../../"), "");
   
   return {
+    envDir: "../../",
     plugins: [TanStackRouterVite(), react()],
     resolve: {
       alias: {
@@ -18,7 +20,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: {
         "/api": {
-          target: env.VITE_API_TARGET || "http://localhost:3001",
+          target: env.VITE_API_TARGET || "https://atlas-1azo.onrender.com",
           changeOrigin: true,
         },
       },
