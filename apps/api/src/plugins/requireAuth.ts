@@ -1,5 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { auth } from "@atlas/auth";
+import { fromNodeHeaders } from "better-auth/node";
 import { UnauthorizedError } from "../common/errors/index.js";
 
 /**
@@ -9,8 +10,9 @@ export async function requireAuth(
   request: FastifyRequest,
   _reply: FastifyReply,
 ) {
+  const headers = fromNodeHeaders(request.headers);
   const session = await auth.api.getSession({
-    headers: request.headers as Record<string, string>,
+    headers: headers,
   });
 
   if (!session?.user) {
