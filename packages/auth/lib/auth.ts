@@ -4,6 +4,9 @@ import { bearer, jwt } from "better-auth/plugins";
 import { dbClient } from "@atlas/database";
 import { env } from "@atlas/config";
 
+const useCrossSiteCookies =
+  env.NODE_ENV === "production" || env.BETTER_AUTH_URL.startsWith("https://");
+
 export const auth = betterAuth({
   baseURL: env.BETTER_AUTH_URL,
   basePath: "/api/auth",
@@ -17,8 +20,10 @@ export const auth = betterAuth({
   advanced: {
     trustHost: true,
     defaultCookieAttributes: {
-      sameSite: "lax",
-      secure: true,
+      // Render and Vercel are cross-site in production; local development uses
+      // the Vite proxy over HTTP and therefore cannot use Secure cookies.
+      sameSite: useCrossSiteCookies ? "none" : "lax",
+      secure: useCrossSiteCookies,
       path: "/",
     },
   },

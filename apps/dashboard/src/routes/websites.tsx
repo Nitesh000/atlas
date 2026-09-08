@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
-import { api } from "../lib/api";
+import { API_BASE_URL, api } from "../lib/api";
 import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -61,8 +61,7 @@ function WebsitesPage() {
     if (!org?.id) return;
 
     // Ensure we hit the absolute base URL
-    const baseUrl =
-      import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+    const baseUrl = API_BASE_URL;
     const evtSource = new EventSource(
       `${baseUrl}/orgs/${org.id}/websites/events`,
       {

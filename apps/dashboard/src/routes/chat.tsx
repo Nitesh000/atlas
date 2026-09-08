@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { api } from "../lib/api";
+import { API_BASE_URL, api } from "../lib/api";
 import { useCurrentOrg } from "../hooks/use-current-org";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,8 +72,7 @@ function ChatPlayground() {
     setIsTyping(true);
 
     try {
-      const baseUrl =
-        import.meta.env.VITE_API_URL || "http://localhost:3001/api/v1";
+      const baseUrl = API_BASE_URL;
       const res = await axios.post(
         `${baseUrl}/chat`,
         { message: userMessage.content, sessionId },

@@ -1,20 +1,19 @@
 import axios from "axios";
+import { SESSION_TOKEN_KEY } from "./auth";
 
-// Force local dev to route through the Vite proxy to bypass Chrome's cross-origin cookie blockers
-const isDev = import.meta.env.DEV;
+export const API_BASE_URL = import.meta.env.DEV
+  ? "/api/v1"
+  : (import.meta.env.VITE_API_URL || "https://atlas-1azo.onrender.com/api/v1");
+
 export const api = axios.create({
-  baseURL: isDev ? "/api/v1" : import.meta.env.VITE_API_URL,
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
-api.interceptors.request.use(async (config) => {
-  try {
-    const token = localStorage.getItem("better-auth.session_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-  } catch (err) {
-    console.error(">> No token found", err);
+api.interceptors.request.use((config) => {
+  const token = window.localStorage.getItem(SESSION_TOKEN_KEY);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });

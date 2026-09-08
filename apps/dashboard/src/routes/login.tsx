@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { signIn } from "../lib/auth";
+import { SESSION_TOKEN_KEY, signIn } from "../lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,9 +28,9 @@ function Login() {
         return;
       }
       
-      // Save the bearer token for Axios to use
+      // Keep compatibility with auth responses that include the token in data.
       if (res.data?.token) {
-        localStorage.setItem("better-auth.session_token", res.data.token);
+        localStorage.setItem(SESSION_TOKEN_KEY, res.data.token);
       }
       
       navigate({ to: "/overview" });

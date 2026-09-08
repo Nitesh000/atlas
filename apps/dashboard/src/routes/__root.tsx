@@ -21,7 +21,7 @@ import {
   Activity,
   MessageSquare,
 } from "lucide-react";
-import { signOut } from "../lib/auth";
+import { SESSION_TOKEN_KEY, signOut } from "../lib/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -43,6 +43,7 @@ function RootComponent() {
 
   const handleLogout = async () => {
     await signOut();
+    localStorage.removeItem(SESSION_TOKEN_KEY);
     navigate({ to: "/login" });
   };
 
