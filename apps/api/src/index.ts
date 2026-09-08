@@ -32,8 +32,8 @@ async function start() {
   }
 
   try {
-    await app.listen({ port: env.PORT });
-    app.log.info(`Server listening at port:${env.PORT}`);
+    await app.listen({ port: env.PORT, host: "0.0.0.0" });
+    app.log.info(`Server listening at host: 0.0.0.0 port:${env.PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
