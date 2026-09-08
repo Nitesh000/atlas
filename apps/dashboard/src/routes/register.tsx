@@ -20,15 +20,21 @@ function Register() {
     e.preventDefault();
     setError("");
     try {
-      const { error: authError } = await signUp.email({
+      const res = await signUp.email({
         name,
         email,
         password,
       });
-      if (authError) {
-        setError(authError.message || "Failed to register");
+      if (res.error) {
+        setError(res.error.message || "Failed to register");
         return;
       }
+
+      // Save the bearer token for Axios to use
+      if (res.data?.token) {
+        localStorage.setItem("better-auth.session_token", res.data.token);
+      }
+
       navigate({ to: "/" });
     } catch (err: any) {
       setError(err.message);

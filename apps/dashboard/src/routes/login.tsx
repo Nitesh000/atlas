@@ -19,14 +19,20 @@ function Login() {
     e.preventDefault();
     setError("");
     try {
-      const { error: authError } = await signIn.email({
+      const res = await signIn.email({
         email,
         password,
       });
-      if (authError) {
-        setError(authError.message || "Failed to login");
+      if (res.error) {
+        setError(res.error.message || "Failed to login");
         return;
       }
+      
+      // Save the bearer token for Axios to use
+      if (res.data?.token) {
+        localStorage.setItem("better-auth.session_token", res.data.token);
+      }
+      
       navigate({ to: "/overview" });
     } catch (err: any) {
       setError(err.message);
