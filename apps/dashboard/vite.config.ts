@@ -17,6 +17,7 @@ export default defineConfig(() => {
       proxy: {
         "/api": {
           target: "https://atlas-1azo.onrender.com",
+          // target: "http://localhost:3001",
           changeOrigin: true,
           cookieDomainRewrite: "localhost",
           secure: false,

@@ -49,7 +49,7 @@ export async function buildApp() {
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-atlas-api-key"],
-    exposedHeaders: ["set-auth-token", "set-auth-jwt"],
+    exposedHeaders: ["set-auth-token"],
   });
 
   app.addHook("onClose", async () => {

@@ -1,5 +1,4 @@
 import { createAuthClient } from "better-auth/react";
-import { jwtClient } from "better-auth/client/plugins";
 
 export const SESSION_TOKEN_KEY = "better-auth.session_token";
 
@@ -36,7 +35,6 @@ export const authClient = createAuthClient({
     credentials: "include",
     plugins: [storeBearerToken],
   },
-  plugins: [jwtClient()],
 });
 
 export const { signIn, signUp, signOut, useSession } = authClient;
